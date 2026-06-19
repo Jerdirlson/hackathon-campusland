@@ -8,7 +8,7 @@
 
         <div class="main">
           <div class="brand">
-            <div class="logo">M</div>
+            <MlLogo :height="38" on-dark />
             <div>
               <div class="title">Crear cuenta</div>
               <div class="subtitle">Unos datos y listo — empieza a usar Metrolínea.</div>
@@ -72,6 +72,7 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { IonContent, IonPage, alertController, toastController } from '@ionic/vue'
 import LucideIcon from '@/components/LucideIcon.vue'
+import MlLogo from '@/components/MlLogo.vue'
 import { useAuth } from '@/composables/useAuth'
 
 const router = useRouter()

@@ -4,7 +4,7 @@
       <div class="wrap">
         <div class="main">
           <div class="brand">
-            <div class="logo">M</div>
+            <MlLogo :height="42" on-dark />
             <div>
               <div class="title">Hola de nuevo</div>
               <div class="subtitle">Ingresa para ver tus buses en tiempo real.</div>
@@ -68,6 +68,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { IonContent, IonPage, alertController, toastController } from '@ionic/vue'
 import LucideIcon from '@/components/LucideIcon.vue'
+import MlLogo from '@/components/MlLogo.vue'
 import { useAuth } from '@/composables/useAuth'
 
 const router = useRouter()
