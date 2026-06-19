@@ -1,5 +1,5 @@
 <template>
-  <ion-page>
+  <ion-page data-auth>
     <ion-content :scroll-y="false" class="onb" :style="bgStyle">
       <div
         class="wrap"

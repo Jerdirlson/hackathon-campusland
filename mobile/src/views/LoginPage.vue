@@ -1,5 +1,5 @@
 <template>
-  <ion-page>
+  <ion-page data-auth>
     <ion-content class="login">
       <div class="wrap">
         <div class="brand-top">
