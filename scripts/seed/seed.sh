@@ -38,6 +38,12 @@ sh "$DIR/seed-buses.sh"
 # 5. Routes + stops + templates
 sh "$DIR/seed-routes.sh"
 
+# 6. AI patches (requires routes + buses to exist)
+echo ""
+echo "→ AI Patches"
+DB_URL="${DATABASE_URL:-postgresql://metrolinea:metrolinea@localhost:5432/metrolinea}"
+psql "$DB_URL" -f "$DIR/seed-ai-patches.sql" -q && echo "  ✓ AI triggers and patches seeded"
+
 echo ""
 echo "======================================"
 echo "  Seed complete."

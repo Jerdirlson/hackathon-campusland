@@ -31,6 +31,7 @@ export class JobRunner {
 
       if (jobRows.length === 0) {
         await client.query('COMMIT')
+        client.release()
         return
       }
 

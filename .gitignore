@@ -47,3 +47,4 @@ mobile/ios/
 # Logs
 logs/
 *.log
+.playwright-mcp/
