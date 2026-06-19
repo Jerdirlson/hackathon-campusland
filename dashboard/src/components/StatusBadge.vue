@@ -12,7 +12,13 @@ const COLOR: Record<string, string> = {
   maintenance: 'badge--orange',
   scheduled:   'badge--blue',
   cancelled:   'badge--red',
-  in_progress: 'badge--green',
+  in_progress:  'badge--green',
+  reported:     'badge--yellow',
+  under_review: 'badge--orange',
+  confirmed:    'badge--red',
+  resolved:     'badge--green',
+  dismissed:    'badge--gray',
+  completed:    'badge--blue',
 }
 </script>
 

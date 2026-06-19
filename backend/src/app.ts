@@ -16,6 +16,7 @@ import stationEventsRouter from './routes/stationEvents'
 import aiTriggersRouter from './routes/aiTriggers'
 import aiPatchesRouter from './routes/aiPatches'
 import routingRouter from './routes/routing'
+import theftAlertsRouter from './routes/theftAlerts'
 import { startScheduler } from './jobs/scheduler'
 
 dotenv.config()
@@ -57,6 +58,7 @@ app.use('/station-events',     stationEventsRouter)
 app.use('/ai-triggers',        aiTriggersRouter)
 app.use('/ai-patches',         aiPatchesRouter)
 app.use('/routing',            routingRouter)
+app.use('/theft-alerts',       theftAlertsRouter)
 
 app.use(errorHandler)
 
