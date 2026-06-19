@@ -75,8 +75,11 @@ router.get('/graph', requireAuth, async (req, res, next) => {
       ORDER BY r.code, rs.stop_order
     `, [codes])
 
-    if (rows.length === 0) {
-      return res.status(404).json({ error: 'No active routes found for the given codes' })
+    const foundCodes = new Set(rows.map(r => r.route_code))
+    const notFound = codes.filter(c => !foundCodes.has(c))
+
+    if (foundCodes.size === 0) {
+      return res.status(404).json({ error: 'No active routes found for the given codes', notFound: codes })
     }
 
     // Build nodes — one per unique station
@@ -155,7 +158,11 @@ router.get('/graph', requireAuth, async (req, res, next) => {
       }
     }
 
-    res.json({ nodes: Array.from(nodeMap.values()), edges })
+    res.json({
+      nodes: Array.from(nodeMap.values()),
+      edges,
+      ...(notFound.length > 0 && { notFound }),
+    })
   } catch (err) { next(err) }
 })
 
