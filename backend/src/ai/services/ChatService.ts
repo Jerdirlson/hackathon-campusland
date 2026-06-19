@@ -133,11 +133,11 @@ export class ChatService {
     // 8) Build suggestion from lastResult (if any)
     const suggestion = lastResult ? ChatService.buildSuggestion(lastResult) : undefined
 
-    // 9) Insert assistant message
+    // 9) Insert assistant message (con la sugerencia en metadata para que persista)
     await db.query(
-      `INSERT INTO assistant_messages (session_id, role, content)
-       VALUES ($1, 'assistant', $2)`,
-      [sessionId, reply]
+      `INSERT INTO assistant_messages (session_id, role, content, metadata)
+       VALUES ($1, 'assistant', $2, $3)`,
+      [sessionId, reply, suggestion ? JSON.stringify({ suggestion }) : null]
     )
 
     // 10) Return response

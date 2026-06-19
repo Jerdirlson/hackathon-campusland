@@ -110,6 +110,7 @@ export interface AssistantMessage {
   role: 'user' | 'assistant'
   content: string
   created_at: string
+  suggestion?: RouteSuggestion
 }
 
 export interface AssistantChatResponse {
