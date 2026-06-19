@@ -51,6 +51,32 @@
             </div>
           </button>
 
+          <!-- Tarjeta MetroPay compacta -->
+          <button class="metropay" @click="router.push('/ajustes/tarjeta')">
+            <div class="metropay-bg" aria-hidden="true">
+              <span class="metropay-blob metropay-blob-1"></span>
+              <span class="metropay-blob metropay-blob-2"></span>
+            </div>
+            <div class="metropay-row metropay-row-top">
+              <div class="metropay-brand">
+                <span class="metropay-logo">metropay</span>
+                <LucideIcon name="wifi" :size="16" color="rgba(255,255,255,0.85)" />
+              </div>
+              <span class="metropay-num">···· {{ metropayLast4 }}</span>
+            </div>
+            <div class="metropay-row metropay-row-bottom">
+              <div>
+                <div class="metropay-label">Saldo disponible</div>
+                <div class="metropay-amount">
+                  <span class="metropay-currency">$</span>{{ metropayBalance }}
+                </div>
+              </div>
+              <span class="metropay-cta">
+                Recargar <LucideIcon name="chevron-right" :size="14" color="#fff" />
+              </span>
+            </div>
+          </button>
+
           <!-- Botón de reporte de incidente -->
           <button
             class="w-full flex items-center gap-3 bg-amber-50/60 border border-amber-200/40 rounded-2xl px-4 py-3.5 cursor-pointer text-left shadow-sm"
@@ -132,6 +158,7 @@ import { IonContent, IonPage, IonRefresher, IonRefresherContent } from '@ionic/v
 import { api, formatEta, type Arrival, type RouteRow, type StationRow } from '@/api/client'
 import { colorForRoute } from '@/ui/occupancy'
 import { useFavorites } from '@/composables/useFavorites'
+import { useMetroPay } from '@/composables/useMetroPay'
 import LucideIcon from '@/components/LucideIcon.vue'
 import MlHeader from '@/components/MlHeader.vue'
 import SectionLabel from '@/components/SectionLabel.vue'
@@ -144,6 +171,7 @@ interface FavRow {
 
 const router = useRouter()
 const { favStops } = useFavorites()
+const { last4: metropayLast4, formattedBalance: metropayBalance } = useMetroPay()
 
 const routes = ref<RouteRow[]>([])
 const stations = ref<StationRow[]>([])
@@ -322,6 +350,74 @@ onMounted(load)
 .hero-cta {
   display: flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 700;
   background: rgba(255, 255, 255, 0.16); padding: 9px 13px; border-radius: 99px;
+}
+
+/* Tarjeta MetroPay (compacta) */
+.metropay {
+  position: relative;
+  overflow: hidden;
+  text-align: left;
+  border: none;
+  cursor: pointer;
+  border-radius: 22px;
+  padding: 18px 20px 16px;
+  color: #fff;
+  background: linear-gradient(135deg, #103909 0%, #2b6f0f 55%, #5aa621 100%);
+  box-shadow: 0 14px 28px -10px rgba(16, 57, 9, 0.55);
+  display: flex; flex-direction: column; gap: 22px;
+  min-height: 144px;
+}
+.metropay-bg { position: absolute; inset: 0; pointer-events: none; }
+.metropay-blob {
+  position: absolute; border-radius: 50%; filter: blur(2px); opacity: 0.18;
+  background: #a6e04a;
+}
+.metropay-blob-1 { width: 180px; height: 180px; right: -60px; top: -60px; }
+.metropay-blob-2 { width: 140px; height: 140px; left: -50px; bottom: -50px; opacity: 0.12; }
+
+.metropay-row { position: relative; display: flex; align-items: center; justify-content: space-between; }
+.metropay-row-bottom { align-items: flex-end; }
+.metropay-brand { display: flex; align-items: center; gap: 8px; }
+.metropay-logo {
+  font-family: var(--ml-font-display);
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: 0.5px;
+}
+.metropay-num {
+  font-family: var(--ml-font-mono);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 2px;
+  opacity: 0.85;
+}
+.metropay-label {
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  opacity: 0.8;
+  margin-bottom: 4px;
+}
+.metropay-amount {
+  font-family: var(--ml-font-display);
+  font-weight: 800;
+  font-size: 30px;
+  line-height: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.metropay-currency {
+  font-size: 18px;
+  font-weight: 700;
+  opacity: 0.85;
+}
+.metropay-cta {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 12.5px; font-weight: 700;
+  background: rgba(255, 255, 255, 0.18);
+  padding: 8px 12px;
+  border-radius: 99px;
 }
 
 /* Favoritos */

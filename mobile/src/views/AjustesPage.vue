@@ -91,7 +91,7 @@ const locationOn = ref(true)
 const notifOn = ref(true)
 
 const settings = [
-  { icon: 'credit-card', label: 'Tarjeta Tullave',  value: '**** 4821', to: '/ajustes/tarjeta' },
+  { icon: 'credit-card', label: 'MetroPay',         value: '**** 4821', to: '/ajustes/tarjeta' },
   { icon: 'circle-help', label: 'Ayuda y soporte',  value: '',          to: '/ajustes/ayuda' },
   { icon: 'shield',      label: 'Privacidad',       value: '',          to: '/ajustes/privacidad' },
 ]

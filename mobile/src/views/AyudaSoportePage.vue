@@ -94,8 +94,8 @@ const open = ref<number | null>(0)
 
 const faqs = [
   {
-    q: '¿Cómo recargo mi tarjeta Tullave desde la app?',
-    a: 'Ve a Ajustes → Tarjeta Tullave → Recargar. Selecciona el monto y confirma. La recarga aparece de inmediato en tu saldo (demo).',
+    q: '¿Cómo recargo mi MetroPay desde la app?',
+    a: 'Ve a Ajustes → MetroPay → Recargar. Selecciona el monto y confirma. La recarga aparece de inmediato en tu saldo (demo).',
   },
   {
     q: '¿Por qué el bus no aparece en el mapa?',
@@ -107,7 +107,7 @@ const faqs = [
   },
   {
     q: '¿Qué hago si pierdo mi tarjeta?',
-    a: 'Bloquéala desde Ajustes → Tarjeta Tullave → Bloquear. Luego pide una nueva en cualquier punto CADE.',
+    a: 'Bloquéala desde Ajustes → MetroPay → Bloquear. Luego pide una nueva en cualquier punto CADE.',
   },
   {
     q: '¿Cómo cierro sesión en este teléfono?',

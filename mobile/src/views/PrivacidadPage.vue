@@ -168,7 +168,7 @@ async function showPolicy() {
   const a = await alertController.create({
     header: 'Política de tratamiento de datos',
     message:
-      'Metrolínea recolecta únicamente los datos necesarios para prestar el servicio de transporte: identidad básica, ubicación cuando la app está en uso y consumo de la tarjeta Tullave. No vendemos ni cedemos tus datos a terceros con fines comerciales.',
+      'Metrolínea recolecta únicamente los datos necesarios para prestar el servicio de transporte: identidad básica, ubicación cuando la app está en uso y consumo de tu MetroPay. No vendemos ni cedemos tus datos a terceros con fines comerciales.',
     buttons: ['Entendido'],
   })
   await a.present()

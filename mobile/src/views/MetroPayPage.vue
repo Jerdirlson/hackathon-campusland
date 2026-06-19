@@ -1,14 +1,14 @@
 <template>
   <ion-page>
     <ion-content :fullscreen="true">
-      <MlHeader back title="Tarjeta Tullave" subtitle="Tu saldo y movimientos recientes" />
+      <MlHeader back title="MetroPay" subtitle="Tu saldo y movimientos recientes" />
 
       <div class="content">
         <!-- Tarjeta física -->
         <div class="card-hero">
           <div class="card-bg">
             <div class="brand-row">
-              <span class="brand">tullave</span>
+              <span class="brand">metropay</span>
               <LucideIcon name="wifi" :size="22" color="#fff" />
             </div>
             <div class="number">
@@ -66,7 +66,7 @@
         </div>
 
         <p class="footnote">
-          Los datos de la tarjeta son simulados para esta demo. La integración real con Tullave llegará en próximas versiones.
+          Los datos de la tarjeta son simulados para esta demo. La integración real con MetroPay llegará en próximas versiones.
         </p>
       </div>
     </ion-content>
@@ -74,36 +74,20 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
 import { IonContent, IonPage, alertController, toastController } from '@ionic/vue'
 import MlHeader from '@/components/MlHeader.vue'
 import SectionLabel from '@/components/SectionLabel.vue'
 import IconBox from '@/components/IconBox.vue'
 import LucideIcon from '@/components/LucideIcon.vue'
 import { useAuth } from '@/composables/useAuth'
+import { useMetroPay } from '@/composables/useMetroPay'
 
 const { user } = useAuth()
-const last4 = '4821'
-
-// Demo data (mock estable; no random porque dispara hidratación inestable).
-const balance = ref(12_400)
-const movimientos = ref([
-  { type: 'recarga', title: 'Recarga en CADE Centro', date: 'Hoy, 8:14 a. m.', amount: 10_000 },
-  { type: 'gasto',   title: 'Ruta P1 · Cabecera ↔ UIS', date: 'Hoy, 7:42 a. m.', amount: 2_900 },
-  { type: 'gasto',   title: 'Ruta T2 · Provenza ↔ Centro', date: 'Ayer, 6:10 p. m.', amount: 2_900 },
-  { type: 'recarga', title: 'Recarga app Tullave', date: 'Jue 13 jun', amount: 20_000 },
-  { type: 'gasto',   title: 'Ruta R3 · Floridablanca ↔ UIS', date: 'Mié 12 jun', amount: 2_900 },
-])
-
-const formattedBalance = computed(() => formatNumber(balance.value))
-
-function formatNumber(n: number) {
-  return new Intl.NumberFormat('es-CO').format(n)
-}
+const { last4, movimientos, formattedBalance, formatNumber, recargar: doRecargar } = useMetroPay()
 
 async function recargar() {
   const a = await alertController.create({
-    header: 'Recargar Tullave',
+    header: 'Recargar MetroPay',
     message: 'Selecciona un monto a recargar (demo).',
     inputs: [
       { name: 'monto', type: 'number', placeholder: 'Monto en pesos', value: 10_000 },
@@ -115,15 +99,9 @@ async function recargar() {
         handler: async (data: { monto: string }) => {
           const monto = Number(data?.monto)
           if (!Number.isFinite(monto) || monto <= 0) return false
-          balance.value += monto
-          movimientos.value.unshift({
-            type: 'recarga',
-            title: 'Recarga desde la app',
-            date: 'Justo ahora',
-            amount: monto,
-          })
+          doRecargar(monto)
           const t = await toastController.create({
-            message: `Recargaste $ ${formatNumber(monto)} a tu Tullave.`,
+            message: `Recargaste $ ${formatNumber(monto)} a tu MetroPay.`,
             duration: 1800,
             position: 'top',
             color: 'success',
@@ -140,7 +118,7 @@ async function recargar() {
 async function bloquear() {
   const a = await alertController.create({
     header: '¿Bloquear tarjeta?',
-    message: 'Bloquearás temporalmente tu Tullave para evitar usos no autorizados. Podrás desbloquearla cuando quieras.',
+    message: 'Bloquearás temporalmente tu MetroPay para evitar usos no autorizados. Podrás desbloquearla cuando quieras.',
     buttons: [
       { text: 'Cancelar', role: 'cancel' },
       {
@@ -162,7 +140,7 @@ async function bloquear() {
 
 async function comoUsar() {
   const a = await alertController.create({
-    header: 'Cómo usar tu Tullave',
+    header: 'Cómo usar tu MetroPay',
     message:
       'Acerca tu tarjeta al validador del bus durante 1 segundo. Verás una luz verde y escucharás un “bip” si el pago fue correcto.',
     buttons: ['Entendido'],
