@@ -7,6 +7,7 @@ const routes: Array<RouteRecordRaw> = [
   // Flujo de entrada
   { path: '/onboarding', name: 'Onboarding', component: () => import('../views/OnboardingPage.vue') },
   { path: '/login', name: 'Login', component: () => import('../views/LoginPage.vue') },
+  { path: '/register', name: 'Register', component: () => import('../views/RegisterPage.vue') },
 
   // App pasajero con barra de tabs
   {

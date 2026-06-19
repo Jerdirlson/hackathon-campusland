@@ -23,7 +23,7 @@
                 <LucideIcon :name="showPwd ? 'eye-off' : 'eye'" :size="19" color="#9AA89A" />
               </button>
             </div>
-            <button type="button" class="forgot">¿Olvidaste tu contraseña?</button>
+            <button type="button" class="forgot" @click="forgotPassword">¿Olvidaste tu contraseña?</button>
 
             <button type="submit" class="cta">Ingresar</button>
           </form>
@@ -39,14 +39,24 @@
               <span class="g">G</span>Google
             </button>
             <button class="social-btn" @click="login">
-              <LucideIcon name="apple" :size="18" color="#fff" />Apple
+              <svg
+                class="apple"
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="#fff"
+                aria-hidden="true"
+              >
+                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+              </svg>
+              Apple
             </button>
           </div>
         </div>
 
         <div class="signup">
           ¿No tienes cuenta?
-          <button @click="router.replace('/onboarding')">Crear cuenta</button>
+          <button @click="router.push('/register')">Crear cuenta</button>
         </div>
       </div>
     </ion-content>
@@ -56,7 +66,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { IonContent, IonPage } from '@ionic/vue'
+import { IonContent, IonPage, alertController, toastController } from '@ionic/vue'
 import LucideIcon from '@/components/LucideIcon.vue'
 import { useAuth } from '@/composables/useAuth'
 
@@ -72,6 +82,49 @@ function login() {
     email: email.value || 'juan@metrolinea.co',
   })
   router.replace('/tabs/home')
+}
+
+async function forgotPassword() {
+  const a = await alertController.create({
+    header: 'Recuperar contraseña',
+    message: 'Te enviaremos un enlace de recuperación al correo que nos indiques.',
+    inputs: [
+      {
+        name: 'email',
+        type: 'email',
+        placeholder: 'tu@correo.com',
+        value: email.value,
+        attributes: { autocomplete: 'email' },
+      },
+    ],
+    buttons: [
+      { text: 'Cancelar', role: 'cancel' },
+      {
+        text: 'Enviar enlace',
+        handler: async (data: { email: string }) => {
+          const value = (data?.email || '').trim()
+          if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value)) {
+            const err = await alertController.create({
+              header: 'Correo inválido',
+              message: 'Ingresa un correo válido.',
+              buttons: ['Entendido'],
+            })
+            await err.present()
+            return false
+          }
+          const t = await toastController.create({
+            message: `Si ${value} está registrado, te llegará un correo en unos minutos.`,
+            duration: 2400,
+            position: 'top',
+            color: 'success',
+          })
+          await t.present()
+          return true
+        },
+      },
+    ],
+  })
+  await a.present()
 }
 </script>
 
@@ -228,6 +281,9 @@ function login() {
   font-weight: 800;
   font-size: 13px;
   color: var(--ml-green-dark);
+}
+.apple {
+  margin-top: -2px; /* el logo de Apple tiene baseline raro, alinear con el texto */
 }
 .signup {
   text-align: center;
