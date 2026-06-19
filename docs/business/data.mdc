@@ -1,0 +1,203 @@
+# Modelo de Datos — Metrolinea (PostgreSQL)
+
+## Infraestructura
+
+### `stations`
+| Campo   | Tipo    | Notas                  |
+|---------|---------|------------------------|
+| id      | serial  | PK                     |
+| code    | varchar | Ej: EST-01             |
+| name    | varchar |                        |
+| address | varchar |                        |
+| lat     | numeric |                        |
+| lng     | numeric |                        |
+
+### `routes`
+| Campo       | Tipo    | Notas                        |
+|-------------|---------|------------------------------|
+| id          | serial  | PK                           |
+| code        | varchar | Ej: P2                       |
+| name        | varchar |                              |
+| description | text    |                              |
+| status      | varchar | active / inactive            |
+
+### `route_stations`
+Paradas ordenadas de cada ruta.
+
+| Campo                       | Tipo    | Notas                              |
+|-----------------------------|---------|------------------------------------|
+| id                          | serial  | PK                                 |
+| route_id                    | int     | FK → routes                        |
+| station_id                  | int     | FK → stations                      |
+| stop_order                  | int     | Orden dentro de la ruta            |
+| estimated_minutes_from_prev | int     | Tiempo estimado desde parada previa|
+
+### `buses`
+| Campo         | Tipo    | Notas                              |
+|---------------|---------|------------------------------------|
+| id            | serial  | PK                                 |
+| code          | varchar | Ej: 003                            |
+| license_plate | varchar |                                    |
+| capacity      | int     | Máximo de pasajeros                |
+| status        | varchar | active / inactive / maintenance    |
+
+---
+
+## Programación
+
+### `schedule_templates`
+Plantilla maestra de la que se generan los viajes diarios.
+
+| Campo              | Tipo    | Notas                                      |
+|--------------------|---------|--------------------------------------------|
+| id                 | serial  | PK                                         |
+| route_id           | int     | FK → routes                                |
+| departure_time     | time    | Hora de salida desde primera estación      |
+| frequency_minutes  | int     | Intervalo entre salidas                    |
+| days_of_week       | int[]   | Ej: [1,2,3,4,5] (lunes a viernes)          |
+| valid_from         | date    |                                            |
+| valid_until        | date    |                                            |
+
+### `daily_trips`
+Viajes concretos generados a partir del template para un día específico.
+
+| Campo               | Tipo      | Notas                                                        |
+|---------------------|-----------|--------------------------------------------------------------|
+| id                  | serial    | PK                                                           |
+| route_id            | int       | FK → routes                                                  |
+| bus_id              | int       | FK → buses                                                   |
+| date                | date      |                                                              |
+| scheduled_departure | timestamp | Salida programada desde primera estación                     |
+| status              | varchar   | scheduled / in_progress / completed / cancelled / delayed    |
+
+### `trip_stops`
+Paso del viaje por cada estación (puntualidad por parada).
+
+| Campo               | Tipo      | Notas                     |
+|---------------------|-----------|---------------------------|
+| id                  | serial    | PK                        |
+| daily_trip_id       | int       | FK → daily_trips          |
+| station_id          | int       | FK → stations             |
+| stop_order          | int       |                           |
+| scheduled_arrival   | timestamp |                           |
+| actual_arrival      | timestamp | Nullable                  |
+| scheduled_departure | timestamp |                           |
+| actual_departure    | timestamp | Nullable                  |
+
+---
+
+## Usuarios y demanda
+
+### `users`
+| Campo         | Tipo    | Notas                          |
+|---------------|---------|--------------------------------|
+| id            | serial  | PK                             |
+| name          | varchar |                                |
+| email         | varchar | Unique                         |
+| password_hash | varchar |                                |
+| role          | varchar | admin / operator / passenger   |
+| created_at    | timestamp |                              |
+
+### `trip_plans`
+Trayectos que el pasajero registrado agenda con antelación.
+
+| Campo              | Tipo      | Notas                                    |
+|--------------------|-----------|------------------------------------------|
+| id                 | serial    | PK                                       |
+| user_id            | int       | FK → users                               |
+| route_id           | int       | FK → routes                              |
+| origin_station_id  | int       | FK → stations                            |
+| dest_station_id    | int       | FK → stations                            |
+| planned_date       | date      |                                          |
+| planned_time       | time      |                                          |
+| status             | varchar   | active / cancelled / completed           |
+
+### `user_trip_assignments`
+Asignación concreta de un usuario a un `daily_trip` (resultado de un patch aprobado).
+
+| Campo         | Tipo    | Notas                         |
+|---------------|---------|-------------------------------|
+| id            | serial  | PK                            |
+| trip_plan_id  | int     | FK → trip_plans               |
+| daily_trip_id | int     | FK → daily_trips              |
+| status        | varchar | assigned / boarded / missed   |
+
+---
+
+## Logs en tiempo real
+
+### `journey_logs`
+Datos de la cámara del bus (ocupación durante el trayecto).
+
+| Campo         | Tipo      | Notas                          |
+|---------------|-----------|--------------------------------|
+| id            | serial    | PK                             |
+| daily_trip_id | int       | FK → daily_trips               |
+| timestamp     | timestamp |                                |
+| passenger_count | int     |                                |
+| event_type    | varchar   | periodic / change              |
+
+### `station_events`
+Datos del sensor de estación (llegada y salida del bus).
+
+| Campo         | Tipo      | Notas                          |
+|---------------|-----------|--------------------------------|
+| id            | serial    | PK                             |
+| daily_trip_id | int       | FK → daily_trips               |
+| station_id    | int       | FK → stations                  |
+| event_type    | varchar   | arrival / departure            |
+| timestamp     | timestamp |                                |
+| passenger_count | int     | Conteo en el momento del evento|
+
+---
+
+## IA
+
+### `ai_triggers`
+Eventos que activan la evaluación del agente IA.
+
+| Campo         | Tipo      | Notas                                                              |
+|---------------|-----------|--------------------------------------------------------------------|
+| id            | serial    | PK                                                                 |
+| trigger_type  | varchar   | pre_day_evaluation / low_occupancy / bus_full / high_demand        |
+| route_id      | int       | FK → routes (nullable)                                             |
+| daily_trip_id | int       | FK → daily_trips (nullable)                                        |
+| payload       | jsonb     | Contexto adicional para el agente                                  |
+| status        | varchar   | pending / processing / resolved                                    |
+| created_at    | timestamp |                                                                    |
+
+### `ai_patches`
+Propuestas de acción generadas por el agente IA, pendientes de aprobación del operador.
+
+| Campo            | Tipo      | Notas                                                  |
+|------------------|-----------|--------------------------------------------------------|
+| id               | serial    | PK                                                     |
+| trigger_id       | int       | FK → ai_triggers                                       |
+| analysis         | text      | Razonamiento del agente                                |
+| proposed_actions | jsonb     | Array de acciones propuestas                           |
+| status           | varchar   | pending / approved / modified / rejected               |
+| reviewed_by      | int       | FK → users (operador)                                  |
+| reviewed_at      | timestamp |                                                        |
+| applied_at       | timestamp |                                                        |
+
+---
+
+## Sesiones de asistente (diferido)
+
+### `assistant_sessions`
+| Campo      | Tipo      | Notas              |
+|------------|-----------|--------------------|
+| id         | serial    | PK                 |
+| user_id    | int       | FK → users         |
+| started_at | timestamp |                    |
+| ended_at   | timestamp | Nullable           |
+| context    | jsonb     | Estado de sesión   |
+
+### `assistant_messages`
+| Campo      | Tipo      | Notas                  |
+|------------|-----------|------------------------|
+| id         | serial    | PK                     |
+| session_id | int       | FK → assistant_sessions|
+| role       | varchar   | user / assistant       |
+| content    | text      |                        |
+| created_at | timestamp |                        |

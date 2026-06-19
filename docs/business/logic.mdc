@@ -1,0 +1,99 @@
+# Lógica de Negocio — Metrolinea
+
+## Actores
+
+- **Admin / Operador logístico**: gestiona rutas, buses, aprueba o modifica patches de IA.
+- **Pasajero registrado**: usa la app, agenda trayectos, recibe notificaciones de bus asignado.
+- **Pasajero libre**: no usa la app, su ocupación se detecta únicamente por cámara.
+
+---
+
+## Flujo principal del día
+
+1. A partir de las `schedule_templates` se generan los `daily_trips` del día.
+2. Inmediatamente después, se dispara el **Trigger 1** (evaluación pre-día).
+3. Durante el día, los triggers 2 y 3 actúan en tiempo real.
+4. Todo cambio propuesto por IA genera un `ai_patch` que el operador revisa, modifica si es necesario, y aprueba.
+5. Al aprobarse un patch, el sistema aplica las acciones y notifica a los usuarios afectados.
+
+---
+
+## Triggers de IA
+
+### Trigger 1 — Evaluación pre-día
+- **Cuándo**: al generar los `daily_trips` (noche anterior o madrugada).
+- **Input**: `trip_plans` del día + `daily_trips` generados + capacidad de cada bus.
+- **Evaluación**: demanda esperada por franja horaria vs capacidad total programada por ruta.
+- **Acciones posibles**:
+  - Agregar viajes (`add_trip`)
+  - Redistribuir pasajeros registrados entre viajes (`assign_users`) — ej. 30 usuarios → dos buses de 15
+  - Aumentar frecuencia en una franja horaria (`increase_frequency`)
+
+### Trigger 2 — Baja ocupación antes de salida
+- **Cuándo**: ~10 minutos antes de que un `daily_trip` salga de la estación inicial.
+- **Input**: `journey_logs` recientes del bus + `trip_plans` asignados al viaje.
+- **Evaluación**: si la ocupación esperada es menor al 20% de la capacidad del bus.
+- **Acciones posibles**:
+  - Retrasar el viaje (`delay_trip`)
+  - Cancelar el viaje (`cancel_trip`) y reasignar sus usuarios al siguiente
+
+### Trigger 3 — Bus lleno en tiempo real
+- **Cuándo**: cuando la cámara del bus reporta ocupación >= 100% (o umbral configurado).
+- **Input**: `journey_logs` del bus + próximo viaje en la misma ruta y su tiempo estimado de llegada.
+- **Evaluación**: si hay un bus siguiente disponible y en cuánto llega.
+- **Acciones posibles**:
+  - Notificar a usuarios en la estación: "bus lleno, el siguiente llega en X min"
+  - Agregar un viaje de emergencia (`add_trip`) si la espera es inaceptable
+
+---
+
+## Gestión de patches
+
+- La IA **nunca ejecuta cambios directamente**; genera un `ai_patch` con `proposed_actions` en JSON.
+- El operador logístico recibe el patch, puede modificarlo, y lo aprueba o rechaza.
+- Solo al aprobarse se aplican las acciones sobre `daily_trips` y `user_trip_assignments`.
+
+### Estructura de `proposed_actions`
+```json
+{
+  "actions": [
+    { "type": "add_trip", "route_id": 1, "bus_id": 5, "departure": "08:30", "date": "2024-01-15" },
+    { "type": "delay_trip", "daily_trip_id": 123, "new_departure": "08:45", "reason": "low_occupancy" },
+    { "type": "cancel_trip", "daily_trip_id": 124, "reason": "low_occupancy" },
+    { "type": "assign_users", "daily_trip_id": 123, "trip_plan_ids": [1, 2, 3] },
+    { "type": "increase_frequency", "route_id": 1, "time_window": "08:00-10:00", "interval_minutes": 10 }
+  ]
+}
+```
+
+---
+
+## Programación de trayectos de usuario
+
+- El pasajero registrado agenda origen, destino, fecha y hora.
+- Esto **no garantiza cupo**; es una señal de demanda que alimenta el Trigger 1.
+- Una vez aprobado un patch, el sistema asigna el usuario a un `daily_trip` concreto y le notifica.
+- Los pasajeros libres (sin app) aportan datos solo vía cámara y sensores de estación.
+
+---
+
+## Sensores de estación
+
+- Al **llegar** un bus a una estación: se registra hora real, se cuenta pasajeros a bordo.
+- Al **salir** un bus de una estación: se registra hora real, se cuenta pasajeros a bordo.
+- Ambos eventos se guardan en `station_events` y permiten calcular puntualidad y variación de ocupación por parada.
+
+---
+
+## Cámara del bus
+
+- Hace POST a la API cada X segundos **o** cuando detecta cambio en el conteo de pasajeros.
+- El dato se guarda en `journey_logs` con `event_type`: `periodic` o `change`.
+- Es la fuente principal para detectar bus lleno (Trigger 3) y baja ocupación (Trigger 2).
+
+---
+
+## Asistente IA (diferido)
+
+- Usará las APIs disponibles del sistema para responder preguntas y ejecutar acciones vía lenguaje natural.
+- Pendiente de definición de alcance y permisos por rol.

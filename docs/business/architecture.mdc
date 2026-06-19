@@ -1,0 +1,113 @@
+# Arquitectura — Metrolinea
+
+## Stack tecnológico
+
+| Capa        | Tecnología         | Rol                                              |
+|-------------|--------------------|--------------------------------------------------|
+| Frontend    | Vue.js             | App web para pasajeros y panel de operadores     |
+| Backend API | Node.js            | API REST, lógica de negocio, WebSockets          |
+| IA          | Python (container) | Agente de decisiones, evaluación de triggers     |
+| Base de datos | PostgreSQL       | Fuente de verdad única                           |
+| LLM         | GPT (OpenAI API)   | Razonamiento del agente y asistente              |
+
+---
+
+## Diagrama de servicios
+
+```
+[Cámara del bus] ──POST──────────────────────────────┐
+[Sensor estación] ──POST────────────────────────────┐ │
+                                                     ▼ ▼
+[Vue App] ──────────────────► [Node.js API] ◄──── [PostgreSQL]
+  - Panel operador                   │                  ▲
+  - App pasajero                     │                  │
+  - Notificaciones WS                ▼                  │
+                            [Python AI Container] ──────┘
+                                   │
+                                   ▼
+                              [OpenAI GPT API]
+```
+
+---
+
+## Responsabilidades por servicio
+
+### Vue.js
+- Panel de operador: visualizar `daily_trips`, revisar y aprobar `ai_patches`, gestionar rutas y buses.
+- App de pasajero: agendar `trip_plans`, ver asignación de bus, recibir notificaciones en tiempo real.
+- Comunicación en tiempo real vía WebSocket con Node.js.
+
+### Node.js API
+- CRUD de todas las entidades del modelo de datos.
+- Generación diaria de `daily_trips` a partir de `schedule_templates`.
+- Recepción de datos de cámaras (`POST /journey-logs`) y sensores (`POST /station-events`).
+- Detección de condiciones que disparan triggers (umbral de ocupación, tiempo antes de salida).
+- Creación de registros en `ai_triggers` y envío al contenedor Python.
+- Aplicación de `ai_patches` aprobados sobre `daily_trips` y `user_trip_assignments`.
+- Envío de notificaciones push / WebSocket a usuarios afectados.
+
+### Python AI Container
+- Expone endpoints que Node.js llama al crear un `ai_trigger`.
+- Consulta el estado actual en PostgreSQL (viajes, ocupación, planes de usuario).
+- Usa GPT para razonar sobre el contexto y decidir qué acciones proponer.
+- Devuelve un `ai_patch` con `proposed_actions` en JSON estructurado.
+- **No ejecuta cambios directamente**; toda acción requiere aprobación del operador.
+
+### PostgreSQL
+- Base de datos única compartida por Node.js y Python.
+- Python tiene acceso de solo lectura + escritura a `ai_triggers` y `ai_patches`.
+- Node.js es el único que aplica cambios operacionales (`daily_trips`, `user_trip_assignments`, etc.).
+
+---
+
+## Flujo de un trigger de IA
+
+```
+1. Node.js detecta condición (ej: bus al 100% de capacidad)
+2. Node.js inserta registro en `ai_triggers` (status: pending)
+3. Node.js llama POST /evaluate al contenedor Python con el trigger_id
+4. Python consulta contexto en PostgreSQL
+5. Python llama a GPT con el contexto
+6. Python inserta `ai_patch` en PostgreSQL (status: pending)
+7. Python responde OK a Node.js
+8. Node.js notifica al operador vía WebSocket: "hay un patch pendiente"
+9. Operador revisa, modifica si necesario, aprueba en la Vue app
+10. Node.js aplica las acciones del patch y notifica usuarios afectados
+```
+
+---
+
+## Triggers y su origen
+
+| Trigger               | Quién lo detecta | Cuándo                                    |
+|-----------------------|------------------|-------------------------------------------|
+| pre_day_evaluation    | Node.js (cron)   | Al generar `daily_trips` cada madrugada   |
+| low_occupancy         | Node.js          | ~10 min antes de la salida de un viaje    |
+| bus_full              | Node.js          | Al recibir POST de cámara con ocupación >= umbral |
+| high_demand           | Node.js          | Al analizar `trip_plans` concentrados en una franja |
+
+---
+
+## Comunicación en tiempo real
+
+- **Cámara → Node.js**: HTTP POST cada X segundos o por evento de cambio de pasajeros.
+- **Sensor estación → Node.js**: HTTP POST en cada evento de llegada/salida de bus.
+- **Node.js → Vue (operador)**: WebSocket para notificar patches pendientes.
+- **Node.js → Vue (pasajero)**: WebSocket o push notification para asignación de bus y alertas.
+
+---
+
+## Seguridad y roles
+
+| Rol       | Acceso                                                                 |
+|-----------|------------------------------------------------------------------------|
+| admin     | Gestión completa: rutas, buses, usuarios, templates, patches           |
+| operator  | Revisar y aprobar patches, monitorear viajes en curso                  |
+| passenger | Agendar trip_plans, ver asignación propia, recibir notificaciones      |
+
+---
+
+## Asistente IA (diferido)
+- Usará las mismas APIs REST de Node.js disponibles para el panel de operador.
+- Sesiones almacenadas en `assistant_sessions` / `assistant_messages`.
+- Alcance y permisos por rol pendientes de definición.
