@@ -100,13 +100,13 @@ async function load() {
   try {
     const id = String(routeParams.params.id)
     route.value = await api.getRoute(id)
-    await nextTick()
-    if (viewActive.value) renderMap()
   } catch (e) {
     error.value = (e as Error).message
   } finally {
     loading.value = false
   }
+  await nextTick()
+  if (viewActive.value) renderMap()
 }
 
 function renderMap() {
