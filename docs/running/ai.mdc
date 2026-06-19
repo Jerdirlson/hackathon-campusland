@@ -1,0 +1,64 @@
+# Correr el backend `ai/` (FastAPI + Docker)
+
+Cerebro del sistema: ingesta de tiempos de paradas y ocupación, conteo de personas con YOLO desde cámaras, motor de decisión por reglas.
+
+## Prerrequisitos
+
+- Docker Desktop instalado y corriendo.
+
+## Arrancar
+
+```bash
+cd ai
+cp .env.example .env       # solo la primera vez (variables: umbrales de decisión, etc.)
+docker compose up --build  # primera vez: ~10 min (descarga PyTorch + OpenCV)
+# subsiguientes:
+docker compose up -d
+```
+
+Cuando arranca:
+
+```
+✅ http://localhost:8000/health         → {"status":"ok"...}
+✅ http://localhost:8000/docs            → Swagger UI
+```
+
+## Endpoints
+
+| Método | Path | Para qué |
+|---|---|---|
+| GET | `/health` | Estado del servicio. |
+| GET | `/routes` | Rutas con datos cargados. |
+| POST | `/ingest/stop-time` | Registrar paso de un bus por una parada (con retraso). |
+| POST | `/ingest/occupancy` | Registrar ocupación medida. |
+| POST | `/vision/count` | Subir imagen de cámara → cuenta personas con YOLO. |
+| GET | `/decision/{route_id}` | Recomendación de despacho de la IA. |
+
+## Smoke test
+
+```bash
+bash ai/scripts/smoke_test.sh
+```
+
+Carga datos sintéticos y verifica que el motor de decisión devuelve `dispatch_extra_bus: true` para la ruta `R1`.
+
+## Parar / reiniciar
+
+```bash
+docker compose down            # parar y eliminar contenedor
+docker compose restart         # reiniciar tras editar código
+docker compose logs -f         # ver logs en vivo
+```
+
+## Variables de entorno (`ai/.env`)
+
+| Variable | Default | Uso |
+|---|---|---|
+| `OCCUPANCY_THRESHOLD` | `0.85` | Ocupación promedio que dispara despacho. |
+| `DELAY_THRESHOLD_MIN` | `8` | Retraso promedio (min) que dispara despacho. |
+| `DISPATCH_COOLDOWN_MIN` | `10` | Cooldown entre recomendaciones repetidas. |
+| `YOLO_MODEL` | `yolov8n.pt` | Modelo YOLO usado para conteo. |
+
+## CORS
+
+`CORSMiddleware` con `allow_origins=["*"]` para que `dashboard/` y `mobile/` puedan consumir desde el navegador sin proxy si quieres.

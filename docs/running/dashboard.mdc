@@ -1,0 +1,62 @@
+# Correr el `dashboard/` (Vue 3 + Vite + TypeScript)
+
+Panel para el equipo de operaciones de Metrolínea — visualiza las recomendaciones del módulo `ai/` por ruta.
+
+## Prerrequisitos
+
+- Node 18+.
+- Backend `ai/` corriendo en `:8000` (ver [`ai.mdc`](./ai.mdc)).
+
+## Arrancar en modo dev
+
+```bash
+cd dashboard
+npm install        # solo la primera vez
+npm run dev        # ya viene con host:true (también: npm run dev -- --host)
+```
+
+- Local: http://localhost:5173
+- LAN: http://<TU_IP>:5173 (hoy: **http://10.0.0.111:5173**)
+
+## Build para producción
+
+```bash
+cd dashboard
+npm run build      # genera dist/
+npm run preview    # sirve dist/ localmente para verificar
+```
+
+`dist/` se puede subir a cualquier hosting estático (Vercel, Netlify, Nginx, S3…).
+Para que apunte a un backend distinto del proxy `/api`:
+
+```bash
+VITE_API_URL=https://api.metrolinea.example.com npm run build
+```
+
+## Arquitectura interna
+
+```
+dashboard/
+├── vite.config.ts         # proxy /api → http://localhost:8000
+├── index.html
+└── src/
+    ├── main.ts
+    ├── App.vue            # vista única: lista de decisiones por ruta
+    └── api/client.ts      # cliente del backend ai/
+```
+
+## Endpoints que consume
+
+Definidos en `src/api/client.ts`:
+
+- `GET /health` — estado del backend.
+- `GET /routes` — rutas con datos.
+- `GET /decision/{route_id}` — recomendación de despacho.
+
+## Troubleshooting
+
+| Síntoma | Arreglo |
+|---|---|
+| `502 Bad Gateway` en `/api/...` | El backend `ai/` no está corriendo |
+| "Aún no hay rutas con datos" | El backend no tiene datos → corre `bash ../ai/scripts/smoke_test.sh` |
+| `port 5173 in use` | `lsof -ti:5173 \| xargs kill -9` |

@@ -1,0 +1,12 @@
+# `docs/running/` — Cómo correr Metrolínea
+
+Manuales de operación de cada servicio del stack.
+
+| Documento | Servicio | Puerto |
+|---|---|---|
+| [`all.mdc`](./all.mdc) | **Todo a la vez** + demo del hackathon | — |
+| [`ai.mdc`](./ai.mdc) | Backend IA (Python + FastAPI + Docker) | 8000 |
+| [`mobile.mdc`](./mobile.mdc) | App pasajero (Vue + Ionic + Capacitor) | 5174 |
+| [`dashboard.mdc`](./dashboard.mdc) | Panel operador (Vue + Vite) | 5173 |
+
+> Para entender **qué** hace cada servicio (modelo de datos, lógica de IA, arquitectura general) ver [`docs/business/`](../business).

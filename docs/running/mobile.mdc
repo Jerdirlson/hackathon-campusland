@@ -1,0 +1,107 @@
+# Correr la app `mobile/` (Vue 3 + Ionic + Capacitor + Tailwind)
+
+App pasajero. El mismo código compila a iOS, Android (Capacitor) y web (kiosko en terminales).
+
+## Prerrequisitos
+
+- Node 18+ (Node 23 funciona).
+- Backend `ai/` corriendo en `:8000` (ver [`ai.mdc`](./ai.mdc)).
+
+## Arrancar en modo dev
+
+```bash
+cd mobile
+npm install                # solo la primera vez
+npm run dev -- --host      # --host expone el server a tu red local
+```
+
+- Local: http://localhost:5174
+- LAN: http://<TU_IP>:5174 (hoy: **http://10.0.0.111:5174**)
+
+## Abrir desde el **celular**
+
+1. Mac y celular en la **misma WiFi**.
+2. En el navegador del celular abre **`http://10.0.0.111:5174`**.
+3. Si la IP cambió: `ipconfig getifaddr en0`.
+
+> Si no carga: firewall de macOS. **Ajustes del Sistema → Red → Firewall** → permite Node.
+
+## Compilar a app nativa (Android / iOS)
+
+```bash
+cd mobile
+
+# Build para que pegue al backend desde tu IP LAN
+VITE_API_URL=http://10.0.0.111:8000 npm run build
+
+# Android
+npx cap add android        # solo la primera vez
+npx cap sync
+npx cap open android       # abre Android Studio → Run
+
+# iOS (necesita Xcode)
+npx cap add ios
+npx cap sync
+npx cap open ios
+```
+
+## Arquitectura interna
+
+```
+mobile/src/
+├── App.vue · main.ts
+├── api/client.ts              # cliente del backend ai/ (vista operador)
+├── data/metrolinea.ts         # datos mock para el prototipo
+├── composables/
+│   ├── useAuth.ts             # login / logout persistido en localStorage
+│   ├── useFavorites.ts        # favoritos compartidos (singleton reactivo)
+│   └── useRefreshable.ts      # pull-to-refresh
+├── components/                # 14 componentes reutilizables
+└── views/
+    ├── OnboardingPage.vue     # /onboarding
+    ├── LoginPage.vue          # /login
+    ├── TabsPage.vue           # /tabs (outlet + MlTabBar)
+    │   ├── HomePage.vue       #   /tabs/home
+    │   ├── RutasPage.vue      #   /tabs/rutas
+    │   ├── FavoritosPage.vue  #   /tabs/fav
+    │   └── AjustesPage.vue    #   /tabs/ajustes  (incluye Cerrar sesión)
+    ├── SearchPage.vue         # /search
+    ├── StopDetailPage.vue     # /stop/:id
+    ├── RouteDetailPage.vue    # /route/:id
+    └── OperatorPage.vue       # /operator (consume ai//decision)
+```
+
+## Estilos: Tailwind + tokens
+
+- **Tailwind v3** instalado. Tokens Metrolínea expuestos como utilities:
+  `bg-ml-green`, `text-ml-ink`, `rounded-ml-lg`, `shadow-hero`, `shadow-card`, etc.
+- Fuentes Google: `Inter`, `Inter Tight`, `JetBrains Mono`.
+- **Modo oscuro de Ionic está apagado** (`dark.system.css` comentado en `main.ts`)
+  y `color-scheme: light` forzado en `index.html` y `variables.css`. No volver
+  a habilitar dark mode automático sin rediseñar.
+
+## Endpoints que consume
+
+Definidos en `src/api/client.ts`:
+
+- `GET /health` — estado del backend.
+- `GET /routes` — rutas con datos.
+- `GET /decision/{route_id}` — recomendación de despacho de la IA.
+
+## Auth (mock)
+
+`useAuth` persiste el usuario en `localStorage` (`ml.auth.user`). `LoginPage`
+llama `login()` con un payload, `AjustesPage` llama `logout()` con un alert
+de confirmación de Ionic y redirige a `/login`.
+
+> Es mock — cualquier credencial sirve. Se conectará al `backend/` Node cuando
+> exista `/auth`.
+
+## Troubleshooting
+
+| Síntoma | Arreglo |
+|---|---|
+| Backend devuelve 502 | `docker compose -f ../ai/docker-compose.yml up -d` |
+| El cel no abre nada | Misma WiFi + firewall macOS |
+| `port 5174 in use` | `lsof -ti:5174 \| xargs kill -9` y `npm run dev -- --host` |
+| Estilos rotos en cel | Verifica que el cel no esté en modo oscuro forzado y que no se haya re-habilitado `dark.system.css` |

@@ -1,0 +1,88 @@
+# Correr todo el stack — Metrolínea
+
+Guía única para tener los **3 servicios** corriendo en local y la app móvil accesible desde un celular real.
+
+---
+
+## Prerrequisitos (una vez)
+
+- **Docker Desktop** corriendo (para el backend `ai/`).
+- **Node 18+** (probado con Node 23).
+- **WiFi compartida** entre el Mac y el celular del presentador.
+
+## Arquitectura local
+
+```
+[Celular]
+   │  http://<IP_LAN>:5174
+   ▼
+[Vite mobile :5174] ──/api/*──► [FastAPI ai :8000]
+                                       ▲
+[Vite dashboard :5173] ──/api/*────────┘
+   ▲
+[Proyector / Laptop operador]
+```
+
+## Pasos (3 terminales)
+
+```bash
+# Terminal 1 — Backend IA
+cd ai
+cp .env.example .env       # solo la primera vez
+docker compose up -d       # detached; ya queda corriendo
+
+# Terminal 2 — Dashboard operador
+cd dashboard
+npm install                # solo la primera vez
+npm run dev -- --host
+
+# Terminal 3 — App móvil pasajero
+cd mobile
+npm install                # solo la primera vez
+npm run dev -- --host
+```
+
+## URLs
+
+| Servicio | Local (Mac) | Desde celular (LAN) |
+|---|---|---|
+| AI Swagger | http://localhost:8000/docs | http://10.0.0.111:8000/docs |
+| Dashboard | http://localhost:5173 | http://10.0.0.111:5173 |
+| **App móvil** | http://localhost:5174 | **http://10.0.0.111:5174** |
+
+> Si la IP cambia (cambias de red): `ipconfig getifaddr en0`.
+
+## Verificación end-to-end
+
+Con los 3 servicios arriba:
+
+```bash
+bash ai/scripts/smoke_test.sh
+```
+
+Inserta un bus con retraso + ocupación 95%, pide la decisión a la IA → `R1: 🚨 Despachar refuerzo`. Refresca el dashboard y el móvil para verlo.
+
+## Demo del hackathon (orden sugerido)
+
+1. **Pantalla 1 (proyector)**: dashboard en `:5173`.
+2. **Pantalla 2 (celular)**: app móvil en `http://10.0.0.111:5174`.
+3. Disparas `bash ai/scripts/smoke_test.sh` desde una terminal escondida.
+4. Refrescas en dashboard y celular → ambos muestran la recomendación de la IA.
+5. **Bonus**: subes una foto al `POST /vision/count` en Swagger y demuestras conteo de personas.
+
+## Apagar todo
+
+```bash
+# Terminal 1
+cd ai && docker compose down
+# Terminales 2 y 3: Ctrl+C
+```
+
+## Troubleshooting rápido
+
+| Síntoma | Arreglo |
+|---|---|
+| El celu no abre nada | Misma WiFi + firewall macOS (Ajustes → Red → Firewall → permite Node) |
+| `port 5173/5174 in use` | `lsof -ti:<PUERTO> \| xargs kill -9` |
+| Dashboard / mobile sin datos | El backend está caído → `docker compose -f ai/docker-compose.yml up -d` |
+| El cel cambió a modo oscuro y el diseño se rompe | Ya está bloqueado a `color-scheme: light` en `mobile/index.html` y `variables.css`. Si vuelve a pasar revisa que `dark.system.css` siga comentado en `mobile/src/main.ts` |

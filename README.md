@@ -21,6 +21,7 @@ Proyecto del **Hackathon Campusland** (Bucaramanga) — sistema de apoyo a la op
 | [`dashboard/`](./dashboard) | Vue 3 + Vite + TS | Panel de operadores para escritorio. |
 | [`backend/`](./backend) | Node.js + TypeScript + Express | API REST con grafo de rutas (en construcción, requiere PostgreSQL). |
 | [`docs/business/`](./docs/business) | `.mdc` | Documentación de negocio: arquitectura, modelo de datos, lógica + triggers de IA. |
+| [`docs/running/`](./docs/running) | `.mdc` | Manuales de cómo correr cada servicio + demo del hackathon. |
 | [`scripts/seed/`](./scripts/seed) | SQL | Seeds para rutas P2 y P6 y sus estaciones. |
 
 ## Cómo levantarlo todo en desarrollo
