@@ -21,16 +21,6 @@ export default defineConfig({
     host: true,
     port: 5174,
     allowedHosts: true,
-    proxy: {
-      // /api → backend Node (Postgres). Igual que nginx.conf en producción.
-      // Dentro de docker-compose el hostname es el nombre del service: "backend".
-      // En dev fuera de docker se puede sobre-escribir con VITE_API_PROXY=http://localhost:3000.
-      '/api': {
-        target: process.env.VITE_API_PROXY || 'http://backend:3000',
-        changeOrigin: true,
-        rewrite: (p) => p.replace(/^\/api/, ''),
-      },
-    },
   },
   test: {
     globals: true,

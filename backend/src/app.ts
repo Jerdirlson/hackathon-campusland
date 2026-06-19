@@ -30,13 +30,8 @@ if (!process.env.JWT_SECRET) {
 
 const app = express()
 
-const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173')
-  .split(',')
-  .map(o => o.trim())
-  .concat(['http://localhost:8001'])
-
 app.use(cors({
-  origin: allowedOrigins,
+  origin: true,
   credentials: true,
 }))
 app.use(cookieParser())
