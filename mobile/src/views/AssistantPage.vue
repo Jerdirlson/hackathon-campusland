@@ -220,6 +220,10 @@ onMounted(async () => {
 <style scoped>
 ion-content {
   --background: var(--ml-bg);
+  overscroll-behavior: none;
+}
+ion-content::part(scroll) {
+  overscroll-behavior: none;
 }
 
 /* ---- Header ---- */
