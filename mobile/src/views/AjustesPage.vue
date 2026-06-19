@@ -90,8 +90,8 @@ const locationOn = ref(true)
 const notifOn = ref(true)
 
 const settings = [
-  { icon: 'languages',   label: 'Idioma',           value: 'Español' },
-  { icon: 'credit-card', label: 'Tarjeta Tullave',  value: '•• 4821' },
+  // { icon: 'languages',   label: 'Idioma',           value: 'Español' },
+  { icon: 'credit-card', label: 'Tarjeta Tullave',  value: '**** 4821' },
   { icon: 'circle-help', label: 'Ayuda y soporte',  value: '' },
   { icon: 'shield',      label: 'Privacidad',       value: '' },
 ]
