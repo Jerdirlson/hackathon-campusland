@@ -2,13 +2,14 @@
   <ion-page>
     <ion-content class="login">
       <div class="wrap">
+        <div class="brand-top">
+          <MlLogo :height="72" on-dark />
+        </div>
+
         <div class="main">
           <div class="brand">
-            <MlLogo :height="42" on-dark />
-            <div>
-              <div class="title">Hola de nuevo</div>
-              <div class="subtitle">Ingresa para ver tus buses en tiempo real.</div>
-            </div>
+            <div class="title">Hola de nuevo</div>
+            <div class="subtitle">Ingresa para ver tus buses en tiempo real.</div>
           </div>
 
           <form class="form" @submit.prevent="login">
@@ -42,8 +43,8 @@
               <svg
                 class="apple"
                 viewBox="0 0 24 24"
-                width="18"
-                height="18"
+                width="22"
+                height="22"
                 fill="#fff"
                 aria-hidden="true"
               >
@@ -147,36 +148,31 @@ async function forgotPassword() {
   justify-content: center;
   gap: 24px;
 }
+.brand-top {
+  display: flex;
+  justify-content: center;
+  padding: 104px 0 14px;
+}
 .brand {
+  text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 18px;
-}
-.logo {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.18);
-  display: flex;
   align-items: center;
-  justify-content: center;
-  font-family: var(--ml-font-display);
-  font-weight: 800;
-  font-size: 30px;
+  gap: 6px;
 }
 .title {
   font-family: var(--ml-font-display);
   font-weight: 800;
-  font-size: 32px;
+  font-size: 28px;
   line-height: 1.05;
   letter-spacing: -0.01em;
 }
 .subtitle {
-  font-size: 15px;
+  font-size: 14.5px;
   color: rgba(255, 255, 255, 0.88);
-  margin-top: 6px;
+  margin-top: 2px;
   line-height: 1.45;
+  max-width: 320px;
 }
 .form {
   display: flex;

@@ -2,17 +2,18 @@
   <ion-page>
     <ion-content class="login">
       <div class="wrap">
-        <button class="back" aria-label="Volver" @click="router.replace('/login')">
-          <LucideIcon name="arrow-left" :size="20" color="#fff" />
-        </button>
+        <div class="top-row">
+          <button class="back" aria-label="Volver" @click="router.replace('/login')">
+            <LucideIcon name="arrow-left" :size="20" color="#fff" />
+          </button>
+          <MlLogo class="top-logo" :height="64" on-dark />
+          <div class="back-spacer"></div>
+        </div>
 
         <div class="main">
           <div class="brand">
-            <MlLogo :height="38" on-dark />
-            <div>
-              <div class="title">Crear cuenta</div>
-              <div class="subtitle">Unos datos y listo — empieza a usar Metrolínea.</div>
-            </div>
+            <div class="title">Crear cuenta</div>
+            <div class="subtitle">Unos datos y listo — empieza a usar Metrolínea.</div>
           </div>
 
           <form class="form" @submit.prevent="register">
@@ -142,8 +143,16 @@ async function openTerms() {
   padding: calc(env(safe-area-inset-top) + 14px) 28px calc(env(safe-area-inset-bottom) + 24px);
   color: #fff;
 }
+.top-row {
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+  margin-bottom: 4px;
+  padding-top: 64px;
+}
+.top-logo { justify-self: center; }
+.back-spacer { width: 40px; height: 40px; }
 .back {
-  align-self: flex-start;
   width: 40px;
   height: 40px;
   border-radius: 999px;
@@ -153,7 +162,6 @@ async function openTerms() {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  margin-bottom: 8px;
 }
 .main {
   flex: 1;
@@ -163,35 +171,25 @@ async function openTerms() {
   gap: 22px;
 }
 .brand {
+  text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 14px;
-}
-.logo {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.18);
-  display: flex;
   align-items: center;
-  justify-content: center;
-  font-family: var(--ml-font-display);
-  font-weight: 800;
-  font-size: 30px;
+  gap: 4px;
 }
 .title {
   font-family: var(--ml-font-display);
   font-weight: 800;
-  font-size: 30px;
+  font-size: 28px;
   line-height: 1.05;
   letter-spacing: -0.01em;
 }
 .subtitle {
   font-size: 14.5px;
   color: rgba(255, 255, 255, 0.9);
-  margin-top: 6px;
+  margin-top: 2px;
   line-height: 1.45;
+  max-width: 320px;
 }
 .form {
   display: flex;
