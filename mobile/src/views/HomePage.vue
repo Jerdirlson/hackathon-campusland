@@ -51,19 +51,23 @@
             </div>
           </button>
 
-          <!-- Botón de alerta de robo -->
+          <!-- Botón de reporte de incidente -->
           <button
-            class="w-full flex items-center gap-3 bg-white border border-red-100 rounded-2xl px-4 py-3.5 cursor-pointer text-left shadow-sm"
+            class="w-full flex items-center gap-3 bg-amber-50/60 border border-amber-200/40 rounded-2xl px-4 py-3.5 cursor-pointer text-left shadow-sm"
             @click="router.push('/report-theft')"
           >
-            <div class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center flex-shrink-0">
-              <LucideIcon name="shield-alert" :size="20" color="#fff" />
+            <div class="w-10 h-10 rounded-full bg-amber-400/80 flex items-center justify-center flex-shrink-0">
+              <svg viewBox="0 0 512.001 512.001" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="white">
+                <path d="M503.839,395.379l-195.7-338.962C297.257,37.569,277.766,26.315,256,26.315c-21.765,0-41.257,11.254-52.139,30.102L8.162,395.378c-10.883,18.85-10.883,41.356,0,60.205c10.883,18.849,30.373,30.102,52.139,30.102h391.398c21.765,0,41.256-11.254,52.14-30.101C514.722,436.734,514.722,414.228,503.839,395.379z M477.861,440.586c-5.461,9.458-15.241,15.104-26.162,15.104H60.301c-10.922,0-20.702-5.646-26.162-15.104c-5.46-9.458-5.46-20.75,0-30.208L229.84,71.416c5.46-9.458,15.24-15.104,26.161-15.104c10.92,0,20.701,5.646,26.161,15.104l195.7,338.962C483.321,419.836,483.321,431.128,477.861,440.586z"/>
+                <rect x="241.001" y="176.01" width="29.996" height="149.982"/>
+                <path d="M256,355.99c-11.027,0-19.998,8.971-19.998,19.998s8.971,19.998,19.998,19.998c11.026,0,19.998-8.971,19.998-19.998S267.027,355.99,256,355.99z"/>
+              </svg>
             </div>
             <div class="flex-1 min-w-0">
-              <div class="text-[14px] font-bold text-red-700">Reportar incidente</div>
-              <div class="text-[12px] text-gray-500 truncate">Robo, agresión u otra emergencia</div>
+              <div class="text-[14px] font-bold text-amber-700">Reportar incidente</div>
+              <div class="text-[12px] text-gray-400 truncate">Robo, agresión u otra emergencia</div>
             </div>
-            <LucideIcon name="chevron-right" :size="18" color="#dc2626" />
+            <LucideIcon name="chevron-right" :size="18" color="#D4A017" />
           </button>
 
           <!-- Tus paradas favoritas -->
