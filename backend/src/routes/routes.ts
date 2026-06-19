@@ -4,17 +4,17 @@ import { requireAuth, requireRole } from '../middleware/auth'
 
 const router = Router()
 
-// GET /routes — any authenticated user
-router.get('/', requireAuth, async (_req, res, next) => {
+// GET /routes — público (demo, sin auth)
+router.get('/', async (_req, res, next) => {
   try {
     const { rows } = await db.query('SELECT * FROM routes ORDER BY code')
     res.json(rows)
   } catch (err) { next(err) }
 })
 
-// GET /routes/:id (includes ordered stations) — any authenticated user
+// GET /routes/:id (includes ordered stations) — público (demo, sin auth)
 // Edge: not found → 404
-router.get('/:id', requireAuth, async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
   try {
     const { rows: [route] } = await db.query('SELECT * FROM routes WHERE id = $1', [req.params.id])
     if (!route) return res.status(404).json({ error: 'Route not found' })
@@ -28,6 +28,72 @@ router.get('/:id', requireAuth, async (req, res, next) => {
       [req.params.id]
     )
     res.json({ ...route, stations })
+  } catch (err) { next(err) }
+})
+
+// GET /routes/:id/arrivals?stationId=N&limit=5 — público (demo)
+// Calcula próximas llegadas a una parada de una ruta a partir de daily_trips +
+// los minutos acumulados de route_stations. stationId opcional → primera parada.
+router.get('/:id/arrivals', async (req, res, next) => {
+  const routeId = Number(req.params.id)
+  const stationId = req.query.stationId ? Number(req.query.stationId) : null
+  const limit = Math.min(Math.max(Number(req.query.limit) || 5, 1), 50)
+
+  try {
+    // Resolver stationId si no vino: tomar primera parada del recorrido.
+    let targetStationId = stationId
+    if (!targetStationId) {
+      const { rows } = await db.query(
+        `SELECT station_id FROM route_stations WHERE route_id=$1 ORDER BY stop_order LIMIT 1`,
+        [routeId],
+      )
+      if (!rows[0]) return res.status(404).json({ error: 'Route has no stations' })
+      targetStationId = rows[0].station_id
+    }
+
+    // Tiempo acumulado en minutos hasta la parada destino.
+    const { rows: ofs } = await db.query(
+      `SELECT COALESCE(SUM(estimated_minutes_from_prev), 0)::int AS offset_min,
+              MAX(stop_order)                                   AS stop_order
+       FROM route_stations
+       WHERE route_id=$1
+         AND stop_order <= COALESCE(
+           (SELECT stop_order FROM route_stations WHERE route_id=$1 AND station_id=$2),
+           0
+         )`,
+      [routeId, targetStationId],
+    )
+    if (!ofs[0] || ofs[0].stop_order === null) {
+      return res.status(404).json({ error: 'Station is not part of this route' })
+    }
+    const offsetMin: number = ofs[0].offset_min
+
+    const { rows } = await db.query(
+      `SELECT dt.id              AS trip_id,
+              dt.status,
+              dt.scheduled_departure,
+              (dt.scheduled_departure + ($2 || ' minutes')::interval) AS arrives_at,
+              r.code             AS route_code,
+              r.name             AS route_name,
+              s.code             AS station_code,
+              s.name             AS station_name
+       FROM daily_trips dt
+       JOIN routes  r ON r.id = dt.route_id
+       JOIN stations s ON s.id = $3
+       WHERE dt.route_id = $1
+         AND dt.status IN ('scheduled', 'in_progress')
+         AND (dt.scheduled_departure + ($2 || ' minutes')::interval) > NOW()
+       ORDER BY arrives_at ASC
+       LIMIT $4`,
+      [routeId, offsetMin, targetStationId, limit],
+    )
+
+    res.json({
+      route_id: routeId,
+      station_id: targetStationId,
+      offset_minutes: offsetMin,
+      arrivals: rows,
+    })
   } catch (err) { next(err) }
 })
 

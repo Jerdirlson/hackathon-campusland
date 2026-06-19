@@ -130,8 +130,8 @@ router.post('/generate', requireAuth, requireRole('admin', 'operator'), async (r
   } catch (err) { next(err) }
 })
 
-// GET /daily-trips?date=&route_id=&status= — any authenticated user
-router.get('/', requireAuth, async (req, res, next) => {
+// GET /daily-trips?date=&route_id=&status= — público (demo)
+router.get('/', async (req, res, next) => {
   try {
     const { date, route_id, status } = req.query
     const conditions: string[] = []
@@ -153,9 +153,9 @@ router.get('/', requireAuth, async (req, res, next) => {
   } catch (err) { next(err) }
 })
 
-// GET /daily-trips/:id (includes stops + latest occupancy) — any authenticated user
+// GET /daily-trips/:id (includes stops + latest occupancy) — público (demo)
 // Edge: not found → 404
-router.get('/:id', requireAuth, async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
   try {
     const { rows: [trip] } = await db.query(
       `SELECT dt.*, r.code AS route_code, b.code AS bus_code, b.capacity

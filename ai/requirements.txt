@@ -8,9 +8,10 @@ python-multipart==0.0.10
 pandas==2.2.3
 numpy==1.26.4
 
-# Visión por computadora
-opencv-python-headless==4.10.0.84
-ultralytics==8.3.0
+# Visión por computadora  --  temporalmente deshabilitada para acelerar build
+# (descarga torch ~430MB). Re-habilítala cuando quieras usar /vision/count.
+# opencv-python-headless==4.10.0.84
+# ultralytics==8.3.0
 
 # Utilidades
 loguru==0.7.2

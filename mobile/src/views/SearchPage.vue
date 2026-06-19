@@ -1,72 +1,67 @@
 <template>
   <ion-page>
     <ion-content :fullscreen="true">
-      <MlHeader back>
-        <template #default><div></div></template>
-        <template #trailing>
-          <div class="search-field">
-            <LucideIcon name="search" :size="18" color="#9AA89A" />
-            <input
-              ref="inputEl"
-              v-model="query"
-              type="text"
-              placeholder="Buscar parada o ruta"
-              autocapitalize="off"
-              autocorrect="off"
-            />
+      <MlHeader back title="Buscar">
+        <template #leading>
+          <button class="icon-btn" aria-label="Volver" @click="goBack">
+            <LucideIcon name="arrow-left" :size="20" color="#fff" />
+          </button>
+        </template>
+        <template #below>
+          <div class="search-input">
+            <LucideIcon name="search" :size="19" color="#9AA89A" />
+            <input v-model="q" placeholder="Parada o ruta…" autofocus />
+            <button v-if="q" class="clear" aria-label="Limpiar" @click="q = ''">
+              <LucideIcon name="x" :size="16" color="#9AA89A" />
+            </button>
           </div>
         </template>
       </MlHeader>
 
       <div class="content">
-        <EmptyState
-          v-if="query && !results.stops.length && !results.routes.length"
-          icon="search-x"
-          title="Sin resultados"
-          body="No encontramos paradas ni rutas con ese nombre."
-        />
+        <SkeletonList v-if="loading" :count="3" :height="60" />
 
         <template v-else>
-          <template v-if="!query">
-            <SectionLabel>Recientes</SectionLabel>
-            <div class="recents">
-              <button v-for="r in recent" :key="r.label" class="recent" @click="r.go()">
-                <LucideIcon name="clock" :size="14" color="#9AA89A" />{{ r.label }}
+          <template v-if="!q.trim()">
+            <SectionLabel>Rutas activas</SectionLabel>
+            <div class="list">
+              <button v-for="r in routes" :key="r.id" class="row" @click="openRoute(r.id)">
+                <span class="rb" :style="{ background: colorForRoute(r.code) }">{{ r.code }}</span>
+                <div class="meta">
+                  <div class="title">{{ r.name }}</div>
+                  <div class="sub">{{ r.description || 'Ruta troncal' }}</div>
+                </div>
               </button>
             </div>
           </template>
 
-          <template v-if="results.routes.length">
-            <SectionLabel>Rutas</SectionLabel>
-            <div class="list">
-              <MlListItem
-                v-for="r in results.routes"
-                :key="r.id"
-                :title="r.name"
-                :subtitle="r.type"
-                chevron
-                @click="openRoute(r.id)"
-              >
-                <template #leading><RouteBadge :id="r.id" :size="36" /></template>
-              </MlListItem>
+          <template v-else>
+            <SectionLabel v-if="matchedRoutes.length">Rutas ({{ matchedRoutes.length }})</SectionLabel>
+            <div v-if="matchedRoutes.length" class="list">
+              <button v-for="r in matchedRoutes" :key="r.id" class="row" @click="openRoute(r.id)">
+                <span class="rb" :style="{ background: colorForRoute(r.code) }">{{ r.code }}</span>
+                <div class="meta">
+                  <div class="title">{{ r.name }}</div>
+                  <div class="sub">{{ r.description || 'Ruta troncal' }}</div>
+                </div>
+              </button>
+            </div>
+
+            <SectionLabel v-if="matchedStations.length" class="mt">Paradas ({{ matchedStations.length }})</SectionLabel>
+            <div v-if="matchedStations.length" class="list">
+              <button v-for="s in matchedStations" :key="s.id" class="row" @click="openStop(s.id)">
+                <span class="icon"><LucideIcon name="map-pin" :size="18" color="#3F7A14" /></span>
+                <div class="meta">
+                  <div class="title">{{ s.name }}</div>
+                  <div class="sub">{{ s.code }}</div>
+                </div>
+              </button>
+            </div>
+
+            <div v-if="!matchedRoutes.length && !matchedStations.length" class="empty">
+              Sin resultados para "{{ q }}".
             </div>
           </template>
-
-          <SectionLabel>{{ query ? 'Paradas' : 'Todas las paradas' }}</SectionLabel>
-          <div class="list">
-            <MlListItem
-              v-for="s in results.stops"
-              :key="s.id"
-              :title="s.name"
-              :subtitle="`${s.zone} · ${s.lines.join(' · ')}`"
-              chevron
-              @click="openStop(s.id)"
-            >
-              <template #leading>
-                <IconBox icon="map-pin" :size="36" :icon-size="17" />
-              </template>
-            </MlListItem>
-          </div>
         </template>
       </div>
     </ion-content>
@@ -74,92 +69,92 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { IonContent, IonPage, onIonViewDidEnter } from '@ionic/vue'
+import { IonContent, IonPage } from '@ionic/vue'
 import MlHeader from '@/components/MlHeader.vue'
-import MlListItem from '@/components/MlListItem.vue'
-import RouteBadge from '@/components/RouteBadge.vue'
 import SectionLabel from '@/components/SectionLabel.vue'
-import IconBox from '@/components/IconBox.vue'
-import EmptyState from '@/components/EmptyState.vue'
+import SkeletonList from '@/components/SkeletonList.vue'
 import LucideIcon from '@/components/LucideIcon.vue'
-import { ROUTES, STOPS } from '@/data/metrolinea'
+import { api, type RouteRow, type StationRow } from '@/api/client'
+import { colorForRoute } from '@/ui/occupancy'
 
 const router = useRouter()
-const query = ref('')
-const inputEl = ref<HTMLInputElement | null>(null)
+const q = ref('')
+const routes = ref<RouteRow[]>([])
+const stations = ref<StationRow[]>([])
+const loading = ref(true)
 
-onIonViewDidEnter(() => inputEl.value?.focus())
-
-const norm = (s: string) =>
-  s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
-
-const results = computed(() => {
-  const q = norm(query.value.trim())
-  if (!q) return { stops: STOPS, routes: [] as typeof ROUTES }
-  return {
-    stops: STOPS.filter((s) => norm(s.name).includes(q) || norm(s.zone).includes(q)),
-    routes: ROUTES.filter((r) => norm(r.name).includes(q) || norm(r.id).includes(q)),
-  }
+const matchedRoutes = computed(() => {
+  const needle = q.value.trim().toLowerCase()
+  if (!needle) return []
+  return routes.value.filter((r) =>
+    r.code.toLowerCase().includes(needle) || r.name.toLowerCase().includes(needle),
+  )
 })
 
-const recent = [
-  { label: 'Provenza', go: () => openStop('PROV') },
-  { label: 'Centro', go: () => openStop('CENT') },
-  { label: 'Ruta T2', go: () => openRoute('T2') },
-]
+const matchedStations = computed(() => {
+  const needle = q.value.trim().toLowerCase()
+  if (!needle) return []
+  return stations.value.filter((s) =>
+    s.name.toLowerCase().includes(needle) || s.code.toLowerCase().includes(needle),
+  )
+})
 
-const openStop = (id: string) => router.push(`/stop/${id}`)
-const openRoute = (id: string) => router.push(`/route/${id}`)
+const openRoute = (id: number) => router.push(`/route/${id}`)
+const openStop = (id: number) => router.push(`/stop/${id}`)
+
+function goBack() {
+  if (window.history.state?.back) router.back()
+  else router.replace('/tabs/home')
+}
+
+onMounted(async () => {
+  loading.value = true
+  try {
+    const [r, s] = await Promise.all([api.listRoutes(), api.listStations()])
+    routes.value = r
+    stations.value = s
+  } finally {
+    loading.value = false
+  }
+})
 </script>
 
 <style scoped>
-.search-field {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #fff;
-  border-radius: 13px;
-  padding: 12px 14px;
+.icon-btn {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.22); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; flex: none;
 }
-.search-field input {
-  flex: 1;
-  border: none;
-  outline: none;
-  background: none;
-  font-family: var(--ml-font-body);
-  font-size: 15px;
-  color: var(--ml-ink);
-  min-width: 0;
+.search-input {
+  background: #fff; border-radius: 14px; padding: 12px 14px;
+  display: flex; align-items: center; gap: 10px;
 }
-.content {
-  padding: 18px 22px 30px;
+.search-input input {
+  flex: 1; border: none; outline: none; background: none;
+  font-family: var(--ml-font-body); font-size: 15px; color: var(--ml-ink); min-width: 0;
 }
-.recents {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 24px;
+.clear { border: none; background: none; cursor: pointer; padding: 0; }
+.content { padding: 18px 22px 60px; }
+.mt { margin-top: 22px; }
+.list { display: flex; flex-direction: column; gap: 8px; }
+.row {
+  display: flex; align-items: center; gap: 12px;
+  background: #fff; border: 1px solid var(--ml-divider); border-radius: 14px;
+  padding: 11px 12px; cursor: pointer; text-align: left;
 }
-.recent {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  border: 1px solid var(--ml-divider);
-  background: #fff;
-  border-radius: 999px;
-  padding: 8px 14px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ml-ink);
+.rb {
+  width: 36px; height: 36px; border-radius: 10px; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ml-font-mono); font-weight: 700; font-size: 12px; flex: none;
 }
-.list {
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-  margin-bottom: 20px;
+.icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--ml-tint); display: flex; align-items: center; justify-content: center; flex: none;
 }
+.meta { flex: 1; min-width: 0; }
+.title { font-weight: 700; font-size: 14px; color: var(--ml-ink); }
+.sub { font-size: 12px; color: var(--ml-ink-2); }
+.empty { padding: 24px; text-align: center; color: var(--ml-ink-2); }
 </style>

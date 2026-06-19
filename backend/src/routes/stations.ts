@@ -4,17 +4,17 @@ import { requireAuth, requireRole } from '../middleware/auth'
 
 const router = Router()
 
-// GET /stations — any authenticated user
-router.get('/', requireAuth, async (_req, res, next) => {
+// GET /stations — público (demo, sin auth)
+router.get('/', async (_req, res, next) => {
   try {
     const { rows } = await db.query('SELECT * FROM stations ORDER BY name')
     res.json(rows)
   } catch (err) { next(err) }
 })
 
-// GET /stations/:id — any authenticated user
+// GET /stations/:id — público (demo, sin auth)
 // Edge: not found → 404
-router.get('/:id', requireAuth, async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
   try {
     const { rows } = await db.query('SELECT * FROM stations WHERE id = $1', [req.params.id])
     if (!rows[0]) return res.status(404).json({ error: 'Station not found' })

@@ -1,76 +1,53 @@
 <template>
   <ion-page>
     <ion-content :fullscreen="true">
-      <ion-refresher slot="fixed" @ion-refresh="refresh">
+      <ion-refresher slot="fixed" @ion-refresh="onRefresh">
         <ion-refresher-content />
       </ion-refresher>
 
-      <MlHeader back :color="route.color" :title="route.name" :subtitle="`${route.type} · cada ${route.headway} min`">
+      <MlHeader back :title="route?.name || 'Ruta'" :subtitle="route?.description || ''">
         <template #leading>
           <button class="icon-btn" aria-label="Volver" @click="goBack">
             <LucideIcon name="arrow-left" :size="20" color="#fff" />
           </button>
-          <RouteBadge :id="route.id" :color="'rgba(255,255,255,.22)'" :size="44" />
+          <div class="big-badge" :style="{ background: badgeColor }">{{ route?.code || '··' }}</div>
         </template>
         <template #below>
-          <div class="od">
-            <span>{{ route.from }}</span>
+          <div class="od" v-if="route?.stations.length">
+            <span>{{ route.stations[0].name }}</span>
             <LucideIcon name="arrow-right" :size="15" color="#fff" />
-            <span>{{ route.to }}</span>
-            <span class="stops">{{ route.stops }} paradas</span>
+            <span>{{ route.stations.at(-1)?.name }}</span>
+            <span class="stops">{{ route.stations.length }} paradas</span>
           </div>
         </template>
       </MlHeader>
 
       <div class="content">
-        <SkeletonList v-if="loading" :count="2" :height="80" />
-        <template v-else>
-          <SectionLabel>Recorrido</SectionLabel>
-          <div class="map">
-            <svg width="100%" height="100%" viewBox="0 0 320 200" preserveAspectRatio="none">
-              <path d="M-10 56 L330 38" stroke="#D6E0C5" stroke-width="9" />
-              <path d="M-10 128 L330 150" stroke="#D6E0C5" stroke-width="13" />
-              <path d="M72 -10 L112 210" stroke="#D6E0C5" stroke-width="8" />
-              <path d="M222 -10 L188 210" stroke="#D6E0C5" stroke-width="11" />
-              <polyline :points="geo.points" fill="none" :stroke="geo.color" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
-              <circle
-                v-for="n in geo.nodes"
-                :key="n.key"
-                :cx="n.x" :cy="n.y" :r="n.r" :fill="n.fill" :stroke="n.stroke" stroke-width="2.5"
-              />
-            </svg>
-            <div
-              class="bus-marker"
-              :style="`left:${geo.bus.left};top:${geo.bus.top};background:${geo.color}`"
-            >
-              <LucideIcon name="bus-front" :size="16" color="#fff" />
-            </div>
-            <div
-              v-for="e in geo.endLabels"
-              :key="e.key"
-              class="end-label"
-              :style="`left:${e.left};top:${e.top};transform:${e.transform}`"
-            >
-              {{ e.label }}
-            </div>
-            <div class="live"><span class="live-dot"></span>En vivo</div>
-          </div>
+        <SkeletonList v-if="loading" :count="2" :height="180" />
 
-          <SectionLabel>Buses en circulación</SectionLabel>
-          <div class="list">
-            <VehicleCard
-              v-for="b in buses"
-              :key="b.key"
-              :title="b.bus"
-              :subtitle="`En ${b.at} → ${b.next}`"
-              :min-label="b.minLabel"
-              :unit="b.unit"
-              :level="b.occ"
-              :min-size="24"
-            >
-              <template #leading><IconBox icon="bus-front" :size="38" :icon-size="20" /></template>
-            </VehicleCard>
-          </div>
+        <template v-else-if="error">
+          <p class="error">No pude cargar la ruta: {{ error }}</p>
+        </template>
+
+        <template v-else-if="route">
+          <SectionLabel>Recorrido en el mapa</SectionLabel>
+          <div ref="mapEl" class="map" />
+
+          <SectionLabel class="mt">Paradas</SectionLabel>
+          <ol class="stops-list">
+            <li v-for="s in route.stations" :key="s.id">
+              <span class="dot" />
+              <div class="stop-body">
+                <div class="stop-name">{{ s.name }}</div>
+                <div class="stop-meta">
+                  {{ s.code }}
+                  <template v-if="s.estimated_minutes_from_prev > 0">
+                    · {{ s.estimated_minutes_from_prev }} min desde la anterior
+                  </template>
+                </div>
+              </div>
+            </li>
+          </ol>
         </template>
       </div>
     </ion-content>
@@ -78,32 +55,115 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { IonContent, IonPage, IonRefresher, IonRefresherContent } from '@ionic/vue'
+import L from 'leaflet'
+import 'leaflet/dist/leaflet.css'
+
 import MlHeader from '@/components/MlHeader.vue'
-import VehicleCard from '@/components/VehicleCard.vue'
-import RouteBadge from '@/components/RouteBadge.vue'
 import SectionLabel from '@/components/SectionLabel.vue'
-import IconBox from '@/components/IconBox.vue'
-import LucideIcon from '@/components/LucideIcon.vue'
 import SkeletonList from '@/components/SkeletonList.vue'
-import { busesFor, routeById, routeGeometry } from '@/data/metrolinea'
-import { useRefreshable } from '@/composables/useRefreshable'
+import LucideIcon from '@/components/LucideIcon.vue'
+import { api, type RouteDetail } from '@/api/client'
 
 const routeParams = useRoute()
 const router = useRouter()
-const { loading, refresh } = useRefreshable()
 
-const routeId = computed(() => String(routeParams.params.id))
-const route = computed(() => routeById(routeId.value))
-const geo = computed(() => routeGeometry(routeId.value))
-const buses = computed(() => busesFor(routeId.value))
+const route = ref<RouteDetail | null>(null)
+const loading = ref(true)
+const error = ref<string | null>(null)
+
+const mapEl = ref<HTMLElement | null>(null)
+let mapInstance: L.Map | null = null
+
+const PALETTE = ['#6FBA2C', '#3F7A14', '#0E6BA8', '#F4B400', '#D43A1F', '#7A4A99']
+const badgeColor = computed(() => {
+  const code = route.value?.code || 'P0'
+  let n = 0
+  for (const c of code) n = (n + c.charCodeAt(0)) % PALETTE.length
+  return PALETTE[n]
+})
+
+async function load() {
+  loading.value = true
+  error.value = null
+  try {
+    const id = String(routeParams.params.id)
+    route.value = await api.getRoute(id)
+    await nextTick()
+    renderMap()
+  } catch (e) {
+    error.value = (e as Error).message
+  } finally {
+    loading.value = false
+  }
+}
+
+function renderMap() {
+  if (!mapEl.value || !route.value) return
+
+  const coords: [number, number][] = route.value.stations
+    .filter((s) => s.lat && s.lng)
+    .map((s) => [Number(s.lat), Number(s.lng)])
+
+  if (!coords.length) return
+
+  if (mapInstance) {
+    mapInstance.remove()
+    mapInstance = null
+  }
+
+  mapInstance = L.map(mapEl.value, { zoomControl: true, attributionControl: false }).setView(
+    coords[0],
+    13,
+  )
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap',
+  }).addTo(mapInstance)
+
+  // Polyline del recorrido
+  L.polyline(coords, { color: badgeColor.value, weight: 5, opacity: 0.85 }).addTo(mapInstance)
+
+  // Marcadores por parada
+  route.value.stations.forEach((s, i) => {
+    if (!s.lat || !s.lng) return
+    const lat = Number(s.lat)
+    const lng = Number(s.lng)
+    const isEnd = i === 0 || i === route.value!.stations.length - 1
+    const marker = L.circleMarker([lat, lng], {
+      radius: isEnd ? 9 : 6,
+      color: '#fff',
+      weight: 2,
+      fillColor: badgeColor.value,
+      fillOpacity: 1,
+    }).addTo(mapInstance!)
+    marker.bindPopup(`<strong>${s.name}</strong><br/>${s.code}`)
+  })
+
+  // Fit a todos los puntos
+  mapInstance.fitBounds(L.latLngBounds(coords), { padding: [28, 28] })
+}
 
 function goBack() {
   if (window.history.state?.back) router.back()
   else router.replace('/tabs/rutas')
 }
+
+async function onRefresh(ev: CustomEvent) {
+  await load()
+  ;(ev.target as HTMLIonRefresherElement).complete()
+}
+
+onMounted(load)
+watch(() => routeParams.params.id, load)
+
+onBeforeUnmount(() => {
+  mapInstance?.remove()
+  mapInstance = null
+})
 </script>
 
 <style scoped>
@@ -114,6 +174,19 @@ function goBack() {
   background: rgba(255, 255, 255, 0.22);
   border: none;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+.big-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  color: #fff;
+  font-family: var(--ml-font-mono);
+  font-weight: 800;
+  font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -135,70 +208,59 @@ function goBack() {
   opacity: 0.85;
   font-weight: 500;
 }
+
 .content {
-  padding: 18px 20px 30px;
+  padding: 18px 20px 80px;
 }
+.mt { margin-top: 22px; }
+
 .map {
-  position: relative;
-  height: 200px;
+  height: 280px;
   border-radius: 18px;
   overflow: hidden;
-  background: #e7eedc;
   border: 1px solid var(--ml-divider);
-  margin-bottom: 20px;
+  box-shadow: var(--ml-shadow-card);
+  z-index: 0; /* evita que tape el ion-header */
 }
-.map svg {
-  position: absolute;
-  inset: 0;
+
+.stops-list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+  position: relative;
 }
-.bus-marker {
+.stops-list::before {
+  content: '';
   position: absolute;
-  transform: translate(-50%, -50%);
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 3px solid #fff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.28);
+  left: 10.5px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--ml-divider);
+  z-index: 0;
+}
+.stops-list li {
+  position: relative;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  gap: 14px;
+  padding: 8px 0;
+  z-index: 1;
 }
-.end-label {
-  position: absolute;
-  background: #fff;
-  border-radius: 8px;
-  padding: 3px 8px;
-  font-size: 10.5px;
-  font-weight: 700;
-  color: var(--ml-ink);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.14);
-  white-space: nowrap;
-}
-.live {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(255, 255, 255, 0.92);
-  border-radius: 99px;
-  padding: 5px 10px;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--ml-ink);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-.live-dot {
-  width: 7px;
-  height: 7px;
+.dot {
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: var(--ml-green);
-  animation: ml-pulse 1.6s infinite;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 1px var(--ml-divider);
+  margin-top: 4px;
+  flex: none;
+  position: relative;
+  z-index: 2;
 }
-.list {
-  display: flex;
-  flex-direction: column;
-  gap: 11px;
-}
+.stop-body { flex: 1; }
+.stop-name { font-weight: 700; color: var(--ml-ink); font-size: 14.5px; }
+.stop-meta { font-size: 12px; color: var(--ml-ink-2); margin-top: 1px; }
+
+.error { color: var(--ml-danger); font-size: 14px; padding: 12px; }
 </style>

@@ -69,6 +69,9 @@ services:
     container_name: metrolinea-dashboard
     environment:
       VITE_BASE_URL: /app
+    volumes:
+      - ../dashboard:/app
+      - /app/node_modules    # anonymous volume → conserva node_modules del build
     restart: unless-stopped
 
   mobile:
@@ -80,6 +83,9 @@ services:
       - "5174:5174"          # acceso directo desde celular: http://<IP_LAN>:5174
     environment:
       VITE_BASE_URL: /mobile
+    volumes:
+      - ../mobile:/app
+      - /app/node_modules
     restart: unless-stopped
 
   nginx:

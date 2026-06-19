@@ -35,7 +35,7 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { IonContent, IonPage } from '@ionic/vue'
 import IconBox from '@/components/IconBox.vue'
-import { ONB } from '@/data/metrolinea'
+import { ONB } from '@/ui/onboarding'
 
 const router = useRouter()
 const step = ref(0)
