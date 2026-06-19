@@ -1,4 +1,38 @@
 services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: metrolinea-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-metrolinea}
+      POSTGRES_USER: ${POSTGRES_USER:-metrolinea}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-metrolinea}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-metrolinea}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: metrolinea-backend
+    ports:
+      - "3000:3000"
+    env_file:
+      - ../.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ../backend/src:/app/src
+    restart: unless-stopped
+
   metrolinea-ai:
     build: .
     container_name: metrolinea-ai
@@ -11,3 +45,43 @@ services:
       - ./data:/srv/data
       - ./models:/srv/models
     restart: unless-stopped
+
+  counter:
+    build:
+      context: ../counter
+      dockerfile: Dockerfile
+    container_name: metrolinea-counter
+    ports:
+      - "8001:8001"
+    environment:
+      BACKEND_URL: "http://metrolinea-backend:3000"
+      DEFAULT_CAPACITY: "50"
+    volumes:
+      - ../counter/app:/srv/app
+    depends_on:
+      - metrolinea-ai
+    restart: unless-stopped
+
+  dashboard:
+    build:
+      context: ../dashboard
+      dockerfile: Dockerfile
+    container_name: metrolinea-dashboard
+    environment:
+      VITE_BASE_URL: /app
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    container_name: metrolinea-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - backend
+      - dashboard
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

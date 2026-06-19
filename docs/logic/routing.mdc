@@ -1,0 +1,172 @@
+# Routing — Scripts de seed
+
+Scripts en `scripts/seed/` que construyen la infraestructura de rutas via API.
+
+---
+
+## Flujo de ejecución
+
+```
+seed.sh
+  ├── health check (GET /health)
+  ├── seed-admin.sh     →  POST /auth/register  (admin@metrolinea.com)
+  ├── seed-stations.sh  →  source _auth.sh → POST /stations  (×8)
+  ├── seed-buses.sh     →  source _auth.sh → POST /buses     (×5)
+  └── seed-routes.sh    →  source _auth.sh
+        ├── POST /routes                        (crea ruta P1)
+        ├── POST /routes/:id/stations           (×8 paradas en orden)
+        └── POST /schedule-templates            (×2 templates de horario)
+```
+
+---
+
+## _auth.sh — helper compartido
+
+Todos los scripts de seed hacen `source _auth.sh` al inicio. Esto:
+
+1. Hace `POST /auth/login` con las credenciales del admin
+2. Guarda la cookie JWT en un archivo temporal (`$COOKIE_JAR`)
+3. Expone la función `api_post` para el resto del script
+
+```bash
+source "$(dirname "$0")/_auth.sh"
+```
+
+**`api_post endpoint data label`**
+Hace un POST autenticado con la cookie. Imprime:
+- `✓ label (id: X)` — creado
+- `~ label (already exists)` — ya existía (409), continúa sin error
+- `✗ label failed` — error real
+
+Esto hace todos los scripts **idempotentes**: seguros de correr múltiples veces.
+
+---
+
+## seed-admin.sh
+
+Crea el usuario administrador si no existe.
+
+```
+POST /auth/register
+  body: { name, email: admin@metrolinea.com, password: admin123, role: admin }
+  201 → creado
+  409 → ya existe, continúa
+```
+
+Debe correr antes que cualquier otro script porque los demás necesitan autenticarse.
+
+---
+
+## seed-stations.sh
+
+Crea 8 estaciones de la red de Bucaramanga con coordenadas reales.
+
+```
+POST /stations  (×8)
+  body: { code, name, address, lat, lng }
+```
+
+| Orden | Code | Nombre |
+|---|---|---|
+| 1 | EST-TN | Terminal Norte |
+| 2 | EST-CAÑ | Cañaveral |
+| 3 | EST-CAB | Cabecera del Llano |
+| 4 | EST-PRA | El Prado |
+| 5 | EST-SOT | Sotomayor |
+| 6 | EST-SAN | Parque Santander |
+| 7 | EST-PRO | Provenza |
+| 8 | EST-TS | Terminal Sur |
+
+---
+
+## seed-buses.sh
+
+Crea 5 buses con capacidades distintas.
+
+```
+POST /buses  (×5)
+  body: { code, license_plate, capacity }
+```
+
+| Code | Placa | Capacidad |
+|---|---|---|
+| B001 | MLN-001 | 40 |
+| B002 | MLN-002 | 40 |
+| B003 | MLN-003 | 40 |
+| B004 | MLN-004 | 35 |
+| B005 | MLN-005 | 35 |
+
+---
+
+## seed-routes.sh
+
+El script más complejo. Hace tres cosas:
+
+### 1. Crear la ruta
+
+```
+POST /routes
+  body: { code: "P1", name: "Terminal Norte – Terminal Sur", description }
+```
+
+Si la ruta ya existe (409), recupera su `id` con `GET /routes` para continuar.
+
+### 2. Enlazar estaciones en orden
+
+Consulta cada estación por su `code` usando `GET /stations` y extrae el `id`.
+Luego las enlaza a la ruta en orden con el tiempo estimado entre paradas:
+
+```
+POST /routes/:routeId/stations  (×8)
+  body: { station_id, stop_order, estimated_minutes_from_prev }
+```
+
+| stop_order | Estación | Minutos desde anterior |
+|---|---|---|
+| 1 | Terminal Norte | 0 |
+| 2 | Cañaveral | 8 |
+| 3 | Cabecera del Llano | 6 |
+| 4 | El Prado | 5 |
+| 5 | Sotomayor | 5 |
+| 6 | Parque Santander | 7 |
+| 7 | Provenza | 4 |
+| 8 | Terminal Sur | 6 |
+
+Tiempo total estimado de recorrido: **41 minutos**.
+
+### 3. Crear templates de horario
+
+```
+POST /schedule-templates  (×2)
+```
+
+| Template | days_of_week | departure_time | frequency_minutes |
+|---|---|---|---|
+| Semana | [1,2,3,4,5] | 06:00:00 | 15 |
+| Fin de semana | [6,7] | 07:00:00 | 20 |
+
+Estos templates son la base para `POST /daily-trips/generate`, que los lee cada madrugada para generar los viajes concretos del día.
+
+---
+
+## Cómo añadir una nueva ruta
+
+Para agregar una ruta P2 se puede crear `scripts/seed/seed-route-p2.sh` siguiendo el mismo patrón:
+
+```bash
+#!/bin/bash
+source "$(dirname "$0")/_auth.sh"
+
+# 1. Crear ruta
+api_post "/routes" '{"code":"P2","name":"..."}' "Route P2"
+ROUTE_ID=<id devuelto>
+
+# 2. Enlazar estaciones
+api_post "/routes/$ROUTE_ID/stations" '{"station_id":X,"stop_order":1,...}' "Stop 1"
+# ...
+
+# 3. Template
+api_post "/schedule-templates" '{"route_id":...}' "Template P2"
+```
+
+Y añadir su llamada en `seed.sh`.

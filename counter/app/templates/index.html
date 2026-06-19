@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ app_name }}</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --primary: #388bfd;
+    --primary-hover: #58a6ff;
+    --success: #3fb950;
+    --warning: #d29922;
+    --danger: #f85149;
+    --text: #c9d1d9;
+    --muted: #8b949e;
+    --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 14px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Header ── */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  header h1 { font-size: 18px; font-weight: 600; }
+  header .badge {
+    background: var(--primary);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+
+  /* ── Config bar ── */
+  .config-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 24px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  .field label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .field input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-size: 14px;
+    padding: 6px 10px;
+    width: 140px;
+    outline: none;
+    transition: border-color .15s;
+  }
+  .field input:focus { border-color: var(--primary); }
+  .field input[type="number"] { width: 80px; }
+
+  /* ── Main layout ── */
+  main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    padding: 24px;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  @media (max-width: 768px) { main { grid-template-columns: 1fr; } }
+
+  /* ── Upload zone ── */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .panel-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .panel-body { padding: 16px; }
+
+  #drop-zone {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+    position: relative;
+  }
+  #drop-zone:hover, #drop-zone.drag-over {
+    border-color: var(--primary);
+    background: rgba(56, 139, 253, 0.06);
+  }
+  #drop-zone input[type="file"] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+  }
+  #drop-zone .icon { font-size: 36px; margin-bottom: 8px; }
+  #drop-zone p { color: var(--muted); font-size: 13px; }
+  #drop-zone p strong { color: var(--primary); }
+
+  #preview-img {
+    width: 100%;
+    border-radius: var(--radius);
+    margin-top: 12px;
+    display: none;
+    border: 1px solid var(--border);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: var(--radius);
+    border: none;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity .15s;
+  }
+  .btn:hover { opacity: .85; }
+  .btn:disabled { opacity: .4; cursor: not-allowed; }
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-success { background: var(--success); color: #000; }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .actions {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .auto-send-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--muted);
+    cursor: pointer;
+  }
+
+  /* ── Result panel ── */
+  #result-img {
+    width: 100%;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    display: none;
+  }
+
+  .count-display {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin: 16px 0 8px;
+  }
+  .count-number {
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--primary);
+  }
+  .count-label { font-size: 18px; color: var(--muted); }
+
+  .occupancy-bar-wrap { margin-bottom: 16px; }
+  .occupancy-bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .occupancy-bar-track {
+    height: 8px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .occupancy-bar-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width .4s ease, background .4s;
+  }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .meta-item {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 8px 12px;
+  }
+  .meta-item .meta-label { font-size: 11px; color: var(--muted); text-transform: uppercase; }
+  .meta-item .meta-value { font-size: 14px; font-weight: 600; margin-top: 2px; }
+
+  /* ── Toast ── */
+  #toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    font-size: 13px;
+    display: none;
+    gap: 8px;
+    align-items: center;
+    box-shadow: 0 8px 24px rgba(0,0,0,.4);
+    z-index: 100;
+  }
+  #toast.show { display: flex; }
+
+  /* ── History ── */
+  .history-section {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto 24px;
+    padding: 0 24px;
+  }
+  .history-section h2 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,.02); }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .tag-sent { background: rgba(63,185,80,.15); color: var(--success); }
+  .tag-unsent { background: rgba(139,148,158,.1); color: var(--muted); }
+
+  .tab-btn.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+  }
+
+  .spinner {
+    display: none;
+    width: 16px; height: 16px;
+    border: 2px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin .6s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  select {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-size: 14px;
+    padding: 6px 10px;
+    outline: none;
+    cursor: pointer;
+  }
+  select:focus { border-color: var(--primary); }
+</style>
+</head>
+<body>
+
+<header>
+  <span style="font-size:22px">🚌</span>
+  <h1>{{ app_name }}</h1>
+  <span class="badge">CONTEO DE PERSONAS</span>
+</header>
+
+<div class="config-bar">
+  <div class="field">
+    <label>Daily Trip ID</label>
+    <input type="number" id="f-trip-id" placeholder="1" min="1" style="width:110px">
+  </div>
+  <div class="field">
+    <label>Tipo de evento</label>
+    <select id="f-event-type">
+      <option value="periodic">periodic</option>
+      <option value="change">change</option>
+    </select>
+  </div>
+  <div class="field">
+    <label>Backend URL</label>
+    <input type="text" id="f-backend-url" value="http://localhost:3000" style="width:240px">
+  </div>
+</div>
+
+<main>
+  <!-- Upload panel -->
+  <div class="panel">
+    <div class="panel-header" style="display:flex;align-items:center;justify-content:space-between">
+      <span>Imagen de entrada</span>
+      <div style="display:flex;gap:4px">
+        <button class="btn btn-outline tab-btn active" id="tab-upload" onclick="switchTab('upload')">📁 Archivo</button>
+        <button class="btn btn-outline tab-btn" id="tab-camera" onclick="switchTab('camera')">📸 Cámara</button>
+      </div>
+    </div>
+    <div class="panel-body">
+
+      <!-- Modo archivo -->
+      <div id="mode-upload">
+        <div id="drop-zone">
+          <input type="file" id="file-input" accept="image/*">
+          <div class="icon">📷</div>
+          <p><strong>Arrastra una imagen</strong> o haz clic para seleccionar</p>
+          <p style="margin-top:4px; font-size:12px">Soporta JPG, PNG, WEBP</p>
+        </div>
+      </div>
+
+      <!-- Modo cámara -->
+      <div id="mode-camera" style="display:none">
+        <div style="position:relative;border-radius:var(--radius);overflow:hidden;background:#000;aspect-ratio:4/3">
+          <video id="camera-video" autoplay playsinline
+                 style="width:100%;height:100%;object-fit:cover;display:block"></video>
+          <canvas id="camera-canvas" style="display:none"></canvas>
+          <div id="camera-placeholder"
+               style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+                      justify-content:center;color:var(--muted);gap:8px">
+            <span style="font-size:40px">📷</span>
+            <p style="font-size:13px">Haz clic en "Iniciar cámara"</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button class="btn btn-outline" id="btn-start-cam">▶ Iniciar cámara</button>
+          <button class="btn btn-primary" id="btn-capture" disabled>📸 Capturar foto</button>
+          <button class="btn btn-outline" id="btn-stop-cam" disabled>⏹ Detener</button>
+        </div>
+      </div>
+
+      <!-- Preview compartida -->
+      <img id="preview-img" alt="Vista previa">
+
+      <div class="actions">
+        <button class="btn btn-primary" id="btn-count" disabled>
+          <span class="spinner" id="spin"></span>
+          <span id="btn-label">Contar personas</span>
+        </button>
+        <label class="auto-send-label">
+          <input type="checkbox" id="chk-send">
+          Enviar al sistema automáticamente
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result panel -->
+  <div class="panel">
+    <div class="panel-header">Resultado</div>
+    <div class="panel-body" id="result-panel">
+      <div style="text-align:center; padding:40px 0; color:var(--muted)">
+        <div style="font-size:36px; margin-bottom:8px">🔍</div>
+        <p>Sube una imagen para comenzar el conteo</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- History -->
+<section class="history-section">
+  <h2>Historial de conteos</h2>
+  <table id="history-table">
+    <thead>
+      <tr>
+        <th>Hora</th>
+        <th>Trip ID</th>
+        <th>Evento</th>
+        <th>Personas</th>
+        <th>Ocupación</th>
+        <th>Trigger</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody id="history-body">
+      <tr><td colspan="7" style="color:var(--muted); text-align:center; padding:20px">Sin conteos aún</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<div id="toast"></div>
+
+<script>
+  const dropZone    = document.getElementById('drop-zone');
+  const fileInput   = document.getElementById('file-input');
+  const previewImg  = document.getElementById('preview-img');
+  const btnCount    = document.getElementById('btn-count');
+  const btnLabel    = document.getElementById('btn-label');
+  const spin        = document.getElementById('spin');
+  const resultPanel = document.getElementById('result-panel');
+  const historyBody = document.getElementById('history-body');
+  const toast       = document.getElementById('toast');
+
+  const video       = document.getElementById('camera-video');
+  const canvas      = document.getElementById('camera-canvas');
+  const btnStartCam = document.getElementById('btn-start-cam');
+  const btnCapture  = document.getElementById('btn-capture');
+  const btnStopCam  = document.getElementById('btn-stop-cam');
+  const camPlaceholder = document.getElementById('camera-placeholder');
+
+  let selectedFile = null;
+  let cameraStream = null;
+
+  // ── Tabs ──
+  function switchTab(mode) {
+    document.getElementById('mode-upload').style.display = mode === 'upload' ? '' : 'none';
+    document.getElementById('mode-camera').style.display = mode === 'camera' ? '' : 'none';
+    document.getElementById('tab-upload').classList.toggle('active', mode === 'upload');
+    document.getElementById('tab-camera').classList.toggle('active', mode === 'camera');
+    if (mode === 'upload') stopCamera();
+  }
+
+  // ── Drag & drop ──
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    const f = e.dataTransfer.files[0];
+    if (f && f.type.startsWith('image/')) setFile(f);
+  });
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files[0]) setFile(fileInput.files[0]);
+  });
+
+  function setFile(f) {
+    selectedFile = f;
+    previewImg.src = URL.createObjectURL(f);
+    previewImg.style.display = 'block';
+    btnCount.disabled = false;
+  }
+
+  // ── Cámara ──
+  btnStartCam.addEventListener('click', async () => {
+    try {
+      cameraStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } },
+        audio: false,
+      });
+      video.srcObject = cameraStream;
+      camPlaceholder.style.display = 'none';
+      btnCapture.disabled = false;
+      btnStopCam.disabled = false;
+      btnStartCam.disabled = true;
+    } catch (err) {
+      showToast('❌ No se pudo acceder a la cámara: ' + err.message, 'error');
+    }
+  });
+
+  btnCapture.addEventListener('click', () => {
+    canvas.width  = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0);
+    canvas.toBlob(blob => {
+      const file = new File([blob], 'captura.jpg', { type: 'image/jpeg' });
+      setFile(file);
+      showToast('📸 Foto capturada — listo para contar', 'info');
+    }, 'image/jpeg', 0.92);
+  });
+
+  btnStopCam.addEventListener('click', stopCamera);
+
+  function stopCamera() {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach(t => t.stop());
+      cameraStream = null;
+      video.srcObject = null;
+      camPlaceholder.style.display = 'flex';
+      btnCapture.disabled = true;
+      btnStopCam.disabled = true;
+      btnStartCam.disabled = false;
+    }
+  }
+
+  // ── Submit ──
+  btnCount.addEventListener('click', async () => {
+    if (!selectedFile) return;
+
+    btnCount.disabled = true;
+    spin.style.display = 'inline-block';
+    btnLabel.textContent = 'Procesando…';
+
+    const fd = new FormData();
+    fd.append('image', selectedFile);
+    fd.append('daily_trip_id', document.getElementById('f-trip-id').value);
+    fd.append('event_type', document.getElementById('f-event-type').value);
+    fd.append('send_to_api', document.getElementById('chk-send').checked ? 'true' : 'false');
+
+    try {
+      const res = await fetch('/count', { method: 'POST', body: fd });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.detail || 'Error del servidor');
+      }
+      const data = await res.json();
+      renderResult(data);
+      addHistoryRow(data);
+      showToast(
+        data.sent
+          ? '✅ Conteo enviado al sistema AI'
+          : `📊 ${data.people_count} persona${data.people_count !== 1 ? 's' : ''} detectada${data.people_count !== 1 ? 's' : ''}`,
+        data.sent ? 'success' : 'info'
+      );
+    } catch (e) {
+      showToast('❌ ' + e.message, 'error');
+    } finally {
+      spin.style.display = 'none';
+      btnLabel.textContent = 'Contar personas';
+      btnCount.disabled = false;
+    }
+  });
+
+  function renderResult(data) {
+    const occ = (data.occupancy_ratio * 100).toFixed(1);
+    const barColor = data.occupancy_ratio >= 0.85 ? '#f85149'
+                   : data.occupancy_ratio >= 0.60 ? '#d29922'
+                   : '#3fb950';
+
+    const metaHtml = [
+      { label: 'Trip ID', value: data.daily_trip_id ?? '—' },
+      { label: 'Evento', value: data.event_type || '—' },
+      { label: 'Ocupación', value: data.backend_response ? data.backend_response.occupancy_ratio * 100 + '%' : '—' },
+      { label: 'Hora', value: new Date(data.timestamp).toLocaleTimeString('es-CO') },
+    ].map(m => `
+      <div class="meta-item">
+        <div class="meta-label">${m.label}</div>
+        <div class="meta-value">${m.value}</div>
+      </div>`).join('');
+
+    resultPanel.innerHTML = `
+      ${data.annotated_image
+        ? `<img src="data:image/jpeg;base64,${data.annotated_image}"
+               style="width:100%;border-radius:var(--radius);border:1px solid var(--border);margin-bottom:12px"
+               alt="Imagen anotada">`
+        : ''}
+      <div class="count-display">
+        <span class="count-number">${data.people_count}</span>
+        <span class="count-label">persona${data.people_count !== 1 ? 's' : ''}</span>
+      </div>
+      <div class="occupancy-bar-wrap">
+        <div class="occupancy-bar-label">
+          <span>Ocupación del bus</span>
+          <span>${occ}%</span>
+        </div>
+        <div class="occupancy-bar-track">
+          <div class="occupancy-bar-fill"
+               style="width:${occ}%;background:${barColor}"></div>
+        </div>
+      </div>
+      <div class="meta-grid">${metaHtml}</div>
+      ${!document.getElementById('chk-send').checked ? `
+        <button class="btn btn-success" id="btn-send-now">
+          📡 Enviar al sistema AI
+        </button>` : ''}
+    `;
+
+    const btnSend = document.getElementById('btn-send-now');
+    if (btnSend) {
+      btnSend.addEventListener('click', async () => {
+        btnSend.disabled = true;
+        btnSend.textContent = 'Enviando…';
+        try {
+          const backendUrl = document.getElementById('f-backend-url').value.trim();
+          const res = await fetch(`${backendUrl}/journey-logs`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              daily_trip_id: parseInt(document.getElementById('f-trip-id').value),
+              passenger_count: data.people_count,
+              event_type: document.getElementById('f-event-type').value,
+            }),
+          });
+          const d = await res.json();
+          if (!res.ok) throw new Error(d.error || `HTTP ${res.status}`);
+          btnSend.textContent = '✅ Enviado';
+          showToast(`✅ Enviado — ocupación: ${d.occupancy_ratio}`, 'success');
+        } catch (e) {
+          btnSend.disabled = false;
+          btnSend.textContent = '📡 Enviar al sistema AI';
+          showToast('❌ ' + e.message, 'error');
+        }
+      });
+    }
+  }
+
+  function addHistoryRow(data) {
+    const occ = (data.occupancy_ratio * 100).toFixed(1);
+    const time = new Date(data.timestamp).toLocaleTimeString('es-CO');
+    const statusTag = data.sent
+      ? '<span class="tag tag-sent">✓ Enviado</span>'
+      : '<span class="tag tag-unsent">Pendiente</span>';
+
+    const existing = historyBody.querySelector('td[colspan]');
+    if (existing) historyBody.innerHTML = '';
+
+    const row = document.createElement('tr');
+    const triggerId = data.backend_response?.trigger_created;
+    row.innerHTML = `
+      <td>${time}</td>
+      <td>${data.daily_trip_id ?? '—'}</td>
+      <td>${data.event_type || '—'}</td>
+      <td style="font-weight:700;color:var(--primary)">${data.people_count}</td>
+      <td>${occ}%</td>
+      <td>${triggerId ? `<span class="tag tag-sent">🔔 #${triggerId}</span>` : '—'}</td>
+      <td>${statusTag}</td>
+    `;
+    historyBody.prepend(row);
+  }
+
+  function showToast(msg, type = 'info') {
+    toast.textContent = msg;
+    toast.className = 'show';
+    toast.style.borderColor = type === 'success' ? 'var(--success)'
+                            : type === 'error'   ? 'var(--danger)'
+                            : 'var(--border)';
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => toast.classList.remove('show'), 3500);
+  }
+</script>
+</body>
+</html>

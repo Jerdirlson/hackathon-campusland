@@ -1,0 +1,12 @@
+# Documentación — Metrolinea
+
+## API
+- [endpoints.mdc](endpoints.mdc) — Todos los endpoints con body, response y errores
+
+## Business
+- [logic.mdc](business/logic.mdc) — Lógica de negocio: actores, triggers de IA, gestión de patches
+- [data.mdc](business/data.mdc) — Modelo de datos completo (PostgreSQL)
+- [architecture.mdc](business/architecture.mdc) — Arquitectura de servicios y flujos de comunicación
+
+## Logic
+- [routing.mdc](logic/routing.mdc) — Cómo funciona el sistema de rutas y trayectos

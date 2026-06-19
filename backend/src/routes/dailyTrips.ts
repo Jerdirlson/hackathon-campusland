@@ -172,16 +172,12 @@ router.get('/:id', requireAuth, async (req, res, next) => {
        WHERE ts.daily_trip_id = $1 ORDER BY ts.stop_order`,
       [req.params.id]
     )
-    const { rows: [lastLog] } = await db.query(
-      `SELECT passenger_count, timestamp FROM journey_logs
-       WHERE daily_trip_id = $1 ORDER BY timestamp DESC LIMIT 1`,
-      [req.params.id]
-    )
     res.json({
-      ...trip, stops,
-      current_occupancy: lastLog?.passenger_count ?? null,
-      occupancy_ratio: lastLog ? (lastLog.passenger_count / trip.capacity).toFixed(2) : null,
-      last_occupancy_at: lastLog?.timestamp ?? null,
+      ...trip,
+      stops,
+      occupancy_ratio: trip.capacity > 0
+        ? (trip.current_occupancy / trip.capacity).toFixed(2)
+        : '0.00',
     })
   } catch (err) { next(err) }
 })

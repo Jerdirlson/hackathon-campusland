@@ -1,0 +1,488 @@
+# API Endpoints — Metrolinea Backend
+
+Base URL: `http://localhost:3000`
+Auth: cookie `token` (httpOnly JWT). Se obtiene en login/register y se envía automáticamente.
+
+---
+
+## Auth
+
+### POST /auth/register
+Crea un usuario nuevo y establece la cookie de sesión.
+
+**Body**
+```json
+{ "name": "string", "email": "string", "password": "string", "role": "passenger|operator|admin" }
+```
+`role` es opcional, default `passenger`.
+
+**Response 201**
+```json
+{ "user": { "id": 1, "name": "Ana", "email": "ana@test.com", "role": "passenger" } }
+```
+
+**Errores:** `400` campos faltantes · `400` rol inválido · `409` email ya registrado
+
+---
+
+### POST /auth/login
+Inicia sesión y establece la cookie.
+
+**Body**
+```json
+{ "email": "string", "password": "string" }
+```
+
+**Response 200**
+```json
+{ "user": { "id": 1, "name": "Ana", "email": "ana@test.com", "role": "passenger" } }
+```
+
+**Errores:** `400` campos faltantes · `401` credenciales inválidas
+
+---
+
+### POST /auth/logout
+Limpia la cookie de sesión. No requiere body.
+
+**Response 200** `{ "ok": true }`
+
+---
+
+## Estaciones
+
+### GET /stations
+Lista todas las estaciones. Requiere auth.
+
+**Response 200** `[ { "id", "code", "name", "address", "lat", "lng" } ]`
+
+---
+
+### GET /stations/:id
+Requiere auth. **Errores:** `404`
+
+---
+
+### POST /stations
+Requiere rol `operator` o `admin`.
+
+**Body**
+```json
+{ "code": "EST-01", "name": "Terminal Norte", "address": "...", "lat": 7.14, "lng": -73.12 }
+```
+`address`, `lat`, `lng` son opcionales.
+
+**Response 201** objeto estación. **Errores:** `400` code/name faltante · `409` code duplicado
+
+---
+
+### PATCH /stations/:id
+Requiere `operator+`. Campos opcionales. **Errores:** `404` · `409` code duplicado
+
+---
+
+### DELETE /stations/:id
+Requiere `admin`. **Errores:** `404` · `409` referenciada por rutas o viajes activos
+
+---
+
+## Rutas
+
+### GET /routes
+Requiere auth. Lista rutas con su status.
+
+**Response 200** `[ { "id", "code", "name", "description", "status" } ]`
+
+---
+
+### GET /routes/:id
+Requiere auth. Incluye paradas ordenadas.
+
+**Response 200**
+```json
+{
+  "id": 3, "code": "P1", "name": "Terminal Norte – Terminal Sur",
+  "stations": [
+    { "stop_order": 1, "id": 3, "code": "EST-TN", "name": "Terminal Norte",
+      "estimated_minutes_from_prev": 0, "lat": 7.145, "lng": -73.125 }
+  ]
+}
+```
+
+---
+
+### POST /routes
+Requiere `operator+`.
+
+**Body** `{ "code": "P2", "name": "...", "description": "..." }`
+
+**Response 201**. **Errores:** `400` code/name faltante · `409` code duplicado
+
+---
+
+### PATCH /routes/:id
+Requiere `operator+`. Campos opcionales incluye `status: active|inactive`.
+
+---
+
+### DELETE /routes/:id
+Requiere `admin`. **Errores:** `409` tiene viajes activos
+
+---
+
+### POST /routes/:id/stations
+Agrega una parada a la ruta. Requiere `operator+`.
+
+**Body** `{ "station_id": 5, "stop_order": 3, "estimated_minutes_from_prev": 8 }`
+
+**Errores:** `404` ruta/estación no existe · `409` orden o estación ya existe en la ruta
+
+---
+
+### DELETE /routes/:id/stations/:stationId
+Requiere `operator+`. **Errores:** `404`
+
+---
+
+## Buses
+
+### GET /buses?status=
+Requiere auth. `status` opcional: `active|inactive|maintenance`.
+
+**Response 200** `[ { "id", "code", "license_plate", "capacity", "status" } ]`
+
+---
+
+### GET /buses/:id
+Requiere auth. **Errores:** `404`
+
+---
+
+### POST /buses
+Requiere `operator+`.
+
+**Body** `{ "code": "B001", "license_plate": "MLN-001", "capacity": 40 }`
+
+**Errores:** `400` campos faltantes · `400` capacity <= 0 · `409` code o placa duplicados
+
+---
+
+### PATCH /buses/:id
+Requiere `operator+`. `status` acepta `active|inactive|maintenance`.
+
+---
+
+### DELETE /buses/:id
+Requiere `admin`. **Errores:** `409` bus en viajes activos
+
+---
+
+## Templates de horario
+
+Todos los endpoints requieren `operator+`.
+
+### GET /schedule-templates?route_id=
+### GET /schedule-templates/:id
+### POST /schedule-templates
+
+**Body**
+```json
+{
+  "route_id": 3,
+  "departure_time": "06:00:00",
+  "frequency_minutes": 15,
+  "days_of_week": [1, 2, 3, 4, 5],
+  "valid_from": "2026-06-19",
+  "valid_until": null
+}
+```
+`days_of_week`: 1=Lunes … 7=Domingo.
+
+### PATCH /schedule-templates/:id
+### DELETE /schedule-templates/:id — solo `admin`
+
+---
+
+## Viajes del día
+
+### POST /daily-trips/generate
+Requiere `operator+`. Genera todos los viajes del día para una ruta según sus templates.
+Itera desde `departure_time` hasta las 22:00 usando `frequency_minutes`.
+Crea `trip_stops` y `scheduled_jobs` automáticamente.
+
+**Body** `{ "date": "2026-06-19", "route_id": 3 }`
+`route_id` es opcional (genera para todas las rutas activas si se omite).
+
+**Response 201**
+```json
+{
+  "generated": 65,
+  "trips": [ { "id", "route_id", "bus_id", "date", "scheduled_departure", "status" } ],
+  "skipped": [ "route 3 at 06:15: no available bus" ]
+}
+```
+
+---
+
+### GET /daily-trips?date=&route_id=&status=
+Requiere auth. Todos los filtros son opcionales.
+
+**Response 200**
+```json
+[{
+  "id": 12,
+  "route_id": 3,   "route_code": "P1",
+  "bus_id": 5,     "bus_code": "B003",
+  "capacity": 40,
+  "current_occupancy": 28,
+  "occupancy_updated_at": "2026-06-19T14:30:00Z",
+  "scheduled_departure": "2026-06-19T06:00:00Z",
+  "status": "scheduled|in_progress|completed|cancelled|delayed",
+  "date": "2026-06-19"
+}]
+```
+
+> Para listar viajes activos con ocupación en tiempo real:
+> `GET /daily-trips?status=in_progress&date=2026-06-19`
+
+---
+
+### GET /daily-trips/:id
+Requiere auth. Incluye paradas con tiempos reales vs programados.
+
+**Response 200**
+```json
+{
+  "id": 12, "route_code": "P1", "bus_code": "B003",
+  "capacity": 40, "current_occupancy": 28, "occupancy_ratio": "0.70",
+  "status": "in_progress",
+  "stops": [
+    {
+      "stop_order": 1, "station_code": "EST-TN", "station_name": "Terminal Norte",
+      "scheduled_arrival": "...", "actual_arrival": "...",
+      "scheduled_departure": "...", "actual_departure": "..."
+    }
+  ]
+}
+```
+
+---
+
+### PATCH /daily-trips/:id/status
+Requiere `operator+`. Actualiza estado del viaje.
+
+**Body** `{ "status": "in_progress|completed|cancelled|delayed|scheduled" }`
+
+**Errores:** `409` no se puede cambiar un viaje `completed` o `cancelled`
+
+---
+
+## Planes de viaje (pasajeros)
+
+### POST /trip-plans
+Requiere auth. El `user_id` se toma del JWT, no del body.
+
+**Body**
+```json
+{
+  "route_id": 3,
+  "origin_station_id": 3,
+  "dest_station_id": 10,
+  "planned_date": "2026-06-20",
+  "planned_time": "08:00"
+}
+```
+
+**Errores:** `400` origen = destino · `400` fecha pasada · `400` estación no está en la ruta · `400` destino antes que origen en la ruta
+
+---
+
+### GET /trip-plans?date=&route_id=&status=
+Requiere auth. El pasajero solo ve sus propios planes. El operador/admin ve todos.
+
+**Response 200**
+```json
+[{
+  "id": 1, "route_code": "P1",
+  "origin_name": "Terminal Norte", "dest_name": "Terminal Sur",
+  "planned_date": "2026-06-20", "planned_time": "08:00",
+  "status": "active|cancelled|completed",
+  "assigned_trip_id": 12
+}]
+```
+
+---
+
+### GET /trip-plans/:id
+Requiere auth. El pasajero no puede ver planes ajenos (403).
+
+---
+
+### PATCH /trip-plans/:id/cancel
+Requiere auth. El pasajero solo cancela los suyos.
+
+**Errores:** `403` intenta cancelar plan ajeno · `409` ya cancelado
+
+---
+
+### GET /trip-plans/demand?date=&route_id=
+Requiere `operator+`. Demanda agrupada por hora.
+
+**Response 200** `[ { "hour_slot": "08:00", "planned_count": 42 } ]`
+
+---
+
+## Logs de ocupación (cámara)
+
+### POST /journey-logs
+**Sin autenticación** — lo llama el servicio `counter` (cámara YOLO).
+
+**Body**
+```json
+{
+  "daily_trip_id": 12,
+  "passenger_count": 28,
+  "event_type": "periodic"
+}
+```
+`event_type`: `periodic` (cada X segundos) | `change` (detectó cambio).
+
+**Response 201**
+```json
+{
+  "log": { "id", "daily_trip_id", "timestamp", "passenger_count", "event_type" },
+  "occupancy_ratio": "0.70",
+  "capacity": 40,
+  "trigger_created": null
+}
+```
+Actualiza `current_occupancy` en `daily_trips` automáticamente.
+Si `occupancy_ratio >= 0.85` crea un trigger `bus_full` automáticamente (`trigger_created` tendrá el id).
+
+---
+
+### GET /journey-logs?daily_trip_id=&limit=
+Requiere auth. `limit` default 50.
+
+---
+
+### GET /journey-logs/latest/:dailyTripId
+Requiere auth. Retorna la última lectura con `occupancy_pct`.
+
+---
+
+## Eventos de estación (sensor)
+
+### POST /station-events
+**Sin autenticación** — lo llama el sensor de cada estación.
+
+**Body**
+```json
+{
+  "daily_trip_id": 12,
+  "station_id": 5,
+  "event_type": "arrival",
+  "passenger_count": 28
+}
+```
+`event_type`: `arrival` | `departure`.
+
+Actualiza `actual_arrival` / `actual_departure` en `trip_stops`.
+Si el bus llega a la primera parada, cambia el viaje a `in_progress`.
+Si el delay supera `DELAY_THRESHOLD_MIN` (8 min) crea trigger `high_demand`.
+
+**Response 201** `{ "event": {...}, "delay_minutes": 3, "trigger_created": null }`
+
+---
+
+### GET /station-events?daily_trip_id=&station_id=
+Requiere auth.
+
+---
+
+## IA — Triggers
+
+Todos requieren `operator+`.
+
+### GET /ai-triggers?status=&route_id=&trigger_type=
+`trigger_type`: `pre_day_evaluation|low_occupancy|bus_full|high_demand`
+`status`: `pending|processing|resolved`
+
+---
+
+### POST /ai-triggers
+Crea un trigger manualmente (para testing u operaciones manuales).
+
+**Body**
+```json
+{ "trigger_type": "bus_full", "route_id": 3, "daily_trip_id": 12, "payload": {} }
+```
+
+---
+
+### POST /ai-triggers/:id/process
+Evalúa el trigger con GPT y crea un `ai_patch`.
+
+**Errores:** `409` ya procesado · `503` OPENAI_API_KEY no configurado
+
+**Response 201** objeto `ai_patch` con `analysis` y `proposed_actions`.
+
+---
+
+## IA — Patches
+
+Todos requieren `operator+`.
+
+### GET /ai-patches?status=
+`status`: `pending|approved|modified|rejected`
+
+---
+
+### GET /ai-patches/:id
+Incluye `trigger_type`, `trigger_payload` y `proposed_actions`.
+
+---
+
+### PATCH /ai-patches/:id/review
+El operador aprueba, rechaza o modifica el patch.
+
+**Body**
+```json
+{ "action": "approve|reject|modify", "proposed_actions": [...] }
+```
+`proposed_actions` solo requerido cuando `action = modify`.
+
+**Errores:** `409` ya aplicado · `409` estado no permite revisión (ej. ya rechazado)
+
+---
+
+### POST /ai-patches/:id/apply
+Ejecuta las acciones del patch aprobado.
+
+**Errores:** `409` no está aprobado · `409` ya aplicado
+
+**Response 200**
+```json
+{
+  "applied": true,
+  "results": [
+    { "action": "delay_trip", "trip_id": 12 },
+    { "action": "assign_users", "count": 15 }
+  ]
+}
+```
+
+Acciones soportadas: `add_trip` · `delay_trip` · `cancel_trip` · `assign_users`
+Al aplicar `delay_trip` o `cancel_trip` se actualiza el `scheduled_job` correspondiente automáticamente.
+
+---
+
+## Jobs programados
+
+No hay endpoints HTTP para jobs — se gestionan internamente.
+El `JobRunner` corre cada minuto y procesa `scheduled_jobs` con `status = pending` cuyo `scheduled_at <= NOW()`.
+
+| job_type | Cuándo corre | Qué hace |
+|---|---|---|
+| `low_occupancy_check` | 2 min antes de cada salida | Si ocupación < 20%: crea trigger y llama LowOccupancyService |
+| `pre_day_evaluation` | 05:00 o al generar viajes | Evalúa demanda vs capacidad y redistribuye pasajeros |
