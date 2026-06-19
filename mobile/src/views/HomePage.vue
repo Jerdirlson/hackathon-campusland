@@ -124,6 +124,40 @@
             </div>
           </section>
 
+          <!-- Buses en ruta ahora -->
+          <section v-if="activeTrips.length">
+            <SectionLabel>Buses en ruta ({{ activeTrips.length }})</SectionLabel>
+            <div class="trip-list">
+              <button
+                v-for="t in activeTrips"
+                :key="t.id"
+                class="trip-card"
+                @click="openRoute(t.route_id)"
+              >
+                <div class="trip-top">
+                  <span class="trip-badge" :style="{ background: colorForRoute(t.route_code) }">{{ t.route_code }}</span>
+                  <span class="trip-bus">{{ t.bus_code }}</span>
+                  <span class="trip-status-dot"></span>
+                </div>
+                <div class="trip-occ">
+                  <div class="trip-occ-bar-wrap">
+                    <div
+                      class="trip-occ-bar"
+                      :style="{
+                        width: occupancyPct(t) + '%',
+                        background: OCC[occupancyOf(t.current_occupancy, t.capacity).level].color,
+                      }"
+                    ></div>
+                  </div>
+                  <span class="trip-occ-label" :style="{ color: OCC[occupancyOf(t.current_occupancy, t.capacity).level].color }">
+                    {{ t.current_occupancy ?? '—' }}/{{ t.capacity }}
+                    · {{ OCC[occupancyOf(t.current_occupancy, t.capacity).level].label }}
+                  </span>
+                </div>
+              </button>
+            </div>
+          </section>
+
           <!-- Rutas -->
           <section v-if="routes.length">
             <SectionLabel>Rutas activas ({{ routes.length }})</SectionLabel>
@@ -155,10 +189,11 @@ import { computed, onMounted, ref, reactive, watch, nextTick, type CSSProperties
 import { useRouter } from 'vue-router'
 
 import { IonContent, IonPage, IonRefresher, IonRefresherContent } from '@ionic/vue'
-import { api, formatEta, type Arrival, type RouteRow, type StationRow } from '@/api/client'
-import { colorForRoute } from '@/ui/occupancy'
+import { api, formatEta, type Arrival, type RouteRow, type StationRow, type DailyTrip } from '@/api/client'
+import { colorForRoute, OCC, occupancyOf } from '@/ui/occupancy'
 import { useFavorites } from '@/composables/useFavorites'
 import { useMetroPay } from '@/composables/useMetroPay'
+import { useOccupancySocket } from '@/composables/useOccupancySocket'
 import LucideIcon from '@/components/LucideIcon.vue'
 import MlHeader from '@/components/MlHeader.vue'
 import SectionLabel from '@/components/SectionLabel.vue'
@@ -176,6 +211,7 @@ const { last4: metropayLast4, formattedBalance: metropayBalance } = useMetroPay(
 const routes = ref<RouteRow[]>([])
 const stations = ref<StationRow[]>([])
 const favoriteStopRows = ref<FavRow[]>([])
+const activeTrips = ref<DailyTrip[]>([])
 const hero = ref<Arrival | null>(null)
 const loading = ref(true)
 const error = ref<string | null>(null)
@@ -214,11 +250,22 @@ function statusLabel(s: Arrival['status']) {
 const openRoute = (id: number) => router.push(`/route/${id}`)
 const openStop = (id: number) => router.push(`/stop/${id}`)
 
+function occupancyPct(t: DailyTrip): number {
+  if (!t.capacity || t.current_occupancy == null) return 0
+  return Math.min(100, Math.round((t.current_occupancy / t.capacity) * 100))
+}
+
 async function load() {
   loading.value = true
   error.value = null
   try {
-    const [routeList, stationList] = await Promise.all([api.listRoutes(), api.listStations()])
+    const today = new Date().toISOString().slice(0, 10)
+    const [routeList, stationList, tripList] = await Promise.all([
+      api.listRoutes(),
+      api.listStations(),
+      api.dailyTrips({ status: 'in_progress', date: today }),
+    ])
+    activeTrips.value = tripList
     routes.value = routeList
     stations.value = stationList
 
@@ -296,6 +343,14 @@ const chipsMaskStyle = computed<CSSProperties>(() => {
 
 watch(loading, (v) => {
   if (!v) nextTick(updateChipsMask)
+})
+
+useOccupancySocket((event) => {
+  const trip = activeTrips.value.find((t) => t.id === event.daily_trip_id)
+  if (trip) {
+    trip.current_occupancy = event.current_occupancy
+    trip.capacity = event.capacity
+  }
 })
 
 onMounted(load)
@@ -457,5 +512,36 @@ onMounted(load)
   display: flex; align-items: center; justify-content: center;
   font-family: var(--ml-font-mono); font-weight: 700; font-size: 11px;
 }
+/* Buses en ruta */
+.trip-list { display: flex; flex-direction: column; gap: 10px; }
+.trip-card {
+  display: flex; flex-direction: column; gap: 10px;
+  background: #fff; border: 1px solid var(--ml-divider); border-radius: 16px;
+  padding: 14px 16px; cursor: pointer; text-align: left;
+}
+.trip-top { display: flex; align-items: center; gap: 10px; }
+.trip-badge {
+  width: 34px; height: 34px; border-radius: 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--ml-font-mono); font-weight: 700; font-size: 12px;
+  color: #fff; flex: none;
+}
+.trip-bus { font-weight: 700; font-size: 14px; color: var(--ml-ink); flex: 1; }
+.trip-status-dot {
+  width: 8px; height: 8px; border-radius: 99px;
+  background: #a6e04a; box-shadow: 0 0 0 3px rgba(166,224,74,0.25);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.trip-occ { display: flex; flex-direction: column; gap: 5px; }
+.trip-occ-bar-wrap {
+  width: 100%; height: 5px; background: #f0f0f0; border-radius: 99px; overflow: hidden;
+}
+.trip-occ-bar { height: 100%; border-radius: 99px; transition: width 0.4s ease; }
+.trip-occ-label { font-size: 11.5px; font-weight: 600; }
+
 .error { color: var(--ml-danger); font-size: 14px; padding: 12px; }
 </style>

@@ -10,6 +10,7 @@
     "test:watch": "jest --runInBand --watch"
   },
   "dependencies": {
+    "@types/ws": "^8.18.1",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
@@ -18,7 +19,8 @@
     "jsonwebtoken": "^9.0.2",
     "node-cron": "^4.4.1",
     "openai": "^4.20.0",
-    "pg": "^8.11.3"
+    "pg": "^8.11.3",
+    "ws": "^8.21.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { db } from '../db/client'
 import { requireAuth } from '../middleware/auth'
+import { broadcast } from '../ws/wss'
 
 const router = Router()
 
@@ -38,6 +39,14 @@ router.post('/', async (req, res, next) => {
     )
 
     const occupancyRatio = passenger_count / trip.capacity
+
+    broadcast({
+      type: 'occupancy_update',
+      daily_trip_id,
+      current_occupancy: passenger_count,
+      capacity: trip.capacity,
+      occupancy_ratio: occupancyRatio,
+    })
     const threshold = parseFloat(process.env.OCCUPANCY_THRESHOLD || '0.85')
     let triggerCreated = null
     if (occupancyRatio >= threshold) {
