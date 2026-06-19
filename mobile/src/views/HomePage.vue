@@ -132,6 +132,10 @@
                 v-for="t in activeTrips"
                 :key="t.id"
                 class="trip-card"
+                :style="{
+                  '--occ-pct': occupancyPct(t) + '%',
+                  '--occ-color': OCC[occupancyOf(t.current_occupancy, t.capacity).level].color,
+                }"
                 @click="openRoute(t.route_id)"
               >
                 <div class="trip-top">
@@ -140,18 +144,8 @@
                   <span class="trip-status-dot"></span>
                 </div>
                 <div class="trip-occ">
-                  <div class="trip-occ-bar-wrap">
-                    <div
-                      class="trip-occ-bar"
-                      :style="{
-                        width: occupancyPct(t) + '%',
-                        background: OCC[occupancyOf(t.current_occupancy, t.capacity).level].color,
-                      }"
-                    ></div>
-                  </div>
                   <span class="trip-occ-label" :style="{ color: OCC[occupancyOf(t.current_occupancy, t.capacity).level].color }">
-                    {{ t.current_occupancy ?? '—' }}/{{ t.capacity }}
-                    · {{ OCC[occupancyOf(t.current_occupancy, t.capacity).level].label }}
+                    {{ occupancyPct(t) }}% · {{ OCC[occupancyOf(t.current_occupancy, t.capacity).level].label }}
                   </span>
                 </div>
               </button>
@@ -515,9 +509,16 @@ onMounted(load)
 /* Buses en ruta */
 .trip-list { display: flex; flex-direction: column; gap: 10px; }
 .trip-card {
+  position: relative; overflow: hidden;
   display: flex; flex-direction: column; gap: 10px;
   background: #fff; border: 1px solid var(--ml-divider); border-radius: 16px;
   padding: 14px 16px; cursor: pointer; text-align: left;
+}
+.trip-card::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: var(--occ-pct, 0%); height: 3px;
+  background: var(--occ-color, var(--ml-divider));
+  transition: width 0.4s ease;
 }
 .trip-top { display: flex; align-items: center; gap: 10px; }
 .trip-badge {
@@ -537,10 +538,6 @@ onMounted(load)
   50% { opacity: 0.4; }
 }
 .trip-occ { display: flex; flex-direction: column; gap: 5px; }
-.trip-occ-bar-wrap {
-  width: 100%; height: 5px; background: #f0f0f0; border-radius: 99px; overflow: hidden;
-}
-.trip-occ-bar { height: 100%; border-radius: 99px; transition: width 0.4s ease; }
 .trip-occ-label { font-size: 11.5px; font-weight: 600; }
 
 .error { color: var(--ml-danger); font-size: 14px; padding: 12px; }

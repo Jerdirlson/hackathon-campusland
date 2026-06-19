@@ -19,7 +19,27 @@ export interface OccupancyUpdateEvent {
   occupancy_ratio: number
 }
 
-export function broadcast(event: OccupancyUpdateEvent): void {
+export interface TheftAlertCreatedEvent {
+  type: 'theft_alert_created'
+  alert: {
+    id: number
+    daily_trip_id: number
+    station_id: number | null
+    reported_by: number
+    reported_by_name: string
+    reported_by_email: string
+    description: string | null
+    severity: string
+    status: string
+    trip_date: string
+    route_code: string
+    station_name: string | null
+    created_at: string
+    updated_at: string
+  }
+}
+
+function send(event: OccupancyUpdateEvent | TheftAlertCreatedEvent): void {
   if (!wss) return
   const payload = JSON.stringify(event)
   wss.clients.forEach((client) => {
@@ -27,4 +47,12 @@ export function broadcast(event: OccupancyUpdateEvent): void {
       client.send(payload)
     }
   })
+}
+
+export function broadcast(event: OccupancyUpdateEvent): void {
+  send(event)
+}
+
+export function broadcastTheftAlert(event: TheftAlertCreatedEvent): void {
+  send(event)
 }

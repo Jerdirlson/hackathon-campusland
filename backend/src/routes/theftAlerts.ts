@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { db } from '../db/client'
 import { requireAuth, requireRole, AuthRequest } from '../middleware/auth'
+import { broadcastTheftAlert } from '../ws/wss'
 
 const router = Router()
 
@@ -46,6 +47,23 @@ router.post('/', requireAuth, async (req: AuthRequest, res, next) => {
       )
 
       await client.query('COMMIT')
+
+      const { rows: [enriched] } = await client.query(
+        `SELECT ta.id, ta.daily_trip_id, ta.station_id, ta.reported_by, ta.severity, ta.status,
+                ta.description, ta.created_at, ta.updated_at,
+                u.name AS reported_by_name, u.email AS reported_by_email,
+                dt.date AS trip_date, r.code AS route_code,
+                s.name AS station_name
+         FROM theft_alerts ta
+         JOIN users u        ON u.id = ta.reported_by
+         JOIN daily_trips dt ON dt.id = ta.daily_trip_id
+         JOIN routes r       ON r.id = dt.route_id
+         LEFT JOIN stations s ON s.id = ta.station_id
+         WHERE ta.id = $1`,
+        [alert.id]
+      )
+      broadcastTheftAlert({ type: 'theft_alert_created', alert: enriched })
+
       res.status(201).json({ alert })
     } catch (err) {
       await client.query('ROLLBACK')

@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import AppLayout from '../components/AppLayout.vue'
 import StatusBadge from '../components/StatusBadge.vue'
 import { theftAlertsApi, type TheftAlert, type AlertStatus } from '../api/theftAlerts'
+import { useTheftAlertSocket } from '../composables/useTheftAlertSocket'
 
 const router = useRouter()
 const alerts = ref<TheftAlert[]>([])
@@ -37,6 +38,12 @@ function formatDate(iso: string) {
     day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit',
   })
 }
+
+useTheftAlertSocket(({ alert }) => {
+  if (statusFilter.value === '' || statusFilter.value === 'reported') {
+    alerts.value.unshift(alert)
+  }
+})
 
 onMounted(load)
 </script>
