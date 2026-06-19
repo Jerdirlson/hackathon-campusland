@@ -73,6 +73,10 @@ import SectionLabel from '@/components/SectionLabel.vue'
 import SkeletonList from '@/components/SkeletonList.vue'
 import LucideIcon from '@/components/LucideIcon.vue'
 import { api, type RouteDetail } from '@/api/client'
+import { useGeolocation } from '@/composables/useGeolocation'
+
+const { coords: userCoords, requestLocation, startWatching, stopWatching } = useGeolocation()
+let userLayer: { marker: L.CircleMarker; accuracy: L.Circle } | null = null
 
 const routeParams = useRoute()
 const router = useRouter()
@@ -154,6 +158,40 @@ function renderMap() {
 
   // Fit a todos los puntos
   mapInstance.fitBounds(L.latLngBounds(coords), { padding: [28, 28] })
+
+  // Pinta la ubicación del usuario si ya la tenemos
+  renderUserMarker()
+}
+
+function renderUserMarker() {
+  if (!mapInstance || !userCoords.value) return
+  const { lat, lng, accuracy } = userCoords.value
+
+  if (userLayer) {
+    userLayer.marker.setLatLng([lat, lng])
+    userLayer.accuracy.setLatLng([lat, lng]).setRadius(accuracy)
+    return
+  }
+
+  const accuracyCircle = L.circle([lat, lng], {
+    radius: accuracy,
+    color: '#0E6BA8',
+    weight: 1,
+    fillColor: '#0E6BA8',
+    fillOpacity: 0.12,
+    interactive: false,
+  }).addTo(mapInstance)
+
+  const dot = L.circleMarker([lat, lng], {
+    radius: 8,
+    color: '#fff',
+    weight: 3,
+    fillColor: '#0E6BA8',
+    fillOpacity: 1,
+  }).addTo(mapInstance)
+  dot.bindPopup('<strong>Tu ubicación</strong>')
+
+  userLayer = { marker: dot, accuracy: accuracyCircle }
 }
 
 function goBack() {
@@ -177,11 +215,21 @@ onIonViewDidEnter(async () => {
   }
   // Aun así, forzar un invalidateSize por si llegó antes del layout final.
   setTimeout(() => mapInstance?.invalidateSize(), 80)
+
+  // Pide / arranca el seguimiento de la ubicación del usuario.
+  requestLocation().then(() => {
+    renderUserMarker()
+    startWatching()
+  })
 })
 
 onIonViewWillLeave(() => {
   viewActive.value = false
+  stopWatching()
 })
+
+// Re-pinta el marcador cuando llegan coords nuevas (watchPosition).
+watch(userCoords, () => renderUserMarker())
 
 watch(() => routeParams.params.id, () => {
   if (viewActive.value) load()
@@ -190,6 +238,8 @@ watch(() => routeParams.params.id, () => {
 onBeforeUnmount(() => {
   mapInstance?.remove()
   mapInstance = null
+  userLayer = null
+  stopWatching()
 })
 </script>
 

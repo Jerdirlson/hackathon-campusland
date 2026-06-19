@@ -93,6 +93,10 @@ import SkeletonList from '@/components/SkeletonList.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import LucideIcon from '@/components/LucideIcon.vue'
 import { api, type RouteDetail } from '@/api/client'
+import { useGeolocation } from '@/composables/useGeolocation'
+
+const { coords: userCoords, requestLocation, startWatching, stopWatching } = useGeolocation()
+let userLayer: { marker: L.CircleMarker; accuracy: L.Circle } | null = null
 
 const router = useRouter()
 const mode = ref<'list' | 'map'>('list')
@@ -182,6 +186,40 @@ async function drawMap() {
 
   // Forzar re-medida tras layout
   setTimeout(() => mapInstance?.invalidateSize(), 80)
+
+  // Pinta la ubicación del usuario si ya la tenemos
+  renderUserMarker()
+}
+
+function renderUserMarker() {
+  if (!mapInstance || !userCoords.value) return
+  const { lat, lng, accuracy } = userCoords.value
+
+  if (userLayer) {
+    userLayer.marker.setLatLng([lat, lng])
+    userLayer.accuracy.setLatLng([lat, lng]).setRadius(accuracy)
+    return
+  }
+
+  const accuracyCircle = L.circle([lat, lng], {
+    radius: accuracy,
+    color: '#0E6BA8',
+    weight: 1,
+    fillColor: '#0E6BA8',
+    fillOpacity: 0.12,
+    interactive: false,
+  }).addTo(mapInstance)
+
+  const dot = L.circleMarker([lat, lng], {
+    radius: 8,
+    color: '#fff',
+    weight: 3,
+    fillColor: '#0E6BA8',
+    fillOpacity: 1,
+  }).addTo(mapInstance)
+  dot.bindPopup('<strong>Tu ubicación</strong>')
+
+  userLayer = { marker: dot, accuracy: accuracyCircle }
 }
 
 function focusRoute(id: number) {
@@ -207,10 +245,16 @@ onIonViewDidEnter(async () => {
   viewActive.value = true
   if (!routes.value.length) await load()
   if (mode.value === 'map') await drawMap()
+
+  requestLocation().then(() => {
+    renderUserMarker()
+    startWatching()
+  })
 })
 
 onIonViewWillLeave(() => {
   viewActive.value = false
+  stopWatching()
 })
 
 // Re-pintar cuando el usuario alterna a "Mapa"
@@ -218,9 +262,14 @@ watch(mode, async (m) => {
   if (m === 'map' && viewActive.value && routes.value.length) await drawMap()
 })
 
+// Re-pinta el marcador del usuario cuando llegan coords nuevas.
+watch(userCoords, () => renderUserMarker())
+
 onBeforeUnmount(() => {
   mapInstance?.remove()
   mapInstance = null
+  userLayer = null
+  stopWatching()
 })
 </script>
 
