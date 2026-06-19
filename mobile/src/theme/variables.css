@@ -63,7 +63,13 @@
 
 /* Forzamos light scheme aunque el SO esté en oscuro. */
 html, body { color-scheme: light; background: var(--ml-bg); }
-ion-content { --background: var(--ml-bg); }
+ion-content {
+  --background: var(--ml-bg);
+  overscroll-behavior: none;
+}
+ion-content::part(scroll) {
+  overscroll-behavior: none;
+}
 
 /* Animaciones compartidas (skeletons, fades, pulsos en vivo) */
 @keyframes ml-shimmer {

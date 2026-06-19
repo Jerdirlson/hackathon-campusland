@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { db } from './client'
 
-async function migrate() {
+export async function runMigrations() {
   await db.query(`
     CREATE TABLE IF NOT EXISTS schema_migrations (
       filename VARCHAR(255) PRIMARY KEY,
@@ -39,11 +39,15 @@ async function migrate() {
     }
   }
 
-  await db.end()
   console.log('Migrations complete.')
 }
 
-migrate().catch(err => {
-  console.error('Migration failed:', err)
-  process.exit(1)
-})
+// Run standalone when executed directly (npm run migrate)
+if (require.main === module) {
+  runMigrations()
+    .then(() => db.end())
+    .catch(err => {
+      console.error('Migration failed:', err)
+      process.exit(1)
+    })
+}

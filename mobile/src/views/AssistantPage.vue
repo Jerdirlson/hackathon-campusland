@@ -2,7 +2,7 @@
   <ion-page>
     <ion-content ref="contentRef" :fullscreen="true" :scroll-events="false">
       <!-- Header propio con degradado verde -->
-      <header class="hero-head">
+      <header class="hero-head" :class="{ sticky: messages.length }">
         <div class="hero-icon">
           <LucideIcon name="sparkles" :size="22" color="#fff" />
         </div>
@@ -10,6 +10,14 @@
           <h1 class="hero-title">Asistente</h1>
           <p class="hero-sub">Tu copiloto de movilidad</p>
         </div>
+        <button
+          v-if="messages.length"
+          class="new-chat"
+          aria-label="Nueva conversación"
+          @click="onNewChat"
+        >
+          <LucideIcon name="square-pen" :size="18" color="#fff" />
+        </button>
       </header>
 
       <div class="thread">
@@ -105,6 +113,9 @@
       </div>
     </ion-content>
 
+    <!-- Difuminado inferior: funde los mensajes antes de llegar al input -->
+    <div class="fade-bottom" aria-hidden="true"></div>
+
     <!-- Barra de input fija, por encima de la tab bar flotante -->
     <div class="input-bar">
       <div class="input-shell">
@@ -133,13 +144,15 @@
 
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { IonContent, IonPage } from '@ionic/vue'
 import LucideIcon from '@/components/LucideIcon.vue'
 import { colorForRoute } from '@/ui/occupancy'
 import { useAssistant } from '@/composables/useAssistant'
-import type { RouteSuggestion } from '@/api/client'
+import { api, type RouteSuggestion } from '@/api/client'
 
-const { messages, loading, send, loadHistory } = useAssistant()
+const router = useRouter()
+const { messages, loading, send, loadHistory, reset } = useAssistant()
 
 const draft = ref('')
 const contentRef = ref<InstanceType<typeof IonContent> | null>(null)
@@ -177,9 +190,22 @@ function onSendDraft() {
   send(text)
 }
 
-function onViewRoute(suggestion: RouteSuggestion) {
-  // TODO: navegación a la vista de ruta detallada.
-  console.log('Ver ruta', suggestion)
+async function onViewRoute(suggestion: RouteSuggestion) {
+  // La suggestion trae el código de ruta (ej. "P1"); el detalle navega por id.
+  const code = suggestion.legs.find((l) => l.routeCode)?.routeCode
+  if (!code) return
+  try {
+    const routes = await api.listRoutes()
+    const match = routes.find((r) => r.code === code)
+    if (match) router.push(`/route/${match.id}`)
+  } catch {
+    // si falla la resolución, no navegamos
+  }
+}
+
+function onNewChat() {
+  draft.value = ''
+  reset()
 }
 
 // Auto-scroll cuando cambia la conversación o el estado de carga.
@@ -197,6 +223,10 @@ onMounted(async () => {
 <style scoped>
 ion-content {
   --background: var(--ml-bg);
+  overscroll-behavior: none;
+}
+ion-content::part(scroll) {
+  overscroll-behavior: none;
 }
 
 /* ---- Header ---- */
@@ -208,6 +238,12 @@ ion-content {
   background: linear-gradient(150deg, var(--ml-green-dark) 0%, var(--ml-green) 100%);
   border-radius: 0 0 26px 26px;
   box-shadow: 0 12px 28px -14px rgba(63, 122, 20, 0.5);
+}
+/* Sticky solo cuando hay conversación activa. */
+.hero-head.sticky {
+  position: sticky;
+  top: 0;
+  z-index: 20;
 }
 .hero-icon {
   width: 44px;
@@ -221,6 +257,25 @@ ion-content {
 }
 .hero-titles {
   min-width: 0;
+  flex: 1;
+}
+.new-chat {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 13px;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.18s ease, background 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.new-chat:active {
+  transform: scale(0.92);
+  background: rgba(255, 255, 255, 0.3);
 }
 .hero-title {
   margin: 0;
@@ -504,6 +559,18 @@ ion-content {
 }
 .typing .dot:nth-child(3) {
   animation-delay: 0.36s;
+}
+
+/* ---- Difuminado inferior ---- */
+.fade-bottom {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(env(safe-area-inset-bottom) + 185px);
+  background: linear-gradient(to top, #f4f6f4 42%, rgba(244, 246, 244, 0));
+  pointer-events: none;
+  z-index: 25;
 }
 
 /* ---- Input bar ---- */

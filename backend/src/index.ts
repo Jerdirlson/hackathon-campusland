@@ -1,6 +1,16 @@
-import app from './app'
+import { runMigrations } from './db/migrate'
+import app, { startScheduler } from './app'
 
 const PORT = process.env.PORT || 3000
-app.listen(PORT, () => {
-  console.log(`Backend running on port ${PORT}`)
-})
+
+runMigrations()
+  .then(() => {
+    startScheduler()
+    app.listen(PORT, () => {
+      console.log(`Backend running on port ${PORT}`)
+    })
+  })
+  .catch(err => {
+    console.error('Failed to run migrations on startup:', err)
+    process.exit(1)
+  })

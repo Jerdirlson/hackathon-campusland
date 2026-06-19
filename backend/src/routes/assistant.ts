@@ -20,13 +20,19 @@ router.post('/chat', async (req, res, next) => {
 router.get('/sessions/:id/messages', async (req, res, next) => {
   try {
     const { rows } = await db.query(
-      `SELECT role, content, created_at
+      `SELECT role, content, created_at, metadata
        FROM assistant_messages
        WHERE session_id = $1
        ORDER BY created_at`,
       [req.params.id]
     )
-    res.json({ messages: rows })
+    const messages = rows.map((r: any) => ({
+      role: r.role,
+      content: r.content,
+      created_at: r.created_at,
+      suggestion: r.metadata?.suggestion,
+    }))
+    res.json({ messages })
   } catch (err) { next(err) }
 })
 

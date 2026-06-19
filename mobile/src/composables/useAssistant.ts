@@ -80,11 +80,24 @@ export function useAssistant() {
         id: makeId(),
         role: m.role,
         content: m.content,
+        suggestion: m.suggestion,
       }))
     } catch {
       // Sin historial recuperable — arrancamos con el estado vacío.
     }
   }
 
-  return { messages, loading, sessionId, send, loadHistory }
+  /** Inicia una conversación desde cero: limpia mensajes y olvida la sesión. */
+  function reset() {
+    messages.value = []
+    sessionId.value = null
+    loading.value = false
+    try {
+      localStorage.removeItem(SESSION_KEY)
+    } catch {
+      // ignorar
+    }
+  }
+
+  return { messages, loading, sessionId, send, loadHistory, reset }
 }
