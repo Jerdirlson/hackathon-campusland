@@ -59,6 +59,5 @@ app.use('/assistant',          assistantRouter)
 
 app.use(errorHandler)
 
-startScheduler()
-
+export { startScheduler }
 export default app
