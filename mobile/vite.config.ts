@@ -22,8 +22,9 @@ export default defineConfig({
     port: 5174,
     allowedHosts: true,
     proxy: {
+      // /api → backend Node (Postgres). Igual que nginx.conf en producción.
       '/api': {
-        target: 'http://localhost:8000',
+        target: 'http://localhost:3000',
         changeOrigin: true,
         rewrite: (p) => p.replace(/^\/api/, ''),
       },
