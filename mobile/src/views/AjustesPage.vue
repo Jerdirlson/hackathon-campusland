@@ -7,7 +7,7 @@
           <div class="avatar">{{ initials }}</div>
           <div>
             <div class="name">{{ user?.name || 'Invitado' }}</div>
-            <div class="meta">{{ user?.email || 'Cuenta Metrolínea · Bucaramanga' }}</div>
+            <div class="meta capitalize">{{ user?.email || 'Cuenta Metrolínea · Bucaramanga' }}</div>
           </div>
         </div>
       </MlHeader>
