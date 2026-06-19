@@ -113,6 +113,9 @@
       </div>
     </ion-content>
 
+    <!-- Difuminado inferior: funde los mensajes antes de llegar al input -->
+    <div class="fade-bottom" aria-hidden="true"></div>
+
     <!-- Barra de input fija, por encima de la tab bar flotante -->
     <div class="input-bar">
       <div class="input-shell">
@@ -556,6 +559,18 @@ ion-content::part(scroll) {
 }
 .typing .dot:nth-child(3) {
   animation-delay: 0.36s;
+}
+
+/* ---- Difuminado inferior ---- */
+.fade-bottom {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(env(safe-area-inset-bottom) + 185px);
+  background: linear-gradient(to top, #f4f6f4 42%, rgba(244, 246, 244, 0));
+  pointer-events: none;
+  z-index: 25;
 }
 
 /* ---- Input bar ---- */
