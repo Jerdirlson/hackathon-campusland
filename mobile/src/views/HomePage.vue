@@ -101,7 +101,12 @@
           <!-- Rutas -->
           <section v-if="routes.length">
             <SectionLabel>Rutas activas ({{ routes.length }})</SectionLabel>
-            <div class="chips">
+            <div
+              ref="chipsRef"
+              class="chips"
+              :style="chipsMaskStyle"
+              @scroll="updateChipsMask"
+            >
               <button
                 v-for="r in routes"
                 :key="r.id"
@@ -120,7 +125,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, reactive, watch, nextTick, type CSSProperties } from 'vue'
 import { useRouter } from 'vue-router'
 import { IonContent, IonPage, IonRefresher, IonRefresherContent } from '@ionic/vue'
 import MlHeader from '@/components/MlHeader.vue'
@@ -231,11 +236,48 @@ async function onRefresh(ev: CustomEvent) {
   ;(ev.target as HTMLIonRefresherElement).complete()
 }
 
+// Scroll mask horizontal para chips de rutas
+const chipsRef = ref<HTMLElement | null>(null)
+const chipsMask = reactive({ left: false, right: false })
+const FADE = 28
+
+function updateChipsMask() {
+  const el = chipsRef.value
+  if (!el) return
+  chipsMask.left = el.scrollLeft > 2
+  chipsMask.right = el.scrollLeft + el.clientWidth < el.scrollWidth - 2
+}
+
+const chipsMaskStyle = computed<CSSProperties>(() => {
+  const { left, right } = chipsMask
+  if (!left && !right) return {}
+  let gradient: string
+  if (left && right) {
+    gradient = `linear-gradient(to right, transparent 0%, black ${FADE}px, black calc(100% - ${FADE}px), transparent 100%)`
+  } else if (right) {
+    gradient = `linear-gradient(to right, black calc(100% - ${FADE}px), transparent 100%)`
+  } else {
+    gradient = `linear-gradient(to right, transparent 0%, black ${FADE}px)`
+  }
+  return {
+    maskImage: gradient,
+    WebkitMaskImage: gradient,
+  } as CSSProperties
+})
+
+watch(loading, (v) => {
+  if (!v) nextTick(updateChipsMask)
+})
+
 onMounted(load)
 </script>
 
 <style scoped>
-.content { padding: 18px 22px 120px; display: flex; flex-direction: column; gap: 18px; background: var(--ml-bg); min-height: 100%; }
+.content {
+  padding: 18px 22px 90px;
+  display: flex; flex-direction: column; gap: 18px;
+  background: var(--ml-bg);
+}
 .status-pill {
   display: flex; align-items: center; gap: 6px;
   background: rgba(255, 255, 255, 0.18); border: none; border-radius: 999px;
@@ -301,7 +343,12 @@ onMounted(load)
 .fav-route { margin-top: 4px; font-family: var(--ml-font-mono); font-weight: 700; font-size: 11px; color: var(--ml-green-dark); }
 
 /* Chips de rutas */
-.chips { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; }
+.chips {
+  display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px;
+  margin: 0 -22px; padding-left: 22px; padding-right: 22px;
+  -ms-overflow-style: none; scrollbar-width: none;
+}
+.chips::-webkit-scrollbar { display: none; }
 .chip {
   display: flex; align-items: center; gap: 9px; padding: 11px 14px;
   background: #fff; border: 1px solid var(--ml-divider); border-radius: 14px;

@@ -1,13 +1,17 @@
 <template>
   <ion-page>
     <ion-content :fullscreen="true">
-      <!-- Header rojo de alerta -->
+      <!-- Header amber de alerta -->
       <div class="alert-header">
         <button class="back-btn" @click="router.back()">
           <LucideIcon name="arrow-left" :size="22" color="#fff" />
         </button>
         <div class="header-icon">
-          <LucideIcon name="shield-alert" :size="36" color="#fff" />
+          <svg viewBox="0 0 512.001 512.001" xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="white">
+            <path d="M503.839,395.379l-195.7-338.962C297.257,37.569,277.766,26.315,256,26.315c-21.765,0-41.257,11.254-52.139,30.102L8.162,395.378c-10.883,18.85-10.883,41.356,0,60.205c10.883,18.849,30.373,30.102,52.139,30.102h391.398c21.765,0,41.256-11.254,52.14-30.101C514.722,436.734,514.722,414.228,503.839,395.379z M477.861,440.586c-5.461,9.458-15.241,15.104-26.162,15.104H60.301c-10.922,0-20.702-5.646-26.162-15.104c-5.46-9.458-5.46-20.75,0-30.208L229.84,71.416c5.46-9.458,15.24-15.104,26.161-15.104c10.92,0,20.701,5.646,26.161,15.104l195.7,338.962C483.321,419.836,483.321,431.128,477.861,440.586z"/>
+            <rect x="241.001" y="176.01" width="29.996" height="149.982"/>
+            <path d="M256,355.99c-11.027,0-19.998,8.971-19.998,19.998s8.971,19.998,19.998,19.998c11.026,0,19.998-8.971,19.998-19.998S267.027,355.99,256,355.99z"/>
+          </svg>
         </div>
         <h1>Reportar incidente</h1>
         <p>Tu reporte llega directamente al operador</p>
@@ -143,7 +147,7 @@ async function submit() {
 
 <style scoped>
 .alert-header {
-  background: linear-gradient(160deg, #b91c1c, #dc2626);
+  background: linear-gradient(160deg, #b45309, #f59e0b);
   padding: 56px 24px 32px;
   display: flex;
   flex-direction: column;
@@ -236,7 +240,7 @@ async function submit() {
   box-sizing: border-box;
   transition: border-color 0.15s;
 }
-.field-input:focus, .field-textarea:focus { outline: none; border-color: #dc2626; }
+.field-input:focus, .field-textarea:focus { outline: none; border-color: #f59e0b; }
 .field-textarea { resize: none; }
 .field-hint { font-size: 0.75rem; color: #9ca3af; }
 
@@ -281,7 +285,7 @@ async function submit() {
   padding: 15px;
   border-radius: 14px;
   border: none;
-  background: #dc2626;
+  background: #d97706;
   color: #fff;
   font-size: 1rem;
   font-weight: 700;
