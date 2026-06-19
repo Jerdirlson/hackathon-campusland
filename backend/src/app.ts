@@ -17,6 +17,7 @@ import aiTriggersRouter from './routes/aiTriggers'
 import aiPatchesRouter from './routes/aiPatches'
 import routingRouter from './routes/routing'
 import theftAlertsRouter from './routes/theftAlerts'
+import assistantRouter from './routes/assistant'
 import { startScheduler } from './jobs/scheduler'
 
 dotenv.config()
@@ -54,6 +55,7 @@ app.use('/ai-triggers',        aiTriggersRouter)
 app.use('/ai-patches',         aiPatchesRouter)
 app.use('/routing',            routingRouter)
 app.use('/theft-alerts',       theftAlertsRouter)
+app.use('/assistant',          assistantRouter)
 
 app.use(errorHandler)
 

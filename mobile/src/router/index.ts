@@ -17,6 +17,7 @@ const routes: Array<RouteRecordRaw> = [
       { path: '', redirect: '/tabs/home' },
       { path: 'home', name: 'Home', component: () => import('../views/HomePage.vue') },
       { path: 'rutas', name: 'Rutas', component: () => import('../views/RutasPage.vue') },
+      { path: 'asistente', name: 'Asistente', component: () => import('../views/AssistantPage.vue') },
       { path: 'fav', name: 'Favoritos', component: () => import('../views/FavoritosPage.vue') },
       { path: 'ajustes', name: 'Ajustes', component: () => import('../views/AjustesPage.vue') },
     ],

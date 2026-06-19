@@ -87,6 +87,37 @@ export interface DispatchRecommendation {
   timestamp: string
 }
 
+// ============ Asistente (chat IA) ============
+
+export interface SuggestionLeg {
+  routeCode: string | null
+  fromName: string
+  toName: string
+  minutes: number
+}
+
+export interface RouteSuggestion {
+  fromCode: string
+  fromName: string
+  toCode: string
+  toName: string
+  totalMinutes: number
+  transfers: number
+  legs: SuggestionLeg[]
+}
+
+export interface AssistantMessage {
+  role: 'user' | 'assistant'
+  content: string
+  created_at: string
+}
+
+export interface AssistantChatResponse {
+  sessionId: number
+  reply: string
+  suggestion?: RouteSuggestion
+}
+
 // ============ API ============
 
 export const api = {
@@ -123,6 +154,15 @@ export const api = {
     const s = qs.toString()
     return http<DailyTrip[]>(`/daily-trips${s ? `?${s}` : ''}`)
   },
+
+  // Asistente (chat IA que sugiere rutas)
+  assistantChat: (message: string, sessionId?: number) =>
+    http<AssistantChatResponse>('/assistant/chat', {
+      method: 'POST',
+      body: JSON.stringify({ message, sessionId }),
+    }),
+  assistantHistory: (sessionId: number) =>
+    http<{ messages: AssistantMessage[] }>(`/assistant/sessions/${sessionId}/messages`),
 }
 
 // ============ Helpers ============

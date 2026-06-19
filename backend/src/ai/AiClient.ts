@@ -64,4 +64,23 @@ export class AiClient {
 
     return JSON.parse(content) as T
   }
+
+  async chatRaw(
+    messages: OpenAI.Chat.ChatCompletionMessageParam[],
+    tools?: OpenAI.Chat.ChatCompletionTool[],
+  ): Promise<OpenAI.Chat.ChatCompletion> {
+    if (!process.env.OPENAI_API_KEY) {
+      throw new Error('OPENAI_API_KEY is not configured')
+    }
+
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+
+    const completion = await openai.chat.completions.create({
+      model: this._model,
+      messages,
+      ...(tools ? { tools } : {}),
+    })
+
+    return completion
+  }
 }

@@ -24,6 +24,7 @@ import LucideIcon from './LucideIcon.vue'
 const tabs = [
   { path: '/tabs/home', label: 'Inicio', icon: 'house' },
   { path: '/tabs/rutas', label: 'Rutas', icon: 'route' },
+  { path: '/tabs/asistente', label: 'Asistente', icon: 'sparkles' },
   { path: '/tabs/fav', label: 'Favoritos', icon: 'star' },
   { path: '/tabs/ajustes', label: 'Ajustes', icon: 'settings' },
 ]
