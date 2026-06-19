@@ -33,6 +33,11 @@ const routes: Array<RouteRecordRaw> = [
 
   // Reporte de incidentes
   { path: '/report-theft', name: 'TheftAlert', component: () => import('../views/TheftAlertPage.vue') },
+
+  // Sub-vistas de Ajustes
+  { path: '/ajustes/tarjeta', name: 'TarjetaTullave', component: () => import('../views/TarjetaTullavePage.vue') },
+  { path: '/ajustes/ayuda',   name: 'AyudaSoporte',   component: () => import('../views/AyudaSoportePage.vue') },
+  { path: '/ajustes/privacidad', name: 'Privacidad',  component: () => import('../views/PrivacidadPage.vue') },
 ];
 
 const router = createRouter({

@@ -39,17 +39,18 @@
 
         <SectionLabel>General</SectionLabel>
         <div class="card">
-          <div
+          <button
             v-for="(s, i) in settings"
             :key="s.label"
-            class="row"
+            class="row row-button"
             :class="{ divided: i < settings.length - 1 }"
+            @click="router.push(s.to)"
           >
             <IconBox :icon="s.icon" :size="36" :icon-size="18" bg="var(--ml-bg)" color="var(--ml-ink-2)" />
             <div class="row-body grow">{{ s.label }}</div>
             <span v-if="s.value" class="row-value">{{ s.value }}</span>
             <LucideIcon name="chevron-right" :size="18" color="#C2CBBC" />
-          </div>
+          </button>
         </div>
 
         <!-- Cerrar sesión -->
@@ -90,10 +91,9 @@ const locationOn = ref(true)
 const notifOn = ref(true)
 
 const settings = [
-  // { icon: 'languages',   label: 'Idioma',           value: 'Español' },
-  { icon: 'credit-card', label: 'Tarjeta Tullave',  value: '**** 4821' },
-  { icon: 'circle-help', label: 'Ayuda y soporte',  value: '' },
-  { icon: 'shield',      label: 'Privacidad',       value: '' },
+  { icon: 'credit-card', label: 'Tarjeta Tullave',  value: '**** 4821', to: '/ajustes/tarjeta' },
+  { icon: 'circle-help', label: 'Ayuda y soporte',  value: '',          to: '/ajustes/ayuda' },
+  { icon: 'shield',      label: 'Privacidad',       value: '',          to: '/ajustes/privacidad' },
 ]
 
 async function confirmLogout() {
@@ -167,6 +167,18 @@ async function confirmLogout() {
 }
 .row.divided {
   border-bottom: 1px solid #f0f3ea;
+}
+.row-button {
+  width: 100%;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--ml-font-body);
+  color: inherit;
+}
+.row-button:active {
+  background: #f5f8f0;
 }
 .row-body {
   flex: 1;
