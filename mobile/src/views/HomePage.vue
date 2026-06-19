@@ -127,14 +127,15 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, reactive, watch, nextTick, type CSSProperties } from 'vue'
 import { useRouter } from 'vue-router'
+
 import { IonContent, IonPage, IonRefresher, IonRefresherContent } from '@ionic/vue'
-import MlHeader from '@/components/MlHeader.vue'
-import SectionLabel from '@/components/SectionLabel.vue'
-import SkeletonList from '@/components/SkeletonList.vue'
-import LucideIcon from '@/components/LucideIcon.vue'
 import { api, formatEta, type Arrival, type RouteRow, type StationRow } from '@/api/client'
 import { colorForRoute } from '@/ui/occupancy'
 import { useFavorites } from '@/composables/useFavorites'
+import LucideIcon from '@/components/LucideIcon.vue'
+import MlHeader from '@/components/MlHeader.vue'
+import SectionLabel from '@/components/SectionLabel.vue'
+import SkeletonList from '@/components/SkeletonList.vue'
 
 interface FavRow {
   station: StationRow
@@ -161,7 +162,7 @@ const greeting = computed(() => {
 
 const updatedLabel = computed(() => {
   const s = Math.round((Date.now() - lastLoadedAt.value) / 1000)
-  if (s < 5) return 'recién'
+  if (s < 5) return 'Recién'
   if (s < 60) return `hace ${s}s`
   return `hace ${Math.round(s / 60)}m`
 })
