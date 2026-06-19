@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.core.logger import logger
@@ -13,6 +14,12 @@ from app.decision import engine
 from app.ingestion import store
 
 app = FastAPI(title=settings.app_name, version="0.1.0")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/health")

@@ -32,6 +32,15 @@ data/processed/
 .vscode/
 *.swp
 
+# Node / frontends
+node_modules/
+dist/
+.vite/
+
+# Capacitor
+mobile/android/
+mobile/ios/
+
 # Logs
 logs/
 *.log
