@@ -1,5 +1,5 @@
 <template>
-  <ion-page>
+  <ion-page data-alert>
     <ion-content :fullscreen="true">
       <!-- Header amber de alerta -->
       <div class="alert-header">
