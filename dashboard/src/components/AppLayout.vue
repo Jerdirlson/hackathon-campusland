@@ -32,6 +32,9 @@ async function logout() {
         <RouterLink to="/ai-patches" class="nav-item">
           <span class="nav-icon">🤖</span> AI Patches
         </RouterLink>
+        <RouterLink to="/theft-alerts" class="nav-item">
+          <span class="nav-icon">🚨</span> Alertas de Robo
+        </RouterLink>
       </nav>
       <div class="sidebar-footer">
         <div class="user-info">

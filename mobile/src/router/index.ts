@@ -29,6 +29,9 @@ const routes: Array<RouteRecordRaw> = [
 
   // Vista operador: integración con el módulo ai/ (/decision)
   { path: '/operator', name: 'Operator', component: () => import('../views/OperatorPage.vue') },
+
+  // Reporte de incidentes
+  { path: '/report-theft', name: 'TheftAlert', component: () => import('../views/TheftAlertPage.vue') },
 ];
 
 const router = createRouter({

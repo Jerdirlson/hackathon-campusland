@@ -51,6 +51,21 @@
             </div>
           </button>
 
+          <!-- Botón de alerta de robo -->
+          <button
+            class="w-full flex items-center gap-3 bg-white border border-red-100 rounded-2xl px-4 py-3.5 cursor-pointer text-left shadow-sm"
+            @click="router.push('/report-theft')"
+          >
+            <div class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center flex-shrink-0">
+              <LucideIcon name="shield-alert" :size="20" color="#fff" />
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="text-[14px] font-bold text-red-700">Reportar incidente</div>
+              <div class="text-[12px] text-gray-500 truncate">Robo, agresión u otra emergencia</div>
+            </div>
+            <LucideIcon name="chevron-right" :size="18" color="#dc2626" />
+          </button>
+
           <!-- Tus paradas favoritas -->
           <section v-if="favStops.length">
             <SectionLabel>Tus paradas</SectionLabel>

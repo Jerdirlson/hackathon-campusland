@@ -12,6 +12,8 @@ const router = createRouter({
     { path: '/routes/:id', component: () => import('../views/RouteDetailView.vue') },
     { path: '/ai-patches', component: () => import('../views/AiPatchesView.vue') },
     { path: '/ai-patches/:id', component: () => import('../views/AiPatchDetailView.vue') },
+    { path: '/theft-alerts', component: () => import('../views/TheftAlertsView.vue') },
+    { path: '/theft-alerts/:id', component: () => import('../views/TheftAlertDetailView.vue') },
   ],
 })
 
