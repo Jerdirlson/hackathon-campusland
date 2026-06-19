@@ -1,2 +1,84 @@
-/* For information on how to create your own theme, please refer to:
-http://ionicframework.com/docs/theming/ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Metrolínea — Design tokens
+   Paleta y tipografía del DESIGN_BRIEF.md / diseño Claude Design.
+   Los tokens viven aquí Y en tailwind.config.js (utilidades `bg-ml-green`,
+   `text-ml-ink`, etc.). Para CSS sin Tailwind seguir usando var(--ml-…).
+   ============================================================ */
+
+:root {
+  /* Marca */
+  --ml-green: #6FBA2C;
+  --ml-green-dark: #3F7A14;
+  --ml-green-light: #D9F0C4;
+  --ml-lime: #96BD0D;
+
+  /* Superficies y texto */
+  --ml-surface: #ffffff;
+  --ml-bg: #f4f6f4;
+  --ml-ink: #1b2a1a;
+  --ml-ink-2: #5c6b5a;
+  --ml-ink-3: #9aa89a;
+  --ml-divider: #e4e8e2;
+  --ml-tint: #eaf3dc;
+
+  /* Semánticos */
+  --ml-warn: #f4b400;
+  --ml-danger: #d43a1f;
+  --ml-info: #0e6ba8;
+
+  /* Ocupación */
+  --ml-occ-low: #3f7a14;
+  --ml-occ-low-bg: #d9f0c4;
+  --ml-occ-mid: #9a6800;
+  --ml-occ-mid-bg: #fbe9c0;
+  --ml-occ-high: #d43a1f;
+  --ml-occ-high-bg: #f8d7cf;
+
+  /* Forma */
+  --ml-radius: 16px;
+  --ml-radius-lg: 22px;
+  --ml-shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  /* Tipografía */
+  --ml-font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --ml-font-display: 'Inter Tight', 'Inter', system-ui, sans-serif;
+  --ml-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Ionic theming */
+  --ion-font-family: var(--ml-font-body);
+  --ion-background-color: var(--ml-bg);
+  --ion-text-color: var(--ml-ink);
+
+  --ion-color-primary: #6fba2c;
+  --ion-color-primary-rgb: 111, 186, 44;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #62a427;
+  --ion-color-primary-tint: #7dc141;
+}
+
+/* Forzamos light scheme aunque el SO esté en oscuro. */
+html, body { color-scheme: light; background: var(--ml-bg); }
+ion-content { --background: var(--ml-bg); }
+
+/* Animaciones compartidas (skeletons, fades, pulsos en vivo) */
+@keyframes ml-shimmer {
+  0% { background-position: -220px 0; }
+  100% { background-position: 220px 0; }
+}
+@keyframes ml-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+@keyframes ml-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes ml-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

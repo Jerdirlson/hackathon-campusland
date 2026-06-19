@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="a0db8e30-09cb-416b-9d0e-5752338ccb49"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<style>/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("2fabca85-209d-4dfa-8d6f-42a8546ca511") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("df5ab861-f8ec-4d38-ac1b-c369675a9755") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("c4520acd-56c8-4e31-9420-cf08108a35b5") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("811541a5-b4ce-486c-b691-8fd0f35c749f") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("d2149204-10e6-45d6-99be-8a03c49ed6fe") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("387cfb74-bab1-4a1e-abb8-108bf492502c") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("437166b1-d315-44c3-b685-45f11f4bfac8") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("2fabca85-209d-4dfa-8d6f-42a8546ca511") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("df5ab861-f8ec-4d38-ac1b-c369675a9755") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("c4520acd-56c8-4e31-9420-cf08108a35b5") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("811541a5-b4ce-486c-b691-8fd0f35c749f") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("d2149204-10e6-45d6-99be-8a03c49ed6fe") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("387cfb74-bab1-4a1e-abb8-108bf492502c") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("437166b1-d315-44c3-b685-45f11f4bfac8") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("2fabca85-209d-4dfa-8d6f-42a8546ca511") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("df5ab861-f8ec-4d38-ac1b-c369675a9755") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("c4520acd-56c8-4e31-9420-cf08108a35b5") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("811541a5-b4ce-486c-b691-8fd0f35c749f") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("d2149204-10e6-45d6-99be-8a03c49ed6fe") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("387cfb74-bab1-4a1e-abb8-108bf492502c") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("437166b1-d315-44c3-b685-45f11f4bfac8") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("2fabca85-209d-4dfa-8d6f-42a8546ca511") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("df5ab861-f8ec-4d38-ac1b-c369675a9755") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("c4520acd-56c8-4e31-9420-cf08108a35b5") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("811541a5-b4ce-486c-b691-8fd0f35c749f") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("d2149204-10e6-45d6-99be-8a03c49ed6fe") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("387cfb74-bab1-4a1e-abb8-108bf492502c") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("437166b1-d315-44c3-b685-45f11f4bfac8") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("77d5db34-1c92-436d-b51b-dfcd487f9617") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("879a9d67-0efc-4f11-b86f-a24573cb28db") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("4f416df1-6cfd-42ad-b87c-0926792e2233") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("4c7abd4d-1598-4418-a6cb-5d3ce5043a0f") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("1b20b66b-2e44-426f-af1a-1175c6988761") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("d8e2e6b5-cbed-495a-a44e-ad7474f90031") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("4cf23d4a-5d8a-4ff0-af9e-ae3da3994850") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("77d5db34-1c92-436d-b51b-dfcd487f9617") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("879a9d67-0efc-4f11-b86f-a24573cb28db") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("4f416df1-6cfd-42ad-b87c-0926792e2233") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("4c7abd4d-1598-4418-a6cb-5d3ce5043a0f") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("1b20b66b-2e44-426f-af1a-1175c6988761") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("d8e2e6b5-cbed-495a-a44e-ad7474f90031") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("4cf23d4a-5d8a-4ff0-af9e-ae3da3994850") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("77d5db34-1c92-436d-b51b-dfcd487f9617") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("879a9d67-0efc-4f11-b86f-a24573cb28db") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("4f416df1-6cfd-42ad-b87c-0926792e2233") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("4c7abd4d-1598-4418-a6cb-5d3ce5043a0f") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("1b20b66b-2e44-426f-af1a-1175c6988761") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("d8e2e6b5-cbed-495a-a44e-ad7474f90031") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("4cf23d4a-5d8a-4ff0-af9e-ae3da3994850") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("77d5db34-1c92-436d-b51b-dfcd487f9617") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("879a9d67-0efc-4f11-b86f-a24573cb28db") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("4f416df1-6cfd-42ad-b87c-0926792e2233") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("4c7abd4d-1598-4418-a6cb-5d3ce5043a0f") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("1b20b66b-2e44-426f-af1a-1175c6988761") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("d8e2e6b5-cbed-495a-a44e-ad7474f90031") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("4cf23d4a-5d8a-4ff0-af9e-ae3da3994850") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("fd72dcc7-0246-4b02-a9b6-481796eb3878") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("3de195c7-208b-40a8-9786-bc096591e0ac") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("95482748-549d-4567-ad15-80d799cc7547") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("5aa20bad-9d31-4883-9410-40aa7d398499") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("4715e082-1a38-429b-9fcf-030d87807894") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("1bfcd301-a147-474a-a176-0bc710506229") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fd72dcc7-0246-4b02-a9b6-481796eb3878") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("3de195c7-208b-40a8-9786-bc096591e0ac") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("95482748-549d-4567-ad15-80d799cc7547") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("5aa20bad-9d31-4883-9410-40aa7d398499") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("4715e082-1a38-429b-9fcf-030d87807894") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("1bfcd301-a147-474a-a176-0bc710506229") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  @keyframes mlshimmer{0%{background-position:-220px 0}100%{background-position:220px 0}}
+  @keyframes mlpulse{0%,100%{opacity:1}50%{opacity:.45}}
+  @keyframes mlin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @keyframes mlfade{from{opacity:0}to{opacity:1}}
+  @keyframes mlblink{0%,49%{opacity:1}50%,100%{opacity:0}}
+  .ml-scroll::-webkit-scrollbar{width:0;height:0}
+</style>
+<script src="d6f1c862-9cbe-46b5-8eae-cd598c31c94b"></script>
+</helmet>
+
+<div style="min-height:100vh;width:100%;background:#E7E5E0;display:flex;flex-direction:column;align-items:center;padding:28px 16px 60px;font-family:'Inter',sans-serif">
+
+  <!-- Prototype control bar -->
+  <div style="width:100%;max-width:980px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:24px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:30px;height:30px;border-radius:9px;background:#6FBA2C;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Inter Tight';font-weight:800;font-size:18px">M</div>
+      <div style="font-family:'Inter Tight';font-weight:700;font-size:17px;color:#1B2A1A">Metrolínea<span style="color:#5C6B5A;font-weight:500"> · prototipo</span></div>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <sc-for list="{{ navItems }}" as="nav" hint-placeholder-count="9">
+        <button onclick="{{ nav.go }}" style="{{ nav.style }}">{{ nav.label }}</button>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- State controls -->
+  <div style="width:100%;max-width:980px;display:flex;gap:6px;flex-wrap:wrap;margin-bottom:22px;align-items:center">
+    <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.5px;color:#5C6B5A;text-transform:uppercase;margin-right:4px">Estado de datos</span>
+    <sc-for list="{{ stateItems }}" as="st" hint-placeholder-count="5">
+      <button onclick="{{ st.go }}" style="{{ st.style }}">{{ st.label }}</button>
+    </sc-for>
+  </div>
+
+  <!-- Stage: kiosk (full) OR phone -->
+  <sc-if value="{{ isKiosk }}" hint-placeholder-val="{{ false }}">
+    <div style="width:100%;max-width:980px;background:#0F1A0C;border-radius:24px;overflow:hidden;box-shadow:0 30px 70px -20px rgba(15,26,12,.55);border:1px solid rgba(255,255,255,.06);animation:mlfade .3s ease">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:22px 28px;background:linear-gradient(90deg,#3F7A14,#6FBA2C)">
+        <div style="display:flex;align-items:center;gap:13px">
+          <div style="width:42px;height:42px;border-radius:11px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center"><i data-lucide="bus-front" style="width:24px;height:24px;color:#fff"></i></div>
+          <div><div style="color:#fff;font-family:'Inter Tight';font-weight:800;font-size:22px;line-height:1">Terminal Provenza</div><div style="color:rgba(255,255,255,.85);font-size:12px;font-family:'JetBrains Mono';letter-spacing:.5px;text-transform:uppercase">Próximas salidas · en vivo</div></div>
+        </div>
+        <div style="text-align:right"><div style="color:#fff;font-family:'Inter Tight';font-weight:800;font-size:30px;line-height:1;font-variant-numeric:tabular-nums">{{ termClock }}</div><div style="color:rgba(255,255,255,.8);font-size:11px;font-family:'JetBrains Mono';letter-spacing:1px">MIÉ · 19 JUN</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:84px 1fr 80px 130px 130px;gap:16px;padding:14px 28px;border-bottom:1px solid rgba(255,255,255,.08);font-family:'JetBrains Mono';font-size:11px;letter-spacing:1px;color:#7FA36A;text-transform:uppercase">
+        <span>Ruta</span><span>Destino</span><span>And.</span><span>Ocupación</span><span style="text-align:right">Sale en</span>
+      </div>
+      <div>
+        <sc-for list="{{ termRows }}" as="t" hint-placeholder-count="8">
+          <div style="display:grid;grid-template-columns:84px 1fr 80px 130px 130px;gap:16px;align-items:center;padding:15px 28px;border-bottom:1px solid rgba(255,255,255,.05)">
+            <span style="width:58px;height:34px;border-radius:8px;background:{{ t.routeColor }};color:#fff;font-family:'JetBrains Mono';font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center">{{ t.route }}</span>
+            <div><div style="color:#fff;font-family:'Inter Tight';font-weight:700;font-size:18px">{{ t.dest }}</div><div style="color:#7FA36A;font-size:11.5px;font-family:'JetBrains Mono'">{{ t.status }}</div></div>
+            <span style="color:#fff;font-family:'JetBrains Mono';font-weight:700;font-size:16px">{{ t.plat }}</span>
+            <span style="display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:{{ t.occColor }}"><span style="width:9px;height:9px;border-radius:50%;background:{{ t.occColor }}"></span>{{ t.occLabel }}</span>
+            <div style="text-align:right;display:flex;align-items:baseline;gap:4px;justify-content:flex-end"><span style="font-family:'Inter Tight';font-weight:800;font-size:28px;color:#fff;font-variant-numeric:tabular-nums">{{ t.minLabel }}</span><span style="color:#7FA36A;font-size:13px;font-weight:600">min</span></div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="padding:14px 28px;background:rgba(255,255,255,.03);display:flex;align-items:center;gap:10px">
+        <span style="width:8px;height:8px;border-radius:50%;background:#6FBA2C;animation:mlpulse 1.6s infinite"></span>
+        <span style="color:#9CB58C;font-size:12.5px;font-family:'JetBrains Mono'">Ocupación medida por cámaras a bordo · Metrolínea IA</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showPhone }}" hint-placeholder-val="{{ true }}">
+    <div style="width:390px;height:844px;background:#0c0c0c;border-radius:56px;padding:13px;box-shadow:0 40px 80px -20px rgba(20,40,15,.35),0 0 0 2px rgba(255,255,255,.04);position:relative;flex:none">
+      <div class="ml-scroll" style="width:100%;height:100%;background:#F4F6F4;border-radius:44px;overflow:hidden;position:relative;display:flex;flex-direction:column">
+
+        <div style="{{ screenBg }}"></div>
+
+        <!-- Status bar -->
+        <div style="height:54px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;padding:0 30px 10px;position:relative;z-index:30;color:{{ statusColor }}">
+          <div style="font-weight:600;font-size:15px;font-family:'Inter Tight'">{{ clock }}</div>
+          <div style="display:flex;align-items:center;gap:7px">
+            <i data-lucide="signal" style="width:17px;height:17px"></i>
+            <i data-lucide="{{ wifiIcon }}" style="width:17px;height:17px"></i>
+            <i data-lucide="battery-medium" style="width:22px;height:22px"></i>
+          </div>
+        </div>
+
+        <!-- Screen router -->
+        <div id="screen-area" class="ml-scroll" style="flex:1;overflow-y:auto;position:relative;z-index:10">
+
+          <!-- ════════ ONBOARDING ════════ -->
+          <sc-if value="{{ isOnboarding }}" hint-placeholder-val="{{ true }}">
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;padding:18px 28px 30px;color:#fff">
+              <div style="display:flex;justify-content:flex-end">
+                <button onclick="{{ skipOnb }}" style="background:rgba(255,255,255,.18);border:none;color:#fff;font-family:'Inter',sans-serif;font-weight:600;font-size:13px;padding:8px 16px;border-radius:999px;cursor:pointer">Saltar</button>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:flex-start">
+                <div style="width:120px;height:120px;border-radius:32px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;margin-bottom:34px;animation:mlin .5s ease both">
+                  <i data-lucide="{{ onb.icon }}" style="width:60px;height:60px;color:#fff"></i>
+                </div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;color:#D9F0C4;margin-bottom:14px">{{ onb.eye }}</div>
+                <div style="font-family:'Inter Tight',sans-serif;font-weight:800;font-size:38px;line-height:1.02;letter-spacing:-.01em;margin-bottom:16px;text-wrap:balance">{{ onb.title }}</div>
+                <div style="font-size:17px;line-height:1.5;color:rgba(255,255,255,.9);max-width:300px">{{ onb.body }}</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:7px;margin-bottom:22px">
+                <sc-for list="{{ onbDots }}" as="d" hint-placeholder-count="3">
+                  <button onclick="{{ d.go }}" style="{{ d.style }}" aria-label="slide"></button>
+                </sc-for>
+              </div>
+              <button onclick="{{ nextOnb }}" style="width:100%;background:#fff;color:#3F7A14;border:none;border-radius:18px;padding:18px;font-family:'Inter',sans-serif;font-weight:700;font-size:17px;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.18)">{{ onb.cta }}</button>
+            </div>
+          </sc-if>
+
+          <!-- ════════ LOGIN ════════ -->
+          <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ false }}">
+            <div class="ml-scroll" style="position:absolute;inset:0;display:flex;flex-direction:column;padding:14px 28px 28px;color:#fff;overflow-y:auto">
+              <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:24px;min-height:0">
+                <div style="display:flex;flex-direction:column;align-items:flex-start;gap:18px">
+                  <div style="width:56px;height:56px;border-radius:16px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-family:'Inter Tight';font-weight:800;font-size:30px;color:#fff">M</div>
+                  <div>
+                    <div style="font-family:'Inter Tight';font-weight:800;font-size:32px;line-height:1.05;letter-spacing:-.01em">Hola de nuevo</div>
+                    <div style="font-size:15px;color:rgba(255,255,255,.88);margin-top:6px;line-height:1.45">Ingresa para ver tus buses en tiempo real.</div>
+                  </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:12px">
+                  <div style="display:flex;align-items:center;gap:10px;background:#fff;border-radius:14px;padding:14px 15px">
+                    <i data-lucide="mail" style="width:19px;height:19px;color:#9AA89A"></i>
+                    <input type="text" placeholder="Correo o celular" style="flex:1;border:none;outline:none;background:none;font-family:'Inter';font-size:15px;color:#1B2A1A;min-width:0">
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px;background:#fff;border-radius:14px;padding:14px 15px">
+                    <i data-lucide="lock" style="width:19px;height:19px;color:#9AA89A"></i>
+                    <input type="{{ pwType }}" placeholder="Contraseña" style="flex:1;border:none;outline:none;background:none;font-family:'Inter';font-size:15px;color:#1B2A1A;min-width:0">
+                    <button onclick="{{ togglePw }}" style="border:none;background:none;cursor:pointer;display:flex;padding:0" aria-label="Ver contraseña"><i data-lucide="{{ pwIcon }}" style="width:19px;height:19px;color:#9AA89A"></i></button>
+                  </div>
+                  <button style="align-self:flex-end;border:none;background:none;color:rgba(255,255,255,.92);font-family:'Inter';font-size:13px;font-weight:600;cursor:pointer;padding:2px 0">¿Olvidaste tu contraseña?</button>
+                </div>
+                <button onclick="{{ doLogin }}" style="width:100%;background:#fff;color:#3F7A14;border:none;border-radius:16px;padding:17px;font-family:'Inter';font-weight:700;font-size:17px;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.18)">Ingresar</button>
+                <div style="display:flex;align-items:center;gap:12px">
+                  <span style="flex:1;height:1px;background:rgba(255,255,255,.25)"></span>
+                  <span style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.5px;color:rgba(255,255,255,.8);text-transform:uppercase">o continúa con</span>
+                  <span style="flex:1;height:1px;background:rgba(255,255,255,.25)"></span>
+                </div>
+                <div style="display:flex;gap:12px">
+                  <button onclick="{{ doLogin }}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:9px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:13px;color:#fff;font-family:'Inter';font-weight:600;font-size:14px;cursor:pointer">
+                    <span style="width:20px;height:20px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-family:'Inter Tight';font-weight:800;font-size:13px;color:#3F7A14">G</span>Google
+                  </button>
+                  <button onclick="{{ doLogin }}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:13px;color:#fff;font-family:'Inter';font-weight:600;font-size:14px;cursor:pointer">
+                    <i data-lucide="apple" style="width:18px;height:18px"></i>Apple
+                  </button>
+                </div>
+              </div>
+              <div style="text-align:center;font-size:14px;color:rgba(255,255,255,.9);margin-top:18px">¿No tienes cuenta? <button onclick="{{ goOnboard }}" style="border:none;background:none;color:#fff;font-weight:700;cursor:pointer;font-family:'Inter';font-size:14px;text-decoration:underline">Crear cuenta</button></div>
+            </div>
+          </sc-if>
+
+          <!-- ════════ HOME (Diseño A) ════════ -->
+          <sc-if value="{{ isHome }}" hint-placeholder-val="{{ false }}">
+            <div style="min-height:100%;animation:mlfade .3s ease">
+              <div style="background:#6FBA2C;margin-top:-54px;padding:64px 22px 22px;border-radius:0 0 26px 26px">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px">
+                  <div>
+                    <div style="color:rgba(255,255,255,.85);font-size:13px;font-weight:500">Buenos días</div>
+                    <div style="color:#fff;font-family:'Inter Tight';font-weight:800;font-size:23px;line-height:1.1">¿A dónde vamos?</div>
+                  </div>
+                  <button onclick="{{ refresh }}" style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);border:none;border-radius:999px;padding:7px 12px;color:#fff;font-size:11.5px;font-weight:600;cursor:pointer;font-family:'Inter'">
+                    <span style="width:7px;height:7px;border-radius:99px;background:{{ connDot }};display:inline-block"></span>{{ lastUpdated }}
+                  </button>
+                </div>
+                <button onclick="{{ openSearch }}" style="width:100%;text-align:left;display:flex;align-items:center;gap:10px;background:#fff;border:none;border-radius:14px;padding:13px 15px;cursor:pointer">
+                  <i data-lucide="search" style="width:19px;height:19px;color:#9AA89A"></i>
+                  <span style="color:#9AA89A;font-size:15px">Busca una parada o ruta</span>
+                </button>
+              </div>
+
+              <div style="padding:18px 22px 110px">
+                <sc-if value="{{ dsOffline }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;align-items:center;gap:10px;background:#FBE9C0;border:1px solid #F4D58A;border-radius:14px;padding:12px 14px;margin-bottom:16px">
+                    <i data-lucide="wifi-off" style="width:18px;height:18px;color:#9A6800;flex:none"></i>
+                    <div style="font-size:13px;color:#7A5200;line-height:1.35">Sin conexión. Mostrando los últimos datos guardados.</div>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ dsLoading }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:12px">
+                    <div style="border-radius:22px;height:152px;background:linear-gradient(90deg,#E8EEE2 25%,#DCE4D6 50%,#E8EEE2 75%);background-size:400px 100%;animation:mlshimmer 1.3s infinite"></div>
+                    <div style="border-radius:16px;height:70px;background:linear-gradient(90deg,#F4F6F4 25%,#E9EDE8 50%,#F4F6F4 75%);background-size:400px 100%;animation:mlshimmer 1.3s infinite;opacity:.7"></div>
+                    <div style="border-radius:16px;height:70px;background:linear-gradient(90deg,#F4F6F4 25%,#E9EDE8 50%,#F4F6F4 75%);background-size:400px 100%;animation:mlshimmer 1.3s infinite;opacity:.4"></div>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ dsError }}" hint-placeholder-val="{{ false }}">
+                  <div style="text-align:center;padding:44px 24px;display:flex;flex-direction:column;align-items:center;gap:14px">
+                    <div style="width:62px;height:62px;border-radius:50%;background:#F8D7CF;display:flex;align-items:center;justify-content:center"><i data-lucide="cloud-off" style="width:30px;height:30px;color:#D43A1F"></i></div>
+                    <div><div style="font-family:'Inter Tight';font-weight:700;font-size:18px;color:#1B2A1A">No pudimos cargar las llegadas</div><div style="font-size:13.5px;color:#5C6B5A;margin-top:5px;line-height:1.45;max-width:260px">Revisa tu conexión e inténtalo de nuevo. Tus datos están a salvo.</div></div>
+                    <button onclick="{{ refresh }}" style="background:#6FBA2C;color:#fff;border:none;border-radius:14px;padding:13px 22px;font-family:'Inter';font-weight:700;font-size:15px;cursor:pointer;display:flex;align-items:center;gap:8px"><i data-lucide="rotate-cw" style="width:17px;height:17px"></i>Reintentar</button>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ dsEmpty }}" hint-placeholder-val="{{ false }}">
+                  <div style="text-align:center;padding:44px 24px;display:flex;flex-direction:column;align-items:center;gap:14px">
+                    <div style="width:62px;height:62px;border-radius:50%;background:#EAEEE8;display:flex;align-items:center;justify-content:center"><i data-lucide="moon-star" style="width:28px;height:28px;color:#9AA89A"></i></div>
+                    <div><div style="font-family:'Inter Tight';font-weight:700;font-size:18px;color:#1B2A1A">No hay buses en servicio</div><div style="font-size:13.5px;color:#5C6B5A;margin-top:5px;line-height:1.45;max-width:260px">Las rutas operan de 5:00 a 23:00. Vuelve más tarde para ver llegadas en vivo.</div></div>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ dsReady }}" hint-placeholder-val="{{ true }}">
+                  <div style="display:flex;flex-direction:column;gap:18px">
+                    <button onclick="{{ heroArr.go }}" style="text-align:left;border:none;cursor:pointer;background:linear-gradient(135deg,#3F7A14,#6FBA2C);border-radius:22px;padding:20px;box-shadow:0 14px 30px -10px rgba(63,122,20,.55);color:#fff">
+                      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                        <div style="display:flex;align-items:center;gap:9px">
+                          <span style="width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono';font-weight:700;font-size:13px">{{ heroArr.route }}</span>
+                          <div><div style="font-weight:700;font-size:15px">{{ heroArr.dest }}</div><div style="font-size:12px;opacity:.85">{{ heroStopName }} · {{ heroArr.bus }}</div></div>
+                        </div>
+                        <span style="font-size:10.5px;font-weight:700;font-family:'JetBrains Mono';background:rgba(255,255,255,.2);padding:4px 9px;border-radius:99px">{{ heroArr.occLabel }}</span>
+                      </div>
+                      <div style="display:flex;align-items:flex-end;justify-content:space-between;border-top:1px solid rgba(255,255,255,.22);padding-top:14px">
+                        <div>
+                          <div style="font-size:12px;opacity:.85;font-weight:500">Llega en</div>
+                          <div style="display:flex;align-items:baseline;gap:5px"><span style="font-family:'Inter Tight';font-size:48px;font-weight:800;line-height:.9;letter-spacing:-.02em">{{ heroArr.minLabel }}</span><span style="font-size:16px;font-weight:600;opacity:.9">{{ heroArr.unit }}</span></div>
+                        </div>
+                        <span style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:700;background:rgba(255,255,255,.16);padding:9px 13px;border-radius:99px">Ver parada <i data-lucide="chevron-right" style="width:15px;height:15px"></i></span>
+                      </div>
+                    </button>
+                    <div>
+                      <div style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.5px;color:#5C6B5A;text-transform:uppercase;margin-bottom:11px">Tus paradas</div>
+                      <div style="display:flex;flex-direction:column;gap:10px">
+                        <sc-for list="{{ favList }}" as="f" hint-placeholder-count="2">
+                          <button onclick="{{ f.go }}" style="text-align:left;border:1px solid #E4E8E2;background:#fff;border-radius:16px;padding:14px 15px;cursor:pointer;display:flex;align-items:center;gap:13px" style-hover="border-color:#CFE0B6">
+                            <span style="width:40px;height:40px;border-radius:12px;background:#EAF3DC;display:flex;align-items:center;justify-content:center;flex:none"><i data-lucide="map-pin" style="width:19px;height:19px;color:#3F7A14"></i></span>
+                            <div style="flex:1;min-width:0"><div style="font-weight:700;font-size:15px;color:#1B2A1A">{{ f.name }}</div><div style="font-size:12px;color:#5C6B5A">{{ f.lines }}</div></div>
+                            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+                              <div style="display:flex;align-items:baseline;gap:3px"><span style="font-family:'Inter Tight';font-size:20px;font-weight:800;color:#3F7A14">{{ f.min }}</span><span style="font-size:11px;font-weight:600;color:#5C6B5A">{{ f.unit }}</span></div>
+                              <span style="font-size:10px;font-weight:700;color:{{ f.occColor }};background:{{ f.occBg }};padding:2px 7px;border-radius:99px">{{ f.occLabel }}</span>
+                            </div>
+                          </button>
+                        </sc-for>
+                      </div>
+                    </div>
+                    <div>
+                      <div style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.5px;color:#5C6B5A;text-transform:uppercase;margin-bottom:11px">Rutas</div>
+                      <div class="ml-scroll" style="display:flex;gap:10px;overflow-x:auto;padding-bottom:4px">
+                        <sc-for list="{{ routeChips }}" as="r" hint-placeholder-count="4">
+                          <button onclick="{{ r.go }}" style="{{ r.chip }}"><span style="{{ r.dot }}">{{ r.label }}</span><span style="font-size:12.5px;font-weight:600;color:#1B2A1A;white-space:nowrap">{{ r.name }}</span></button>
+                        </sc-for>
+                      </div>
+                    </div>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- ════════ RUTAS ════════ -->
+          <sc-if value="{{ isRutas }}" hint-placeholder-val="{{ false }}">
+            <div style="min-height:100%;animation:mlfade .3s ease">
+              <div style="background:#6FBA2C;margin-top:-54px;padding:64px 22px 22px;border-radius:0 0 26px 26px">
+                <div style="color:rgba(255,255,255,.85);font-size:13px;font-weight:500">Líneas Metrolínea</div>
+                <div style="color:#fff;font-family:'Inter Tight';font-weight:800;font-size:26px;line-height:1.1">Rutas</div>
+              </div>
+              <div style="padding:18px 22px 110px">
+                <sc-if value="{{ dsOffline }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;align-items:center;gap:10px;background:#FBE9C0;border:1px solid #F4D58A;border-radius:14px;padding:12px 14px;margin-bottom:16px"><i data-lucide="wifi-off" style="width:18px;height:18px;color:#9A6800;flex:none"></i><div style="font-size:13px;color:#7A5200;line-height:1.35">Sin conexión. Mostrando los últimos datos guardados.</div></div>
+                </sc-if>
+                <sc-if value="{{ dsLoading }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:12px">
+                    <div style="border-radius:18px;height:96px;background:linear-gradient(90deg,#F4F6F4 25%,#E9EDE8 50%,#F4F6F4 75%);background-size:400px 100%;animation:mlshimmer 1.3s infinite"></div>
+                    <div style="border-radius:18px;height:96px;background:linear-gradient(90deg,#F4F6F4 25%,#E9EDE8 50%,#F4F6F4 75%);background-size:400px 100%;animation:mlshimmer 1.3s infinite;opacity:.6"></div>
+                    <div style="border-radius:18px;height:96px;background:linear-gradient(90deg,#F4F6F4 25%,#E9EDE8 50%,#F4F6F4 75%);background-size:400px 100%;animation:mlshimmer 1.3s infinite;opacity:.3"></div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ dsError }}" hint-placeholder-val="{{ false }}">
+                  <div style="text-align:center;padding:40px 20px;display:flex;flex-direction:column;align-items:center;gap:13px">
+                    <div style="width:60px;height:60px;border-radius:50%;background:#F8D7CF;display:flex;align-items:center;justify-content:center"><i data-lucide="cloud-off" style="width:29px;height:29px;color:#D43A1F"></i></div>
+                    <div><div style="font-family:'Inter Tight';font-weight:700;font-size:17px;color:#1B2A1A">No pudimos cargar las rutas</div><div style="font-size:13px;color:#5C6B5A;margin-top:4px;line-height:1.45;max-width:250px">Revisa tu conexión e inténtalo de nuevo.</div></div>
+                    <button onclick="{{ refresh }}" style="background:#6FBA2C;color:#fff;border:none;border-radius:14px;padding:12px 20px;font-family:'Inter';font-weight:700;font-size:14.5px;cursor:pointer;display:flex;align-items:center;gap:8px"><i data-lucide="rotate-cw" style="width:16px;height:16px"></i>Reintentar</button>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ dsEmpty }}" hint-placeholder-val="{{ false }}">
+                  <div style="text-align:center;padding:40px 20px;display:flex;flex-direction:column;align-items:center;gap:13px">
+                    <div style="width:60px;height:60px;border-radius:50%;background:#EAEEE8;display:flex;align-items:center;justify-content:center"><i data-lucide="route-off" style="width:27px;height:27px;color:#9AA89A"></i></div>
+                    <div><div style="font-family:'Inter Tight';font-weight:700;font-size:17px;color:#1B2A1A">Sin rutas disponibles</div><div style="font-size:13px;color:#5C6B5A;margin-top:4px;line-height:1.45;max-width:250px">No hay líneas en operación en este momento.</div></div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ dsReady }}" hint-placeholder-val="{{ true }}">
+                <div style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.5px;color:#5C6B5A;text-transform:uppercase;margin-bottom:12px">Todas las líneas</div>
+                <div style="display:flex;flex-direction:column;gap:12px">
+                  <sc-for list="{{ allRoutes }}" as="r" hint-placeholder-count="4">
+                    <button onclick="{{ r.go }}" style="text-align:left;border:1px solid #E4E8E2;background:#fff;border-radius:18px;padding:16px;cursor:pointer;display:flex;flex-direction:column;gap:13px" style-hover="border-color:#CFE0B6">
+                      <div style="display:flex;align-items:center;gap:12px">
+                        <span style="width:46px;height:46px;border-radius:12px;background:{{ r.color }};color:#fff;font-family:'JetBrains Mono';font-weight:700;font-size:17px;display:flex;align-items:center;justify-content:center;flex:none">{{ r.id }}</span>
+                        <div style="flex:1;min-width:0"><div style="font-weight:700;font-size:16px;color:#1B2A1A">{{ r.name }}</div><div style="font-size:12.5px;color:#5C6B5A">{{ r.type }} · cada {{ r.headway }} min</div></div>
+                        <i data-lucide="chevron-right" style="width:20px;height:20px;color:#C2CBBC"></i>
+                      </div>
+                      <div style="display:flex;align-items:center;gap:8px;background:#F4F6F4;border-radius:11px;padding:9px 12px;font-size:12.5px;font-weight:600;color:#1B2A1A">
+                        <span>{{ r.from }}</span><i data-lucide="arrow-right" style="width:14px;height:14px;color:#9AA89A;flex:none"></i><span>{{ r.to }}</span><span style="margin-left:auto;color:#5C6B5A;font-weight:500">{{ r.stops }} paradas</span>
+                      </div>
+                    </button>
+                  </sc-for>
+                </div>
+                </sc-if>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- ════════ FAVORITOS ════════ -->
+          <sc-if value="{{ isFav }}" hint-placeholder-val="{{ false }}">
+            <div style="min-height:100%;animation:mlfade .3s ease">
+              <div style="background:#6FBA2C;margin-top:-54px;padding:64px 22px 22px;border-radius:0 0 26px 26px">
+                <div style="color:rgba(255,255,255,.85);font-size:13px;font-weight:500">Tu acceso rápido</div>
+                <div style="color:#fff;font-family:'Inter Tight';font-weight:800;font-size:26px;line-height:1.1">Favoritos</div>
+              </div>
+              <div style="padding:18px 22px 110px">
+                <sc-if value="{{ dsOffline }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;align-items:center;gap:10px;background:#FBE9C0;border:1px solid #F4D58A;border-radius:14px;padding:12px 14px;margin-bottom:16px"><i data-lucide="wifi-off" style="width:18px;height:18px;color:#9A6800;flex:none"></i><div style="font-size:13px;color:#7A5200;line-height:1.35">Sin conexión. Mostrando los últimos datos guardados.</div></div>
+                </sc-if>
+                <sc-if value="{{ dsLoading }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:10px">
+                    <div style="border-radius:16px;height:70px;background:linear-gradient(90deg,#F4F6F4 25%,#E9EDE8 50%,#F4F6F4 75%);background-size:400px 100%;animation:mlshimmer 1.3s infinite"></div>
+                    <div style="border-radius:16px;height:70px;background:linear-gradient(90deg,#F4F6F4 25%,#E9EDE8 50%,#F4F6F4 75%);background-size:400px 100%;animation:mlshimmer 1.3s infinite;opacity:.6"></div>
+                    <div style="border-radius:16px;height:70px;background:linear-gradient(90deg,#F4F6F4 25%,#E9EDE8 50%,#F4F6F4 75%);background-size:400px 100%;animation:mlshimmer 1.3s infinite;opacity:.3"></div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ dsError }}" hint-placeholder-val="{{ false }}">
+                  <div style="text-align:center;padding:40px 20px;display:flex;flex-direction:column;align-items:center;gap:13px">
+                    <div style="width:60px;height:60px;border-radius:50%;background:#F8D7CF;display:flex;align-items:center;justify-content:center"><i data-lucide="cloud-off" style="width:29px;height:29px;color:#D43A1F"></i></div>
+                    <div><div style="font-family:'Inter Tight';font-weight:700;font-size:17px;color:#1B2A1A">No pudimos cargar tus favoritos</div><div style="font-size:13px;color:#5C6B5A;margin-top:4px;line-height:1.45;max-width:250px">Revisa tu conexión e inténtalo de nuevo.</div></div>
+                    <button onclick="{{ refresh }}" style="background:#6FBA2C;color:#fff;border:none;border-radius:14px;padding:12px 20px;font-family:'Inter';font-weight:700;font-size:14.5px;cursor:pointer;display:flex;align-items:center;gap:8px"><i data-lucide="rotate-cw" style="width:16px;height:16px"></i>Reintentar</button>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ dsEmpty }}" hint-placeholder-val="{{ false }}">
+                  <div style="text-align:center;padding:40px 20px;display:flex;flex-direction:column;align-items:center;gap:13px">
+                    <div style="width:60px;height:60px;border-radius:50%;background:#EAEEE8;display:flex;align-items:center;justify-content:center"><i data-lucide="star" style="width:27px;height:27px;color:#9AA89A"></i></div>
+                    <div><div style="font-family:'Inter Tight';font-weight:700;font-size:17px;color:#1B2A1A">Aún no tienes favoritos</div><div style="font-size:13px;color:#5C6B5A;margin-top:4px;line-height:1.45;max-width:250px">Guarda paradas y rutas para verlas aquí al instante.</div></div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ dsReady }}" hint-placeholder-val="{{ true }}">
+                <div style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.5px;color:#5C6B5A;text-transform:uppercase;margin-bottom:11px">Paradas guardadas</div>
+                <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px">
+                  <sc-for list="{{ favList }}" as="f" hint-placeholder-count="2">
+                    <button onclick="{{ f.go }}" style="text-align:left;border:1px solid #E4E8E2;background:#fff;border-radius:16px;padding:14px 15px;cursor:pointer;display:flex;align-items:center;gap:13px" style-hover="border-color:#CFE0B6">
+                      <span style="width:40px;height:40px;border-radius:12px;background:#EAF3DC;display:flex;align-items:center;justify-content:center;flex:none"><i data-lucide="map-pin" style="width:19px;height:19px;color:#3F7A14"></i></span>
+                      <div style="flex:1;min-width:0"><div style="font-weight:700;font-size:15px;color:#1B2A1A">{{ f.name }}</div><div style="font-size:12px;color:#5C6B5A">{{ f.lines }}</div></div>
+                      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+                        <div style="display:flex;align-items:baseline;gap:3px"><span style="font-family:'Inter Tight';font-size:20px;font-weight:800;color:#3F7A14">{{ f.min }}</span><span style="font-size:11px;font-weight:600;color:#5C6B5A">{{ f.unit }}</span></div>
+                        <span style="font-size:10px;font-weight:700;color:{{ f.occColor }};background:{{ f.occBg }};padding:2px 7px;border-radius:99px">{{ f.occLabel }}</span>
+                      </div>
+                    </button>
+                  </sc-for>
+                </div>
+                <div style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.5px;color:#5C6B5A;text-transform:uppercase;margin-bottom:11px">Rutas guardadas</div>
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <sc-for list="{{ favRoutes }}" as="r" hint-placeholder-count="2">
+                    <button onclick="{{ r.go }}" style="text-align:left;border:1px solid #E4E8E2;background:#fff;border-radius:16px;padding:14px 15px;cursor:pointer;display:flex;align-items:center;gap:12px" style-hover="border-color:#CFE0B6">
+                      <span style="width:40px;height:40px;border-radius:11px;background:{{ r.color }};color:#fff;font-family:'JetBrains Mono';font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex:none">{{ r.id }}</span>
+                      <div style="flex:1;min-width:0"><div style="font-weight:700;font-size:15px;color:#1B2A1A">{{ r.name }}</div><div style="font-size:12px;color:#5C6B5A">{{ r.type }}</div></div>
+                      <i data-lucide="chevron-right" style="width:20px;height:20px;color:#C2CBBC"></i>
+                    </button>
+                  </sc-for>
+                </div>
+                </sc-if>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- ════════ AJUSTES ════════ -->
+          <sc-if value="{{ isAjustes }}" hint-placeholder-val="{{ false }}">
+            <div style="min-height:100%;animation:mlfade .3s ease">
+              <div style="background:#6FBA2C;margin-top:-54px;padding:64px 22px 22px;border-radius:0 0 26px 26px">
+                <div style="display:flex;align-items:center;gap:14px">
+                  <div style="width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-family:'Inter Tight';font-weight:800;font-size:20px;color:#fff;flex:none">JS</div>
+                  <div><div style="color:#fff;font-family:'Inter Tight';font-weight:800;font-size:21px;line-height:1.1">Juan Sánchez</div><div style="color:rgba(255,255,255,.85);font-size:12.5px">Cuenta Metrolínea · Bucaramanga</div></div>
+                </div>
+              </div>
+              <div style="padding:18px 22px 110px">
+                <div style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.5px;color:#5C6B5A;text-transform:uppercase;margin-bottom:11px">Preferencias</div>
+                <div style="background:#fff;border:1px solid #E4E8E2;border-radius:16px;overflow:hidden;margin-bottom:22px">
+                  <div style="display:flex;align-items:center;gap:13px;padding:14px 15px;border-bottom:1px solid #F0F3EA">
+                    <span style="width:36px;height:36px;border-radius:10px;background:#EAF3DC;display:flex;align-items:center;justify-content:center;flex:none"><i data-lucide="map-pin" style="width:18px;height:18px;color:#3F7A14"></i></span>
+                    <div style="flex:1"><div style="font-weight:600;font-size:14.5px;color:#1B2A1A">Ubicación</div><div style="font-size:11.5px;color:#5C6B5A">Paradas cercanas automáticas</div></div>
+                    <button onclick="{{ toggleLocation }}" style="{{ locTrackStyle }}"><span style="{{ locKnobStyle }}"></span></button>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:13px;padding:14px 15px">
+                    <span style="width:36px;height:36px;border-radius:10px;background:#EAF3DC;display:flex;align-items:center;justify-content:center;flex:none"><i data-lucide="bell" style="width:18px;height:18px;color:#3F7A14"></i></span>
+                    <div style="flex:1"><div style="font-weight:600;font-size:14.5px;color:#1B2A1A">Notificaciones</div><div style="font-size:11.5px;color:#5C6B5A">Avisos de llegada del bus</div></div>
+                    <button onclick="{{ toggleNotif }}" style="{{ notifTrackStyle }}"><span style="{{ notifKnobStyle }}"></span></button>
+                  </div>
+                </div>
+                <div style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.5px;color:#5C6B5A;text-transform:uppercase;margin-bottom:11px">General</div>
+                <div style="background:#fff;border:1px solid #E4E8E2;border-radius:16px;overflow:hidden;margin-bottom:22px">
+                  <sc-for list="{{ settingRows }}" as="s" hint-placeholder-count="4">
+                    <div style="{{ s.rowStyle }}">
+                      <span style="width:36px;height:36px;border-radius:10px;background:#F4F6F4;display:flex;align-items:center;justify-content:center;flex:none"><i data-lucide="{{ s.icon }}" style="width:18px;height:18px;color:#5C6B5A"></i></span>
+                      <div style="flex:1;font-weight:600;font-size:14.5px;color:#1B2A1A">{{ s.label }}</div>
+                      <span style="font-size:13px;color:#9AA89A">{{ s.value }}</span>
+                      <i data-lucide="chevron-right" style="width:18px;height:18px;color:#C2CBBC"></i>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="text-align:center;font-size:11.5px;color:#9AA89A;font-family:'JetBrains Mono'">Metrolínea · versión 1.0.0 (demo)</div>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- ════════ BÚSQUEDA ════════ -->
+          <sc-if value="{{ isSearch }}" hint-placeholder-val="{{ false }}">
+            <div style="min-height:100%;animation:mlfade .3s ease">
+              <div style="background:#6FBA2C;margin-top:-54px;padding:64px 18px 18px;border-radius:0 0 24px 24px">
+                <div style="display:flex;align-items:center;gap:11px">
+                  <button onclick="{{ backHome }}" style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.2);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none"><i data-lucide="arrow-left" style="width:20px;height:20px;color:#fff"></i></button>
+                  <div style="flex:1;display:flex;align-items:center;gap:10px;background:#fff;border-radius:13px;padding:12px 14px">
+                    <i data-lucide="search" style="width:18px;height:18px;color:#9AA89A"></i>
+                    <span style="color:#1B2A1A;font-size:15px">Buscar parada o ruta</span>
+                    <span style="width:2px;height:18px;background:#6FBA2C;animation:mlblink 1s step-end infinite;margin-left:-4px"></span>
+                  </div>
+                </div>
+              </div>
+              <div style="padding:18px 22px 30px">
+                <sc-if value="{{ dsLoading }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:9px">
+                    <div style="border-radius:14px;height:62px;background:linear-gradient(90deg,#F4F6F4 25%,#E9EDE8 50%,#F4F6F4 75%);background-size:400px 100%;animation:mlshimmer 1.3s infinite"></div>
+                    <div style="border-radius:14px;height:62px;background:linear-gradient(90deg,#F4F6F4 25%,#E9EDE8 50%,#F4F6F4 75%);background-size:400px 100%;animation:mlshimmer 1.3s infinite;opacity:.7"></div>
+                    <div style="border-radius:14px;height:62px;background:linear-gradient(90deg,#F4F6F4 25%,#E9EDE8 50%,#F4F6F4 75%);background-size:400px 100%;animation:mlshimmer 1.3s infinite;opacity:.4"></div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ dsError }}" hint-placeholder-val="{{ false }}">
+                  <div style="text-align:center;padding:40px 20px;display:flex;flex-direction:column;align-items:center;gap:13px">
+                    <div style="width:60px;height:60px;border-radius:50%;background:#F8D7CF;display:flex;align-items:center;justify-content:center"><i data-lucide="cloud-off" style="width:29px;height:29px;color:#D43A1F"></i></div>
+                    <div><div style="font-family:'Inter Tight';font-weight:700;font-size:17px;color:#1B2A1A">No pudimos cargar las paradas</div><div style="font-size:13px;color:#5C6B5A;margin-top:4px;line-height:1.45;max-width:250px">Revisa tu conexión e inténtalo de nuevo.</div></div>
+                    <button onclick="{{ refresh }}" style="background:#6FBA2C;color:#fff;border:none;border-radius:14px;padding:12px 20px;font-family:'Inter';font-weight:700;font-size:14.5px;cursor:pointer;display:flex;align-items:center;gap:8px"><i data-lucide="rotate-cw" style="width:16px;height:16px"></i>Reintentar</button>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ dsEmpty }}" hint-placeholder-val="{{ false }}">
+                  <div style="text-align:center;padding:40px 20px;display:flex;flex-direction:column;align-items:center;gap:13px">
+                    <div style="width:60px;height:60px;border-radius:50%;background:#EAEEE8;display:flex;align-items:center;justify-content:center"><i data-lucide="search-x" style="width:27px;height:27px;color:#9AA89A"></i></div>
+                    <div><div style="font-family:'Inter Tight';font-weight:700;font-size:17px;color:#1B2A1A">Sin resultados</div><div style="font-size:13px;color:#5C6B5A;margin-top:4px;line-height:1.45;max-width:250px">No encontramos paradas ni rutas con ese nombre.</div></div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ dsReady }}" hint-placeholder-val="{{ true }}">
+                <div style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.5px;color:#5C6B5A;text-transform:uppercase;margin-bottom:11px">Recientes</div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px">
+                  <sc-for list="{{ recent }}" as="rc" hint-placeholder-count="3">
+                    <button onclick="{{ rc.go }}" style="display:flex;align-items:center;gap:7px;border:1px solid #E4E8E2;background:#fff;border-radius:999px;padding:8px 14px;cursor:pointer;font-size:13px;font-weight:600;color:#1B2A1A" style-hover="border-color:#CFE0B6"><i data-lucide="clock" style="width:14px;height:14px;color:#9AA89A"></i>{{ rc.label }}</button>
+                  </sc-for>
+                </div>
+                <div style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.5px;color:#5C6B5A;text-transform:uppercase;margin-bottom:11px">Todas las paradas</div>
+                <div style="display:flex;flex-direction:column;gap:9px">
+                  <sc-for list="{{ allStops }}" as="s" hint-placeholder-count="6">
+                    <button onclick="{{ s.go }}" style="text-align:left;border:1px solid #E4E8E2;background:#fff;border-radius:14px;padding:13px 15px;cursor:pointer;display:flex;align-items:center;gap:12px" style-hover="border-color:#CFE0B6">
+                      <span style="width:36px;height:36px;border-radius:10px;background:#EAF3DC;display:flex;align-items:center;justify-content:center;flex:none"><i data-lucide="map-pin" style="width:17px;height:17px;color:#3F7A14"></i></span>
+                      <div style="flex:1;min-width:0"><div style="font-weight:700;font-size:14.5px;color:#1B2A1A">{{ s.name }}</div><div style="font-size:11.5px;color:#5C6B5A">{{ s.zone }} · {{ s.lines }}</div></div>
+                      <i data-lucide="chevron-right" style="width:18px;height:18px;color:#C2CBBC"></i>
+                    </button>
+                  </sc-for>
+                </div>
+                </sc-if>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- ════════ STOP DETAIL ════════ -->
+          <sc-if value="{{ isStop }}" hint-placeholder-val="{{ false }}">
+            <div style="min-height:100%;display:flex;flex-direction:column;animation:mlfade .3s ease">
+              <div style="background:#6FBA2C;margin-top:-54px;padding:64px 20px 20px;border-radius:0 0 24px 24px">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+                  <button onclick="{{ backHome }}" style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.2);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none"><i data-lucide="arrow-left" style="width:20px;height:20px;color:#fff"></i></button>
+                  <div style="flex:1;min-width:0"><div style="color:#fff;font-family:'Inter Tight';font-weight:800;font-size:22px;line-height:1.05">{{ stopName }}</div><div style="color:rgba(255,255,255,.85);font-size:12.5px">{{ stopZone }}</div></div>
+                  <button style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.2);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none"><i data-lucide="star" style="width:18px;height:18px;color:#fff"></i></button>
+                </div>
+                <div style="display:flex;gap:7px;flex-wrap:wrap">
+                  <sc-for list="{{ stopLines }}" as="ln" hint-placeholder-count="3">
+                    <span style="font-family:'JetBrains Mono';font-size:11px;font-weight:700;color:#fff;background:rgba(255,255,255,.2);padding:4px 10px;border-radius:99px">{{ ln }}</span>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="padding:18px 20px 30px;flex:1">
+                <sc-if value="{{ dsOffline }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;align-items:center;gap:10px;background:#FBE9C0;border:1px solid #F4D58A;border-radius:14px;padding:12px 14px;margin-bottom:16px"><i data-lucide="wifi-off" style="width:18px;height:18px;color:#9A6800;flex:none"></i><div style="font-size:13px;color:#7A5200;line-height:1.35">Sin conexión. Mostrando los últimos datos guardados.</div></div>
+                </sc-if>
+                <sc-if value="{{ dsLoading }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:11px">
+                    <div style="border-radius:16px;height:86px;background:linear-gradient(90deg,#F4F6F4 25%,#E9EDE8 50%,#F4F6F4 75%);background-size:400px 100%;animation:mlshimmer 1.3s infinite"></div>
+                    <div style="border-radius:16px;height:86px;background:linear-gradient(90deg,#F4F6F4 25%,#E9EDE8 50%,#F4F6F4 75%);background-size:400px 100%;animation:mlshimmer 1.3s infinite;opacity:.6"></div>
+                    <div style="border-radius:16px;height:86px;background:linear-gradient(90deg,#F4F6F4 25%,#E9EDE8 50%,#F4F6F4 75%);background-size:400px 100%;animation:mlshimmer 1.3s infinite;opacity:.3"></div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ dsError }}" hint-placeholder-val="{{ false }}">
+                  <div style="text-align:center;padding:34px 16px;display:flex;flex-direction:column;align-items:center;gap:13px">
+                    <div style="width:58px;height:58px;border-radius:50%;background:#F8D7CF;display:flex;align-items:center;justify-content:center"><i data-lucide="cloud-off" style="width:28px;height:28px;color:#D43A1F"></i></div>
+                    <div style="font-family:'Inter Tight';font-weight:700;font-size:17px;color:#1B2A1A">No pudimos cargar las llegadas</div>
+                    <button onclick="{{ refresh }}" style="background:#6FBA2C;color:#fff;border:none;border-radius:14px;padding:12px 20px;font-family:'Inter';font-weight:700;font-size:14.5px;cursor:pointer;display:flex;align-items:center;gap:8px"><i data-lucide="rotate-cw" style="width:16px;height:16px"></i>Reintentar</button>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ dsEmpty }}" hint-placeholder-val="{{ false }}">
+                  <div style="text-align:center;padding:34px 16px;display:flex;flex-direction:column;align-items:center;gap:13px">
+                    <div style="width:58px;height:58px;border-radius:50%;background:#EAEEE8;display:flex;align-items:center;justify-content:center"><i data-lucide="moon-star" style="width:26px;height:26px;color:#9AA89A"></i></div>
+                    <div style="font-family:'Inter Tight';font-weight:700;font-size:17px;color:#1B2A1A">Sin buses por ahora</div>
+                    <div style="font-size:13px;color:#5C6B5A;max-width:240px;line-height:1.45">Esta parada no tiene salidas programadas en este momento.</div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ dsReady }}" hint-placeholder-val="{{ true }}">
+                  <div style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.5px;color:#5C6B5A;text-transform:uppercase;margin-bottom:12px">Próximas llegadas</div>
+                  <div style="display:flex;flex-direction:column;gap:11px">
+                    <sc-for list="{{ stopArr }}" as="a" hint-placeholder-count="4">
+                      <div style="border:1px solid #E4E8E2;background:#fff;border-radius:16px;padding:15px;display:flex;flex-direction:column;gap:12px">
+                        <div style="display:flex;align-items:center;justify-content:space-between">
+                          <div style="display:flex;align-items:center;gap:11px">
+                            <span style="width:38px;height:38px;border-radius:10px;background:{{ a.routeColor }};color:#fff;font-family:'JetBrains Mono';font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none">{{ a.route }}</span>
+                            <div><div style="font-weight:700;font-size:15px;color:#1B2A1A">{{ a.dest }}</div><div style="font-size:12px;color:#5C6B5A">{{ a.bus }}</div></div>
+                          </div>
+                          <div style="display:flex;align-items:baseline;gap:3px"><span style="font-family:'Inter Tight';font-size:26px;font-weight:800;color:#3F7A14;line-height:.9">{{ a.minLabel }}</span><span style="font-size:12px;font-weight:600;color:#5C6B5A">{{ a.unit }}</span></div>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:10px">
+                          <div style="flex:1;height:7px;border-radius:99px;background:#EEF1EC;overflow:hidden"><div style="height:100%;border-radius:99px;width:{{ a.occPct }}%;background:{{ a.occColor }}"></div></div>
+                          <span style="font-size:11px;font-weight:700;color:{{ a.occColor }};white-space:nowrap">Ocupación {{ a.occLabel }}</span>
+                        </div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- ════════ ROUTE DETAIL ════════ -->
+          <sc-if value="{{ isRoute }}" hint-placeholder-val="{{ false }}">
+            <div style="min-height:100%;display:flex;flex-direction:column;animation:mlfade .3s ease">
+              <div style="background:{{ rColor }};margin-top:-54px;padding:64px 20px 20px;border-radius:0 0 24px 24px">
+                <div style="display:flex;align-items:center;gap:11px;margin-bottom:14px">
+                  <button onclick="{{ backHome }}" style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.22);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none"><i data-lucide="arrow-left" style="width:20px;height:20px;color:#fff"></i></button>
+                  <span style="width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.22);color:#fff;font-family:'JetBrains Mono';font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;flex:none">{{ rInfo.id }}</span>
+                  <div style="flex:1;min-width:0"><div style="color:#fff;font-family:'Inter Tight';font-weight:800;font-size:19px;line-height:1.05">{{ rInfo.name }}</div><div style="color:rgba(255,255,255,.85);font-size:12px">{{ rInfo.type }} · cada {{ rInfo.headway }} min</div></div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;color:#fff;font-size:13px;font-weight:600;background:rgba(255,255,255,.15);border-radius:12px;padding:10px 13px">
+                  <span>{{ rInfo.from }}</span><i data-lucide="arrow-right" style="width:15px;height:15px;flex:none"></i><span>{{ rInfo.to }}</span><span style="margin-left:auto;opacity:.85;font-weight:500">{{ rInfo.stops }} paradas</span>
+                </div>
+              </div>
+              <div style="padding:18px 20px 30px;flex:1">
+                <sc-if value="{{ dsLoading }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:11px">
+                    <div style="border-radius:16px;height:80px;background:linear-gradient(90deg,#F4F6F4 25%,#E9EDE8 50%,#F4F6F4 75%);background-size:400px 100%;animation:mlshimmer 1.3s infinite"></div>
+                    <div style="border-radius:16px;height:80px;background:linear-gradient(90deg,#F4F6F4 25%,#E9EDE8 50%,#F4F6F4 75%);background-size:400px 100%;animation:mlshimmer 1.3s infinite;opacity:.5"></div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ dsError }}" hint-placeholder-val="{{ false }}">
+                  <div style="text-align:center;padding:34px 16px;display:flex;flex-direction:column;align-items:center;gap:13px">
+                    <div style="width:58px;height:58px;border-radius:50%;background:#F8D7CF;display:flex;align-items:center;justify-content:center"><i data-lucide="cloud-off" style="width:28px;height:28px;color:#D43A1F"></i></div>
+                    <div style="font-family:'Inter Tight';font-weight:700;font-size:17px;color:#1B2A1A">No pudimos cargar la ruta</div>
+                    <button onclick="{{ refresh }}" style="background:#6FBA2C;color:#fff;border:none;border-radius:14px;padding:12px 20px;font-family:'Inter';font-weight:700;font-size:14.5px;cursor:pointer;display:flex;align-items:center;gap:8px"><i data-lucide="rotate-cw" style="width:16px;height:16px"></i>Reintentar</button>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ dsEmpty }}" hint-placeholder-val="{{ false }}">
+                  <div style="text-align:center;padding:34px 16px;display:flex;flex-direction:column;align-items:center;gap:13px">
+                    <div style="width:58px;height:58px;border-radius:50%;background:#EAEEE8;display:flex;align-items:center;justify-content:center"><i data-lucide="moon-star" style="width:26px;height:26px;color:#9AA89A"></i></div>
+                    <div style="font-family:'Inter Tight';font-weight:700;font-size:17px;color:#1B2A1A">Ruta sin servicio</div>
+                    <div style="font-size:13px;color:#5C6B5A;max-width:240px;line-height:1.45">No hay buses circulando en esta ruta ahora mismo.</div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ dsReady }}" hint-placeholder-val="{{ true }}">
+                  <div style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.5px;color:#5C6B5A;text-transform:uppercase;margin-bottom:11px">Recorrido</div>
+                  <div style="position:relative;height:200px;border-radius:18px;overflow:hidden;background:#E7EEDC;border:1px solid #E4E8E2;margin-bottom:20px">
+                    <svg width="100%" height="100%" viewBox="0 0 320 200" preserveAspectRatio="none" style="position:absolute;inset:0">
+                      <path d="M-10 56 L330 38" stroke="#D6E0C5" stroke-width="9"></path>
+                      <path d="M-10 128 L330 150" stroke="#D6E0C5" stroke-width="13"></path>
+                      <path d="M72 -10 L112 210" stroke="#D6E0C5" stroke-width="8"></path>
+                      <path d="M222 -10 L188 210" stroke="#D6E0C5" stroke-width="11"></path>
+                      <polyline points="{{ rPathPoints }}" fill="none" stroke="{{ rColor }}" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                      <sc-for list="{{ rNodes }}" as="n" hint-placeholder-count="5">
+                        <circle cx="{{ n.x }}" cy="{{ n.y }}" r="{{ n.r }}" fill="{{ n.fill }}" stroke="{{ n.stroke }}" stroke-width="2.5"></circle>
+                      </sc-for>
+                    </svg>
+                    <div style="position:absolute;left:{{ rBusLeft }};top:{{ rBusTop }};transform:translate(-50%,-50%);width:32px;height:32px;border-radius:50%;background:{{ rColor }};border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,.28);display:flex;align-items:center;justify-content:center">
+                      <i data-lucide="bus-front" style="width:16px;height:16px;color:#fff"></i>
+                    </div>
+                    <sc-for list="{{ rEndNodes }}" as="e" hint-placeholder-count="2">
+                      <div style="position:absolute;left:{{ e.leftPct }};top:{{ e.topPct }};transform:{{ e.tf }};background:#fff;border-radius:8px;padding:3px 8px;font-size:10.5px;font-weight:700;color:#1B2A1A;box-shadow:0 2px 6px rgba(0,0,0,.14);white-space:nowrap">{{ e.label }}</div>
+                    </sc-for>
+                    <div style="position:absolute;top:10px;right:10px;display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.92);border-radius:99px;padding:5px 10px;font-size:11px;font-weight:700;color:#1B2A1A;box-shadow:0 2px 6px rgba(0,0,0,.1)"><span style="width:7px;height:7px;border-radius:50%;background:#6FBA2C;animation:mlpulse 1.6s infinite"></span>En vivo</div>
+                  </div>
+                  <div style="font-family:'JetBrains Mono';font-size:11px;letter-spacing:.5px;color:#5C6B5A;text-transform:uppercase;margin-bottom:12px">Buses en circulación</div>
+                  <div style="display:flex;flex-direction:column;gap:11px">
+                    <sc-for list="{{ rBuses }}" as="b" hint-placeholder-count="3">
+                      <div style="border:1px solid #E4E8E2;background:#fff;border-radius:16px;padding:15px;display:flex;flex-direction:column;gap:12px">
+                        <div style="display:flex;align-items:center;justify-content:space-between">
+                          <div style="display:flex;align-items:center;gap:11px">
+                            <span style="width:38px;height:38px;border-radius:10px;background:#EAF3DC;display:flex;align-items:center;justify-content:center;flex:none"><i data-lucide="bus-front" style="width:20px;height:20px;color:#3F7A14"></i></span>
+                            <div><div style="font-weight:700;font-size:15px;color:#1B2A1A">{{ b.bus }}</div><div style="font-size:12px;color:#5C6B5A">En {{ b.at }} → {{ b.next }}</div></div>
+                          </div>
+                          <div style="display:flex;align-items:baseline;gap:3px"><span style="font-family:'Inter Tight';font-size:24px;font-weight:800;color:#3F7A14;line-height:.9">{{ b.minLabel }}</span><span style="font-size:12px;font-weight:600;color:#5C6B5A">{{ b.unit }}</span></div>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:10px">
+                          <div style="flex:1;height:7px;border-radius:99px;background:#EEF1EC;overflow:hidden"><div style="height:100%;border-radius:99px;width:{{ b.occPct }}%;background:{{ b.occColor }}"></div></div>
+                          <span style="font-size:11px;font-weight:700;color:{{ b.occColor }};white-space:nowrap">Ocupación {{ b.occLabel }}</span>
+                        </div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+
+        <!-- Floating pill tab bar -->
+        <sc-if value="{{ showTabBar }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;left:0;right:0;bottom:30px;display:flex;justify-content:center;z-index:40;pointer-events:none">
+            <div style="display:flex;align-items:center;gap:4px;background:rgba(18,28,14,.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:7px;box-shadow:0 16px 36px -10px rgba(15,26,12,.6);pointer-events:auto">
+              <sc-for list="{{ tabItems }}" as="t" hint-placeholder-count="4">
+                <button onclick="{{ t.go }}" style="{{ t.btnStyle }}" aria-label="{{ t.label }}"><i data-lucide="{{ t.icon }}" style="width:22px;height:22px"></i></button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- Home indicator -->
+        <div style="height:26px;flex:none;display:flex;align-items:center;justify-content:center;position:relative;z-index:30">
+          <div style="width:134px;height:5px;border-radius:3px;background:{{ homeBarColor }}"></div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="">
+class Component extends DCLogic {
+  state = {
+    screen: 'onboarding',
+    onbStep: 0,
+    dataState: 'ready',
+    online: true,
+    selectedStopId: 'PROV',
+    selectedRouteId: 'P1',
+    favorites: ['PROV', 'CENT'],
+    favRouteIds: ['P1', 'T2'],
+    clock: '6:42',
+    tick: 0,
+    locationOn: true,
+    notifOn: true,
+    showPwd: false,
+  };
+
+  OCC = {
+    low:  { id:'low',  label:'Baja',  color:'#3F7A14', bg:'#D9F0C4', pct:28 },
+    mid:  { id:'mid',  label:'Media', color:'#9A6800', bg:'#FBE9C0', pct:62 },
+    high: { id:'high', label:'Alta',  color:'#D43A1F', bg:'#F8D7CF', pct:91 },
+  };
+
+  STOPS = [
+    { id:'PROV', name:'Provenza',        zone:'Sur',          lines:['P1','T2','A8'] },
+    { id:'CANA', name:'Cañaveral',       zone:'Floridablanca',lines:['P1','P8','T2'] },
+    { id:'REAL', name:'Real de Minas',   zone:'Occidente',    lines:['P8','A8'] },
+    { id:'QUEB', name:'Quebradaseca',    zone:'Centro',       lines:['P1','P8','T2','A8'] },
+    { id:'CENT', name:'Centro',          zone:'Centro',       lines:['P1','P8','T2','A8'] },
+    { id:'UIS',  name:'UIS / Universidad',zone:'Centro',      lines:['P1','T2'] },
+    { id:'FLOR', name:'Floridablanca',   zone:'Floridablanca',lines:['P8','T2'] },
+    { id:'NORTE',name:'Portal Norte',    zone:'Norte',        lines:['P1','A8'] },
+  ];
+
+  ROUTES = [
+    { id:'P1', name:'Provenza – Portal Norte', type:'Pretroncal', color:'#6FBA2C', from:'Provenza', to:'Portal Norte', stops:14, headway:6 },
+    { id:'P8', name:'Girón – Floridablanca',   type:'Pretroncal', color:'#0E6BA8', from:'Girón',    to:'Floridablanca', stops:18, headway:8 },
+    { id:'T2', name:'Cañaveral – UIS',         type:'Troncal',    color:'#3F7A14', from:'Cañaveral', to:'UIS',         stops:11, headway:5 },
+    { id:'A8', name:'Piedecuesta – Real de Minas', type:'Alimentadora', color:'#96BD0D', from:'Piedecuesta', to:'Real de Minas', stops:22, headway:12 },
+  ];
+
+  ARR = {
+    PROV: [
+      { route:'P1', bus:'ML-1042', min:2,  occ:'low',  dest:'Portal Norte' },
+      { route:'T2', bus:'ML-2210', min:6,  occ:'mid',  dest:'UIS' },
+      { route:'A8', bus:'ML-3318', min:9,  occ:'high', dest:'Real de Minas' },
+      { route:'P1', bus:'ML-1077', min:13, occ:'low',  dest:'Portal Norte' },
+    ],
+    CANA: [
+      { route:'T2', bus:'ML-2204', min:1,  occ:'high', dest:'UIS' },
+      { route:'P1', bus:'ML-1031', min:4,  occ:'mid',  dest:'Portal Norte' },
+      { route:'P8', bus:'ML-5120', min:8,  occ:'low',  dest:'Floridablanca' },
+    ],
+    CENT: [
+      { route:'P8', bus:'ML-5101', min:3,  occ:'mid',  dest:'Floridablanca' },
+      { route:'T2', bus:'ML-2218', min:5,  occ:'low',  dest:'UIS' },
+      { route:'P1', bus:'ML-1090', min:7,  occ:'high', dest:'Portal Norte' },
+      { route:'A8', bus:'ML-3340', min:11, occ:'mid',  dest:'Real de Minas' },
+    ],
+  };
+
+  BUSES = {
+    P1: [
+      { bus:'ML-1042', at:'Cañaveral',    next:'Quebradaseca', occ:'low',  min:2 },
+      { bus:'ML-1077', at:'Centro',       next:'UIS',          occ:'mid',  min:7 },
+      { bus:'ML-1090', at:'Portal Norte', next:'Provenza',     occ:'high', min:13 },
+    ],
+    P8: [
+      { bus:'ML-5101', at:'Real de Minas', next:'Centro',    occ:'mid', min:3 },
+      { bus:'ML-5120', at:'Girón',         next:'Cañaveral', occ:'low', min:8 },
+    ],
+    T2: [
+      { bus:'ML-2204', at:'Provenza', next:'Cañaveral', occ:'high', min:1 },
+      { bus:'ML-2218', at:'Centro',   next:'UIS',       occ:'low',  min:5 },
+    ],
+    A8: [
+      { bus:'ML-3318', at:'Piedecuesta', next:'Provenza', occ:'high', min:9 },
+    ],
+  };
+
+  TERMINAL = [
+    { route:'P1', dest:'Portal Norte', plat:'A1', min:1,  occ:'low',  status:'Llegando' },
+    { route:'T2', dest:'UIS',          plat:'B2', min:2,  occ:'mid',  status:'En ruta' },
+    { route:'P8', dest:'Floridablanca',plat:'A3', min:4,  occ:'high', status:'En ruta' },
+    { route:'A8', dest:'Real de Minas',plat:'C1', min:6,  occ:'mid',  status:'En ruta' },
+    { route:'P1', dest:'Portal Norte', plat:'A1', min:9,  occ:'low',  status:'Programado' },
+    { route:'T2', dest:'UIS',          plat:'B2', min:11, occ:'low',  status:'Programado' },
+    { route:'P8', dest:'Girón',        plat:'A4', min:14, occ:'mid',  status:'Programado' },
+    { route:'A8', dest:'Piedecuesta',  plat:'C2', min:17, occ:'low',  status:'Programado' },
+  ];
+
+  ROUTE_PATH = {
+    P1: [
+      { name:'Provenza', x:42, y:180 }, { name:'Cañaveral', x:92, y:150 },
+      { name:'Quebradaseca', x:150, y:148 }, { name:'Centro', x:192, y:108 },
+      { name:'UIS', x:232, y:70 }, { name:'Portal Norte', x:282, y:32 },
+    ],
+    P8: [
+      { name:'Girón', x:34, y:118 }, { name:'Real de Minas', x:84, y:158 },
+      { name:'Centro', x:150, y:164 }, { name:'Cañaveral', x:214, y:120 },
+      { name:'Floridablanca', x:282, y:84 },
+    ],
+    T2: [
+      { name:'Cañaveral', x:48, y:172 }, { name:'Quebradaseca', x:110, y:142 },
+      { name:'Centro', x:174, y:120 }, { name:'UIS', x:270, y:70 },
+    ],
+    A8: [
+      { name:'Piedecuesta', x:40, y:52 }, { name:'Provenza', x:96, y:104 },
+      { name:'Centro', x:160, y:140 }, { name:'Quebradaseca', x:212, y:160 },
+      { name:'Real de Minas', x:282, y:150 },
+    ],
+  };
+
+  ONB = [
+    { eye:'BIENVENIDO', title:'Tu bus, sin sorpresas', body:'Sabemos que el tiempo cuenta. Mira cuándo llega tu próximo bus y qué tan lleno viene, en tiempo real.', icon:'bus-front', cta:'Continuar' },
+    { eye:'UBICACIÓN', title:'La parada más cercana, al instante', body:'Activa tu ubicación y te mostramos las llegadas de tu parada y tus rutas favoritas apenas abres la app.', icon:'map-pin', cta:'Permitir ubicación' },
+    { eye:'LISTO', title:'Datos medidos por IA', body:'La ocupación de cada bus la miden las cámaras a bordo. Verás qué tan lleno viene antes de subirte.', icon:'sparkles', cta:'Empezar a viajar' },
+  ];
+
+  componentDidMount() {
+    this._lucide();
+    this._timer = setInterval(() => this.setState(s => ({ tick: s.tick + 1 })), 15000);
+  }
+  componentDidUpdate() { this._lucide(); }
+  componentWillUnmount() { clearInterval(this._timer); }
+  _lucide() {
+    if (window.lucide) { window.lucide.createIcons(); return; }
+    if (this._loading) return;
+    this._loading = true;
+    const s = document.createElement('script');
+    s.src = 'https://unpkg.com/lucide@latest';
+    s.onload = () => window.lucide && window.lucide.createIcons();
+    document.head.appendChild(s);
+  }
+
+  route(id) { return this.ROUTES.find(r => r.id === id) || this.ROUTES[0]; }
+  stop(id) { return this.STOPS.find(s => s.id === id) || this.STOPS[0]; }
+  go = (screen) => this.setState({ screen });
+  openStop = (id) => this.setState({ selectedStopId: id, screen: 'stop' });
+  openRoute = (id) => this.setState({ selectedRouteId: id, screen: 'route' });
+  openSearch = () => this.setState({ screen: 'search' });
+  backHome = () => this.setState({ screen: 'home' });
+  refresh = () => { this.setState({ dataState: 'loading' }); setTimeout(() => this.setState({ dataState: 'ready', online: true }), 1100); };
+  setStateData = (ds) => this.setState({ dataState: ds, online: ds !== 'offline' });
+  toggleLocation = () => this.setState(s => ({ locationOn: !s.locationOn }));
+  toggleNotif = () => this.setState(s => ({ notifOn: !s.notifOn }));
+  nextOnb = () => { if (this.state.onbStep >= 2) this.go('login'); else this.setState(s => ({ onbStep: s.onbStep + 1 })); };
+  skipOnb = () => this.go('login');
+  setOnb = (i) => this.setState({ onbStep: i });
+  togglePw = () => this.setState(s => ({ showPwd: !s.showPwd }));
+  doLogin = () => this.go('home');
+  goOnboard = () => this.setState({ screen: 'onboarding', onbStep: 0 });
+
+  decoArr(stopId, n) {
+    const list = (this.ARR[stopId] || this.ARR.PROV).slice(0, n || 99);
+    return list.map((a, i) => {
+      const o = this.OCC[a.occ];
+      return {
+        key: a.bus + i, route: a.route, routeColor: this.route(a.route).color,
+        dest: a.dest, bus: a.bus, min: a.min,
+        minLabel: a.min <= 0 ? 'Ya' : String(a.min), unit: a.min <= 0 ? 'llegando' : 'min',
+        occLabel: o.label, occColor: o.color, occBg: o.bg, occPct: o.pct,
+        soon: a.min <= 2, go: () => this.openStop(stopId),
+      };
+    });
+  }
+
+  renderVals() {
+    const st = this.state;
+    const chip = (active) => `padding:7px 13px;border-radius:999px;border:1px solid ${active?'#1B2A1A':'#CFD4CC'};background:${active?'#1B2A1A':'#fff'};color:${active?'#fff':'#5C6B5A'};font-size:12.5px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:.15s`;
+    const sChip = (active, col) => `padding:6px 12px;border-radius:999px;border:1px solid ${active?col:'#CFD4CC'};background:${active?col:'#fff'};color:${active?'#fff':'#5C6B5A'};font-size:11.5px;font-weight:600;font-family:'JetBrains Mono',monospace;cursor:pointer;transition:.15s`;
+    const onPhone = st.screen !== 'kiosk';
+
+    // route map geometry
+    const rid = st.selectedRouteId;
+    const rpath = this.ROUTE_PATH[rid] || this.ROUTE_PATH.P1;
+    const rcol = this.route(rid).color;
+    const rNodes = rpath.map((p, i) => {
+      const end = (i === 0 || i === rpath.length - 1);
+      return { key: p.name + i, x: p.x, y: p.y, r: end ? 6.5 : 4.5, fill: end ? rcol : '#fff', stroke: rcol };
+    });
+    const rEndNodes = rpath.map((p, i) => ({ p, i })).filter(o => o.i === 0 || o.i === rpath.length - 1).map(o => ({
+      key: o.p.name, label: o.p.name,
+      leftPct: (o.p.x / 320 * 100).toFixed(1) + '%', topPct: (o.p.y / 200 * 100).toFixed(1) + '%',
+      tf: o.p.y < 60 ? 'translate(-50%,60%)' : 'translate(-50%,-150%)',
+    }));
+    const rbn = rpath[1] || rpath[0];
+
+    const navDefs = [
+      { id:'onboarding', label:'Onboarding' }, { id:'login', label:'Login' }, { id:'home', label:'Home' },
+      { id:'rutas', label:'Rutas' }, { id:'fav', label:'Favoritos' },
+      { id:'ajustes', label:'Ajustes' }, { id:'search', label:'Búsqueda' },
+      { id:'stop', label:'Parada' }, { id:'route', label:'Ruta' }, { id:'kiosk', label:'Terminal' },
+    ];
+    const stateDefs = [
+      { id:'ready', label:'OK', col:'#6FBA2C' }, { id:'loading', label:'Cargando', col:'#0E6BA8' },
+      { id:'empty', label:'Vacío', col:'#5C6B5A' }, { id:'error', label:'Error', col:'#D43A1F' },
+      { id:'offline', label:'Sin conexión', col:'#9A6800' },
+    ];
+
+    const tabBtn = (active) => `width:48px;height:44px;border-radius:999px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.18s;background:${active?'#6FBA2C':'transparent'};color:${active?'#fff':'rgba(255,255,255,.55)'}`;
+    const tabDefs = [
+      { id:'home', label:'Inicio', icon:'house' },
+      { id:'rutas', label:'Rutas', icon:'route' },
+      { id:'fav', label:'Favoritos', icon:'star' },
+      { id:'ajustes', label:'Ajustes', icon:'settings' },
+    ];
+
+    const settingDefs = [
+      { icon:'languages', label:'Idioma', value:'Español' },
+      { icon:'credit-card', label:'Tarjeta Tullave', value:'•• 4821' },
+      { icon:'circle-help', label:'Ayuda y soporte', value:'' },
+      { icon:'shield', label:'Privacidad', value:'' },
+    ];
+
+    const toggleTrack = (on) => `width:46px;height:28px;border-radius:999px;border:none;cursor:pointer;background:${on?'#6FBA2C':'#D7DDD2'};display:flex;align-items:center;padding:3px;justify-content:${on?'flex-end':'flex-start'};transition:.2s`;
+    const toggleKnob = 'width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);display:block';
+
+    return {
+      navItems: navDefs.map(n => ({ label:n.label, style:chip(st.screen===n.id), go:()=>this.go(n.id) })),
+      stateItems: stateDefs.map(s => ({ label:s.label, style:sChip(st.dataState===s.id, s.col), go:()=>this.setStateData(s.id) })),
+
+      isKiosk: st.screen === 'kiosk',
+      showPhone: onPhone,
+      clock: st.clock,
+      statusColor: '#fff',
+      screenBg: (st.screen === 'onboarding' || st.screen === 'login')
+        ? 'position:absolute;inset:0;z-index:0;background:radial-gradient(120% 80% at 70% 0%, #7FCB38 0%, #5AA621 45%, #3F7A14 100%)'
+        : 'position:absolute;inset:0;z-index:0;background:#F4F6F4',
+      homeBarColor: (st.screen === 'onboarding' || st.screen === 'login') ? 'rgba(255,255,255,.7)' : '#1B2A1A',
+      wifiIcon: st.online ? 'wifi' : 'wifi-off',
+
+      isOnboarding: st.screen === 'onboarding',
+      isLogin: st.screen === 'login',
+      isHome: st.screen === 'home',
+      pwType: st.showPwd ? 'text' : 'password',
+      pwIcon: st.showPwd ? 'eye-off' : 'eye',
+      togglePw: this.togglePw, doLogin: this.doLogin, goOnboard: this.goOnboard,
+      isRutas: st.screen === 'rutas',
+      isFav: st.screen === 'fav',
+      isAjustes: st.screen === 'ajustes',
+      isSearch: st.screen === 'search',
+      isStop: st.screen === 'stop',
+      isRoute: st.screen === 'route',
+      showTabBar: ['home','rutas','fav','ajustes'].includes(st.screen),
+
+      dsLoading: st.dataState === 'loading',
+      dsError: st.dataState === 'error',
+      dsEmpty: st.dataState === 'empty',
+      dsOffline: st.dataState === 'offline',
+      dsReady: st.dataState === 'ready' || st.dataState === 'offline',
+      lastUpdated: st.dataState === 'offline' ? 'hace 4 min · sin conexión' : 'hace 12 s',
+      connDot: st.dataState === 'offline' ? '#F4B400' : '#A6E04A',
+      refresh: this.refresh,
+
+      openSearch: this.openSearch,
+      backHome: this.backHome,
+
+      tabItems: tabDefs.map(t => ({ label:t.label, icon:t.icon, btnStyle:tabBtn(st.screen===t.id), go:()=>this.go(t.id) })),
+
+      // home
+      heroStopName: this.stop('PROV').name,
+      heroArr: this.decoArr('PROV', 1)[0],
+      favList: st.favorites.map(id => {
+        const s = this.stop(id); const a = this.decoArr(id, 1)[0];
+        return { id, name:s.name, lines:s.lines.join(' · '), min:a.minLabel, unit:a.unit,
+          route:a.route, routeColor:a.routeColor, occLabel:a.occLabel, occColor:a.occColor, occBg:a.occBg,
+          go:()=>this.openStop(id) };
+      }),
+      routeChips: this.ROUTES.map(r => ({ id:r.id, label:r.id, name:r.name,
+        chip:`display:flex;align-items:center;gap:9px;padding:11px 14px;background:#fff;border:1px solid #E4E8E2;border-radius:14px;cursor:pointer;min-width:152px`,
+        dot:`width:30px;height:30px;border-radius:9px;background:${r.color}1A;color:${r.color};display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;font-family:'JetBrains Mono',monospace;flex:none`,
+        go:()=>this.openRoute(r.id) })),
+
+      // rutas
+      allRoutes: this.ROUTES.map(r => ({ ...r, go:()=>this.openRoute(r.id) })),
+      // favoritos
+      favRoutes: st.favRouteIds.map(id => { const r = this.route(id); return { id:r.id, name:r.name, type:r.type, color:r.color, go:()=>this.openRoute(r.id) }; }),
+
+      // ajustes
+      locTrackStyle: toggleTrack(st.locationOn), locKnobStyle: toggleKnob, toggleLocation: this.toggleLocation,
+      notifTrackStyle: toggleTrack(st.notifOn), notifKnobStyle: toggleKnob, toggleNotif: this.toggleNotif,
+      settingRows: settingDefs.map((s, i) => ({ ...s,
+        rowStyle:`display:flex;align-items:center;gap:13px;padding:14px 15px;${i < settingDefs.length-1 ? 'border-bottom:1px solid #F0F3EA' : ''}` })),
+
+      // search
+      recent: [
+        { label:'Provenza', go:()=>this.openStop('PROV') },
+        { label:'Centro', go:()=>this.openStop('CENT') },
+        { label:'Ruta T2', go:()=>this.openRoute('T2') },
+      ],
+      allStops: this.STOPS.map(s => ({ name:s.name, zone:s.zone, lines:s.lines.join(' · '), go:()=>this.openStop(s.id) })),
+
+      // stop detail
+      stopName: this.stop(st.selectedStopId).name,
+      stopZone: this.stop(st.selectedStopId).zone + ' · ' + this.stop(st.selectedStopId).lines.length + ' rutas',
+      stopLines: this.stop(st.selectedStopId).lines,
+      stopArr: this.decoArr(st.selectedStopId, 99),
+
+      // route detail
+      rInfo: this.route(st.selectedRouteId),
+      rColor: this.route(st.selectedRouteId).color,
+      rPathPoints: rpath.map(p => p.x + ',' + p.y).join(' '),
+      rNodes, rEndNodes,
+      rBusLeft: (rbn.x / 320 * 100).toFixed(1) + '%', rBusTop: (rbn.y / 200 * 100).toFixed(1) + '%',
+      rBuses: (this.BUSES[st.selectedRouteId] || this.BUSES.P1).map((b, i) => {
+        const o = this.OCC[b.occ];
+        return { key:b.bus+i, bus:b.bus, at:b.at, next:b.next,
+          minLabel:b.min<=0?'Ya':String(b.min), unit:b.min<=0?'llegando':'min',
+          occLabel:o.label, occColor:o.color, occBg:o.bg, occPct:o.pct };
+      }),
+
+      // terminal
+      termRows: this.TERMINAL.map((t, i) => {
+        const o = this.OCC[t.occ]; const r = this.route(t.route);
+        return { key:t.route+i, route:t.route, routeColor:r.color, dest:t.dest, plat:t.plat,
+          minLabel:t.min<=0?'Ya':String(t.min), occLabel:o.label, occColor:o.color, status:t.status, soon:t.min<=2 };
+      }),
+      termClock: st.clock,
+
+      // onboarding
+      onb: this.ONB[st.onbStep],
+      onbDots: this.ONB.map((_, i) => ({ style:`width:${i===st.onbStep?'22px':'7px'};height:7px;border-radius:99px;background:${i===st.onbStep?'#fff':'rgba(255,255,255,.45)'};transition:.25s;border:none;cursor:pointer;padding:0`, go:()=>this.setOnb(i) })),
+      nextOnb: this.nextOnb, skipOnb: this.skipOnb,
+    };
+  }
+}
+</script>
+
+
+</body></html>

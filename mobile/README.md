@@ -71,20 +71,49 @@ npx cap sync
 
 ## Estructura
 
+App real de Ionic con navegación por **router + tabs**. Las pantallas son vistas
+separadas que comparten un set de **componentes reutilizables transversales**
+(no un preview HTML). Datos **mock** por ahora (en `data/metrolinea.ts`),
+estructurados para cambiar al API `ai/` después.
+
 ```
-mobile/
-├── capacitor.config.ts        # appId: co.metrolinea.campusland
-├── vite.config.ts             # puerto 5174, proxy /api → :8000
-├── src/
-│   ├── App.vue
-│   ├── main.ts
-│   ├── api/client.ts          # cliente del backend ai/
-│   ├── router/index.ts
-│   ├── views/HomePage.vue     # vista inicial
-│   └── theme/variables.css
-├── DESIGN_BRIEF.md            # base para diseño
-└── package.json
+mobile/src/
+├── App.vue · main.ts
+├── api/client.ts              # cliente del backend ai/ (vista operador)
+├── data/metrolinea.ts         # datos mock + view-models (paradas, rutas, llegadas, geometría)
+├── composables/
+│   ├── useFavorites.ts        # favoritos compartidos (singleton reactivo)
+│   └── useRefreshable.ts      # estado de carga para pull-to-refresh
+├── components/                # ── reutilizables / transversales ──
+│   ├── LucideIcon.vue         # iconos (registro tree-shakeable)
+│   ├── MlHeader.vue           # header verde curvo (back/eyebrow/título/slots)
+│   ├── MlTabBar.vue           # barra de tabs flotante (pill)
+│   ├── MlListItem.vue         # fila genérica de lista
+│   ├── RouteBadge.vue         # badge de ruta (P1, T2…)
+│   ├── OccupancyChip.vue · OccupancyBar.vue   # ocupación (chip / barra)
+│   ├── MinutesBadge.vue       # minutos hasta llegada
+│   ├── VehicleCard.vue        # tarjeta de llegada / bus
+│   ├── RouteCard.vue          # tarjeta de ruta
+│   ├── IconBox.vue · SectionLabel.vue
+│   ├── EmptyState.vue · SkeletonList.vue · OfflineBanner.vue
+├── views/
+│   ├── OnboardingPage.vue     # /onboarding (3 slides)
+│   ├── LoginPage.vue          # /login
+│   ├── TabsPage.vue           # /tabs (outlet + MlTabBar)
+│   │   ├── HomePage.vue       #   /tabs/home
+│   │   ├── RutasPage.vue      #   /tabs/rutas
+│   │   ├── FavoritosPage.vue  #   /tabs/fav
+│   │   └── AjustesPage.vue    #   /tabs/ajustes
+│   ├── SearchPage.vue         # /search (filtrado en vivo)
+│   ├── StopDetailPage.vue     # /stop/:id
+│   ├── RouteDetailPage.vue    # /route/:id (mapa de recorrido + buses)
+│   └── OperatorPage.vue       # /operator (integración con ai/ /decision)
+├── theme/variables.css        # tokens de marca + theming Ionic
+└── ../DESIGN_BRIEF.md · ../DESIGN_REFERENCE.html   # diseño de referencia
 ```
+
+> El **modo terminal/kiosko** (tablero de salidas estilo aeropuerto) va en el
+> módulo [`dashboard/`](../dashboard), no en la app móvil (ver DESIGN_BRIEF).
 
 ---
 

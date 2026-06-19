@@ -32,6 +32,9 @@ data/processed/
 .vscode/
 *.swp
 
+# Claude Code (local settings por proyecto)
+.claude/
+
 # Node / frontends
 node_modules/
 dist/
