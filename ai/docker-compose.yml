@@ -67,6 +67,8 @@ services:
       context: ../dashboard
       dockerfile: Dockerfile
     container_name: metrolinea-dashboard
+    ports:
+      - "5173:5173"          # acceso directo desde host: http://localhost:5173/app
     environment:
       VITE_BASE_URL: /app
     volumes:

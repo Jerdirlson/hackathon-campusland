@@ -55,9 +55,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { IonContent, IonPage, IonRefresher, IonRefresherContent } from '@ionic/vue'
+import {
+  IonContent,
+  IonPage,
+  IonRefresher,
+  IonRefresherContent,
+  onIonViewDidEnter,
+  onIonViewWillLeave,
+} from '@ionic/vue'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
@@ -85,6 +92,8 @@ const badgeColor = computed(() => {
   return PALETTE[n]
 })
 
+const viewActive = ref(false)
+
 async function load() {
   loading.value = true
   error.value = null
@@ -92,7 +101,7 @@ async function load() {
     const id = String(routeParams.params.id)
     route.value = await api.getRoute(id)
     await nextTick()
-    renderMap()
+    if (viewActive.value) renderMap()
   } catch (e) {
     error.value = (e as Error).message
   } finally {
@@ -157,8 +166,26 @@ async function onRefresh(ev: CustomEvent) {
   ;(ev.target as HTMLIonRefresherElement).complete()
 }
 
-onMounted(load)
-watch(() => routeParams.params.id, load)
+// Ionic: el ion-page está `display:none` hasta entrar la ruta. Inicializamos
+// Leaflet aquí para que el contenedor ya tenga dimensiones reales.
+onIonViewDidEnter(async () => {
+  viewActive.value = true
+  if (!route.value) {
+    await load()
+  } else {
+    renderMap()
+  }
+  // Aun así, forzar un invalidateSize por si llegó antes del layout final.
+  setTimeout(() => mapInstance?.invalidateSize(), 80)
+})
+
+onIonViewWillLeave(() => {
+  viewActive.value = false
+})
+
+watch(() => routeParams.params.id, () => {
+  if (viewActive.value) load()
+})
 
 onBeforeUnmount(() => {
   mapInstance?.remove()
