@@ -71,6 +71,17 @@ services:
       VITE_BASE_URL: /app
     restart: unless-stopped
 
+  mobile:
+    build:
+      context: ../mobile
+      dockerfile: Dockerfile
+    container_name: metrolinea-mobile
+    ports:
+      - "5174:5174"          # acceso directo desde celular: http://<IP_LAN>:5174
+    environment:
+      VITE_BASE_URL: /mobile
+    restart: unless-stopped
+
   nginx:
     image: nginx:alpine
     container_name: metrolinea-nginx
@@ -81,6 +92,7 @@ services:
     depends_on:
       - backend
       - dashboard
+      - mobile
     restart: unless-stopped
 
 volumes:
